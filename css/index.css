@@ -1052,11 +1052,11 @@ code {
   filter: none;
 }
 .sidebar-overview .sidebar-author-avatar:hover {
-  -webkit-animation: 'avatar-turn' 0.8s both ease-out;
-  -moz-animation: 'avatar-turn' 0.8s both ease-out;
-  -o-animation: 'avatar-turn' 0.8s both ease-out;
-  -ms-animation: 'avatar-turn' 0.8s both ease-out;
-  animation: 'avatar-turn' 0.8s both ease-out;
+  -webkit-animation: 'avatar-shake' 0.8s both ease-out;
+  -moz-animation: 'avatar-shake' 0.8s both ease-out;
+  -o-animation: 'avatar-shake' 0.8s both ease-out;
+  -ms-animation: 'avatar-shake' 0.8s both ease-out;
+  animation: 'avatar-shake' 0.8s both ease-out;
 }
 .sidebar-overview .sidebar-author-motto {
   margin: 0.5rem 0 0;
@@ -1245,6 +1245,14 @@ code {
   width: 0;
   height: 1px;
   background-color: #fc6423;
+}
+.post-body img,
+#recent-posts img {
+  margin: auto;
+}
+.post-body img,
+#recent-posts img {
+  display: block;
 }
 .post-body #more {
   border: 0;
@@ -1832,7 +1840,7 @@ code {
   -o-transform: scale(1.5) rotate(45deg);
   -ms-transform: scale(1.5) rotate(45deg);
   transform: scale(1.5) rotate(45deg);
-  color: #999;
+  color: #96f;
 }
 #recent-posts .post-btn {
   display: -webkit-box;

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acptek.github.io/"/>
-  <updated>2019-06-25T02:40:09.042Z</updated>
+  <updated>2019-07-20T07:17:33.827Z</updated>
   <id>https://acptek.github.io/</id>
   
   <author>
@@ -17,11 +17,29 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>19-07-08</title>
+    <link href="https://acptek.github.io/2019/07/10/19-07-08/"/>
+    <id>https://acptek.github.io/2019/07/10/19-07-08/</id>
+    <published>2019-07-10T07:25:28.000Z</published>
+    <updated>2019-07-20T07:17:33.827Z</updated>
+    
+    <content type="html"><![CDATA[<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script><div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX19W5wWwXS1tPKOA4P4mhZGam4aYd+Fklk3bcvixd3uC7aFEJxKF8K5tvuqGwm8V21rbikZJbNtgtrNOfu31WYczPCV42e1c3WM=</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    
+    <summary type="html">
+    
+      Enter password to read.
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>测试</title>
     <link href="https://acptek.github.io/2019/06/23/%E6%B5%8B%E8%AF%95/"/>
     <id>https://acptek.github.io/2019/06/23/测试/</id>
     <published>2019-06-23T08:16:08.000Z</published>
-    <updated>2019-06-25T02:40:09.042Z</updated>
+    <updated>2019-07-10T07:27:22.537Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><h3 id="Welcome"><a href="#Welcome" class="headerlink" title="Welcome"></a>Welcome</h3><h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><blockquote><p>quote test …</p><footer><strong>Test</strong><cite>test</cite></footer></blockquote><blockquote><p>Every interaction is both precious and an opportunity to delight.</p><footer><strong>Seth Godin</strong><cite><a href="http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html" target="_blank" rel="noopener">Welcome</a></cite></footer></blockquote><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">'Hello World!'</span>);</span><br></pre></td></tr></table></figure><iframe src="https://www.baidu.com" width="100%" height="100" frameborder="0" allowfullscreen></iframe>]]></content>
     

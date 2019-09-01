@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Git常用命令总结]]></title>
+    <url>%2F2019%2F09%2F01%2FGit%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[Commit创建一个提交：commit```123456789101112## Branch&gt; Git分支是指向某个提交记录，不会造成内存上的开销，按逻辑分解工作到不同的分支，星号（*）标识表示当前所在分支 1. 创建分支： ```git branch newbranch 切换分支：（从master分支切换到newbranch分支） checkout newbranch```123456783. 简洁方式： 创建一个分支并且切换到新的分支上 ```git checkout -b &lt;branch_name&gt; branch xx master^^2^```12345678## Merge&gt; 将两个或两个以上的开发历史合并到一起1. ```git pull = git fetch + git merge Merge模拟： 12345git checkout -b newbranchgit commit -m &quot;newbranch提交&quot;git checkout mastergit commit -m “master提交”git merge newbranch //将newbranch合并到master Rebase 1 合并多个commit为一个完整commit 2 将某一段commit粘贴到另一个分支上 将newbranch分支的工作移到master分支上，实现并行开发： 123456git checkout -b newbranchgit commit -m &quot;newbranch更新&quot;git checkout mastergit commit -m &quot;master更新&quot;git checkout newbranchgit rebase newbranch HEAD HEAD 是一个对当前检出记录的符号引用 —— 也就是指向你正在其基础上进行工作的提交记录，常情况下指向分支名 C0 → C1（master*）：HEAD → master → C1 然后执行 checkout C1```，变成1234HEAD → C11. 分离出HEAD并使其指向一个提交记录 git checkout 123456789## 相对引用（^/~）&gt; - 使用 `^` 向上移动 1 个提交记录&gt; - 使用 `~&lt;num&gt;` 向上移动多个提交记录，如 `~3````git checkout xxx^ checkout xxx~3```1234567891011121314151617181. 强制修改分支位置： ```git branch -f master HEAD^``` 将master分支强制移动到HEAD的上一个分支 ## 撤销变更1. git reset &gt; `git reset` 向上移动分支，原来指向的提交记录就跟从来没有提交过一样 &gt; &gt; 对共享远程分支无效 ```git reset HEAD~1 git revert 撤销更改并支持分享给别人 revert HEAD```1234567891011121314 创建一个新的提交，该提交与HEAD的前一条提交相同## 自由修改提交树1. git Cherry-pick （知道提交的哈希值 &gt; git cherry-pick &lt;提交号&gt;... &gt; &gt; 将一些提交复制到当前所在的位置（`HEAD`）下面 ```git cherry-pick C3 C4 C5 交互式rebase 参数 ```-i```12```git rebase -i HEAD~3 调整提交记录的顺序 删除提交 合并提交 标签 可以永久将某个特定的提交命名为里程碑，不会随着新的提交而移动，它表示了某个特定位置 tag version1 C1```12345678910111213141516171819202122## 锚点&gt; 描述最近的标签，```git describe &lt;ref&gt;```，得到例ref最近的标签、二者间相差多少个提交记录## 远程仓库### Clone&gt; 在本地创建一个远程仓库的拷贝### 远程分支&gt; 反映了远程仓库的状态，在检出时自动进入分离 HEAD 状态。远程分支命名规范：```&lt;remote name&gt;/&lt;branch name&gt; 例如：origin/master，分支为 master ，远程仓库为 origin 在使用git clone时，git将远程仓库命名为 origin（默认命名） git checkout origin/master（head分离） Fetch 从远程仓库下载本地仓库缺失的提交记录 更新远程分支指针 （实际上将本地仓库中的远程分支更新成了远程仓库相应分支最新的状态） （为下载操作，不改变本地仓库状态） Pull 从远程仓库获取更新并合并到本地的分支当中 Pushgit push 将变更上传到远程仓库，并在其上合并提交记录 偏离的提交历史对于提交已更新的旧版本的更改，需要先合并新版本在提交更改 git commit //对于旧版本的更改 git pull --rebase //合并新版本并提交更改 git push //提交到远程分支]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[19-07-08]]></title>
     <url>%2F2019%2F07%2F10%2F19-07-08%2F</url>
-    <content type="text"><![CDATA[Enter password to read. Incorrect Password! No content to display! U2FsdGVkX1+wjaLBpGYHBUAasPIXWZJ8dWmctr//pqBW83FUftmpMUYZjnx3Ix3MKFapMen+ZMKWohzwepzxGNumiMD/fjbIZVWcKkf3R7g=]]></content>
+    <content type="text"><![CDATA[Enter password to read. Incorrect Password! No content to display! U2FsdGVkX1+Z9huwsS2Xxk7FqZsbEIsxQSJYmz/yLlbQlDjwr6zpcDSjrEXO98KFPzNNsakCaJJj1gA3RPROC2o54NUNCwhdLLS0HkBSjGM=]]></content>
   </entry>
   <entry>
     <title><![CDATA[测试]]></title>

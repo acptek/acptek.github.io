@@ -826,6 +826,7 @@ table td {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
+  background: url("/images/bg_pic.png") no-repeat center center;
 }
 .header-nav {
   position: fixed;
@@ -966,7 +967,7 @@ table td {
   position: relative;
   height: 100%;
   text-align: center;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0);
 }
 .header-info-inner {
   display: inline-block;

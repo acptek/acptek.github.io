@@ -1,58 +1,10 @@
 $(document).ready(function () {
-  var SIDEBAR_STICKY_TOP = parseInt(window.CONFIG.sidebar_offsetTop);
+  // The previous distance from the page to the top.
   var prevScrollTop = 0;
-    
-  // Must initial run
-  headerNavScroll();
-  backToTop();
+  var isNavFix = false;
+  var isNavShow = true;
 
-  $(window).scroll(throttle(function () {
-    headerNavScroll();
-    backToTop();
-  }, 20, 100));
-  
-  // Must initial run
-  readProgress();
-  sidebarSticky();
-
-  $(window).scroll(function () {
-    readProgress();
-    sidebarSticky();
-  });
-
-  // click heading
-  $('.main-content')
-    .find('h1,h2,h3,h4,h5,h6')
-    .on('click', function () {
-      scrollToHead('#' + $(this).attr('id'))
-    });
-
-  // click post toc
-  $('.toc-link').on('click', function (e) {
-    e.preventDefault();
-
-    scrollToHead($(this).attr('href'));
-  });
-
-  $('#back-top').click(function () {
-    $('body').velocity('stop').velocity('scroll', {
-      duration: 500,
-      easing: 'easeOutQuart'
-    });
-
-    if (window.CONFIG.back2top_animation) {
-      $('#back-top').velocity({
-        translateY: '-100vh',
-      }, {
-        duration: 500
-      }).velocity('reverse', {
-        duration: 10
-      });
-    }
-  });
-  
-  // site header nav scroll
-  function headerNavScroll() {
+  function headerNavScroll () {
     var scrollTop = $(window).scrollTop();
     var delta = scrollTop - prevScrollTop;
 
@@ -60,18 +12,28 @@ $(document).ready(function () {
       $('.header-nav').removeClass('fixed');
       $('.header-nav').removeClass('slider-up');
       $('.header-nav').addClass('slider-down');
-    } else {
-      $('.header-nav').addClass('fixed');
 
-      if (delta > 0) {
-        if (Math.abs(delta) > 5) {
+      isNavFix = false;
+    } else {
+      if (!isNavFix) {
+        $('.header-nav').addClass('fixed');
+
+        isNavFix = true;
+      }
+
+      var MIN_SCROLL_TO_CHANGE_NAV = 5;
+      // Make the state of nav bar not change due to tiny scrolling.
+      if (Math.abs(delta) > MIN_SCROLL_TO_CHANGE_NAV) {
+        if (isNavShow && delta > 0) {
           $('.header-nav').removeClass('slider-down');
           $('.header-nav').addClass('slider-up');
-        }
-      } else {
-        if (Math.abs(delta) > 5) {
+
+          isNavShow = false;
+        } else if (!isNavShow && delta < 0) {
           $('.header-nav').removeClass('slider-up');
           $('.header-nav').addClass('slider-down');
+
+          isNavShow = true;
         }
       }
     }
@@ -79,55 +41,65 @@ $(document).ready(function () {
     prevScrollTop = scrollTop;
   }
 
-  // sidebar sticky
-  function sidebarSticky() {
-    var mainInner = document.querySelector('.main-inner');
-    
-    if (mainInner) {
-      var targetY = mainInner.getBoundingClientRect().top;
-
-      if (targetY < SIDEBAR_STICKY_TOP) {
-        $('.sidebar-inner').addClass('sticky');
-      } else {
-        $('.sidebar-inner').removeClass('sticky');
-      }
-    }
-  }
-
-  // update the reading progress lines of post
-  function readProgress() {
-    var winH = $(window).height();
-    var postH = $('.main-content').height();
-    var post = document.querySelector('.main-content');
-    var scrollH = (post &&
-      post.getBoundingClientRect().top * -1) || 0
-    
-    var percent = parseInt((scrollH / Math.abs((postH - winH))) * 100);
-    percent = percent > 100 ? 100 : percent < 0 ? 0 : percent;
-    percent += '%';
-
-    $('.sidebar-progress-number').html(percent);
-    $('.sidebar-progress-line').css('width', percent);
-  }
-
-  // scroll heading to top
-  function scrollToHead(anchor) {
+  function scrollHeadingToTop (anchor) {
     $(anchor)
       .velocity('stop')
-      .velocity('scroll', {
-        duration: 500,
-        easing: 'easeOutSine'
-      });
+      .velocity('scroll', { easing: 'easeOutSine' });
   }
 
-  // back to top
-  function backToTop() {
-    var scrollTop = $(window).scrollTop();
+  var isBack2topShow = false;
+  // Back the page to top.
+  function back2top () {
+    function back2topHandler () {
+      var $top = $('#back-top');
+      var scrollTop = $(window).scrollTop();
 
-    if (scrollTop !== 0) {
-      $('#back-top').css('display', 'block');
-    } else {
-      $('#back-top').css('display', 'none');
+      if (scrollTop !== 0) {
+        if (!isBack2topShow) {
+          $top.addClass('show');
+          $top.removeClass('hide');
+          isBack2topShow = true;
+        }
+      } else {
+        $top.addClass('hide');
+        $top.removeClass('show');
+        isBack2topShow = false;
+      }
     }
+
+    $(window).on('load', back2topHandler);
+    $(window).on('scroll', Stun.utils.throttle(function () {
+      back2topHandler();
+    }, 500));
+
+    $('#back-top').on('click', function () {
+      $('body').velocity('stop').velocity('scroll');
+    });
   }
+
+  // Initialization
+  headerNavScroll();
+  back2top();
+
+  $(window).on('scroll', Stun.utils.throttle(function () {
+    headerNavScroll();
+  }, 100));
+
+  Stun.utils.pjaxReloadScroll = function () {
+    // Click the heading.
+    $('.content')
+      .find('h1,h2,h3,h4,h5,h6')
+      .on('click', function () {
+        scrollHeadingToTop('#' + $(this).attr('id'));
+      });
+
+    // Click the post toc.
+    $('.toc-link').on('click', function (e) {
+      e.preventDefault();
+      scrollHeadingToTop($(this).attr('href'));
+    });
+  };
+
+  // Initializaiton
+  Stun.utils.pjaxReloadScroll();
 });

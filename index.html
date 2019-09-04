@@ -1,4 +1,12 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="acptek, Acptek's Blog"><meta name="author" content="acptek"><meta name="description" content><meta name="copyright" content="acptek"><title>Acptek's Blog</title><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=1.3.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=1.3.1" type="image/png" sizes="32x32"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.3.1"><script>var Stun = window.Stun || {};
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="acptek, Acptek's Blog"><meta name="author" content="acptek"><meta name="description" content><meta name="copyright" content="acptek"><title>Acptek's Blog</title><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=1.3.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=1.3.1" type="image/png" sizes="32x32"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.3.1"><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+  hm.setAttribute('data-pjax', '');
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -23,15 +31,38 @@ window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src=
 <figure class="highlight javascript"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">'Hello World!'</span>);</span><br></pre></td></tr></table></div></figure>
 
 
-<iframe src="https://www.baidu.com" width="100%" height="100" frameborder="0" allowfullscreen></iframe></div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/09/01/Git常用命令总结/">Git常用命令总结</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-01</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-01</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>932</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="Commit"><a href="#Commit" class="headerlink" title="Commit"></a>Commit</h2><p>创建一个提交：<figure class="highlight plain"><figcaption><span>commit```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Branch</span><br><span class="line"></span><br><span class="line">&gt; Git分支是指向某个提交记录，不会造成内存上的开销，按逻辑分解工作到不同的分支，星号（*）标识表示当前所在分支 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">1. 创建分支：</span><br><span class="line"></span><br><span class="line">   ```git branch newbranch</span><br></pre></td></tr></table></div></figure></p>
-<ol start="2">
-<li><p>切换分支：（从master分支切换到newbranch分支）</p>
-<figure class="highlight plain"><figcaption><span>checkout newbranch```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 简洁方式：</span><br><span class="line"></span><br><span class="line">   创建一个分支并且切换到新的分支上</span><br><span class="line"></span><br><span class="line">   ```git checkout -b &lt;branch_name&gt;</span><br></pre></td></tr></table></div></figure>
+<iframe src="https://www.baidu.com" width="100%" height="100" frameborder="0" allowfullscreen></iframe></div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/09/01/Git常用命令总结/">Git常用命令总结</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-01</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-03</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>919</span></span></div></header><div class="post-body"><div class="post-excerpt"><h2 id="Commit"><a href="#Commit" class="headerlink" title="Commit"></a>Commit</h2><p>创建一个提交：</p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit</span><br></pre></td></tr></table></div></figure>
+
+
+<h2 id="Branch"><a href="#Branch" class="headerlink" title="Branch"></a>Branch</h2><blockquote>
+<p>Git分支是指向某个提交记录，不会造成内存上的开销，按逻辑分解工作到不同的分支，星号（ * ）标识表示当前所在分支 </p>
+</blockquote>
+<ol>
+<li><p>创建分支：</p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch newbranch</span><br></pre></td></tr></table></div></figure>
 </li>
-<li><figure class="highlight plain"><figcaption><span>branch xx master^^2^```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Merge</span><br><span class="line"></span><br><span class="line">&gt; 将两个或两个以上的开发历史合并到一起</span><br><span class="line"></span><br><span class="line">1. ```git pull = git fetch + git merge</span><br></pre></td></tr></table></div></figure>
+<li><p>切换分支：（从master分支切换到newbranch分支）</p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout newbranch</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>简洁方式：</p>
+<p>创建一个分支并且切换到新的分支上</p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;branch_name&gt;</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpp git branch xx master^^2^</span><br></pre></td></tr></table></div></figure>
+
+
+</li>
+</ol>
+<h2 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h2><blockquote>
+<p>将两个或两个以上的开发历史合并到一起</p>
+</blockquote>
+<ol>
+<li><figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull = git fetch + git merge</span><br></pre></td></tr></table></div></figure>
 </li>
 <li><p>Merge模拟：</p>
 <figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b newbranch</span><br><span class="line">git commit -m &quot;newbranch提交&quot;</span><br><span class="line">git checkout master</span><br><span class="line">git commit -m “master提交”</span><br><span class="line">git merge newbranch //将newbranch合并到master</span><br></pre></td></tr></table></div></figure>
+
 
 </li>
 </ol>
@@ -40,43 +71,109 @@ window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src=
 <p>2 将某一段commit粘贴到另一个分支上</p>
 </blockquote>
 <ol>
-<li><p>将newbranch分支的工作移到master分支上，实现并行开发：</p>
-<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b newbranch</span><br><span class="line">git commit -m &quot;newbranch更新&quot;</span><br><span class="line">git checkout master</span><br><span class="line">git commit -m &quot;master更新&quot;</span><br><span class="line">git checkout newbranch</span><br><span class="line">git rebase newbranch</span><br></pre></td></tr></table></div></figure>
+<li>将newbranch分支的工作移到master分支上，实现并行开发：<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b newbranch</span><br><span class="line">git commit -m &quot;newbranch更新&quot;</span><br><span class="line">git checkout master</span><br><span class="line">git commit -m &quot;master更新&quot;</span><br><span class="line">git checkout newbranch</span><br><span class="line">git rebase newbranch</span><br></pre></td></tr></table></div></figure>
 
 </li>
 </ol>
 <h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><blockquote>
 <p>HEAD 是一个对当前检出记录的符号引用 —— 也就是指向你正在其基础上进行工作的提交记录，常情况下指向分支名</p>
 </blockquote>
-<p>C0 → C1（master*）：HEAD → master → C1</p>
-<p>然后执行 <figure class="highlight plain"><figcaption><span>checkout C1```，变成</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">HEAD → C1</span><br><span class="line"></span><br><span class="line">1. 分离出HEAD并使其指向一个提交记录</span><br></pre></td></tr></table></div></figure></p>
-<p>   git checkout <hash-value><br>   <figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 相对引用（^/~）</span><br><span class="line"></span><br><span class="line">&gt; - 使用 `^` 向上移动 1 个提交记录</span><br><span class="line">&gt; - 使用 `~&lt;num&gt;` 向上移动多个提交记录，如 `~3`</span><br><span class="line"></span><br><span class="line">```git checkout xxx^</span><br></pre></td></tr></table></div></figure></hash-value></p>
-<figure class="highlight plain"><figcaption><span>checkout xxx~3```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 强制修改分支位置：</span><br><span class="line"></span><br><span class="line">   ```git branch -f master HEAD^``` </span><br><span class="line"></span><br><span class="line">   将master分支强制移动到HEAD的上一个分支</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">## 撤销变更</span><br><span class="line"></span><br><span class="line">1. git reset</span><br><span class="line"></span><br><span class="line">   &gt; `git reset` 向上移动分支，原来指向的提交记录就跟从来没有提交过一样</span><br><span class="line">   &gt;</span><br><span class="line">   &gt; 对共享远程分支无效</span><br><span class="line"></span><br><span class="line">   ```git reset HEAD~1</span><br></pre></td></tr></table></div></figure>
+<p>C0 → C1（ master* ）：HEAD → master → C1</p>
+<p>然后执行 </p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout C1</span><br></pre></td></tr></table></div></figure>，变成
+
+<p>HEAD → C1</p>
+<ol>
+<li>分离出HEAD并使其指向一个提交记录<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;hash-value&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+</li>
+</ol>
+<h2 id="相对引用（-）"><a href="#相对引用（-）" class="headerlink" title="相对引用（ ^/~ ）"></a>相对引用（ ^/~ ）</h2><blockquote>
+<ul>
+<li>使用 <code>^</code> 向上移动 1 个提交记录</li>
+<li>使用 <code>~&lt;num&gt;</code> 向上移动多个提交记录，如 <code>~3</code></li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout xxx^</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpp git checkout xxx~3</span><br></pre></td></tr></table></div></figure>
+
+
+
+<ol>
+<li>强制修改分支位置：</li>
+</ol>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -f master HEAD^ </span><br></pre></td></tr></table></div></figure>
+
+<p>   将master分支强制移动到HEAD的上一个分支</p>
+<h2 id="撤销变更"><a href="#撤销变更" class="headerlink" title="撤销变更"></a>撤销变更</h2><ol>
+<li><p>git reset</p>
+<blockquote>
+<p><code>git reset</code> 向上移动分支，原来指向的提交记录就跟从来没有提交过一样</p>
+<p>对共享远程分支无效</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD~1</span><br></pre></td></tr></table></div></figure>
 
 <ol start="2">
 <li><p>git revert</p>
 <blockquote>
 <p>撤销更改并支持分享给别人</p>
 </blockquote>
-<figure class="highlight plain"><figcaption><span>revert HEAD```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   创建一个新的提交，该提交与HEAD的前一条提交相同</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 自由修改提交树</span><br><span class="line"></span><br><span class="line">1. git Cherry-pick （知道提交的哈希值</span><br><span class="line"></span><br><span class="line">   &gt; git cherry-pick &lt;提交号&gt;...</span><br><span class="line">   &gt;</span><br><span class="line">   &gt; 将一些提交复制到当前所在的位置（`HEAD`）下面</span><br><span class="line"></span><br><span class="line">   ```git cherry-pick C3 C4 C5</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD</span><br></pre></td></tr></table></div></figure>
+
+<p>创建一个新的提交，该提交与HEAD的前一条提交相同</p>
+</li>
+</ol>
+<h2 id="自由修改提交树"><a href="#自由修改提交树" class="headerlink" title="自由修改提交树"></a>自由修改提交树</h2><ol>
+<li><p>git Cherry-pick （知道提交的哈希值</p>
+<blockquote>
+<p>git cherry-pick &lt;提交号&gt;…</p>
+<p>将一些提交复制到当前所在的位置（<code>HEAD</code>）下面</p>
+</blockquote>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick C3 C4 C5</span><br><span class="line">   </span><br></pre></td></tr></table></div></figure>
 </li>
 <li><p>交互式rebase</p>
-<p>参数 <figure class="highlight plain"><figcaption><span>```-i```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```git rebase -i HEAD~3</span><br></pre></td></tr></table></div></figure></p>
+<p>参数 –interactive ，简写为  -i </p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~3</span><br><span class="line">   </span><br></pre></td></tr></table></div></figure>
+
+
+</li>
+</ol>
 <blockquote>
 <p>调整提交记录的顺序</p>
 <p>删除提交</p>
 <p>合并提交</p>
 </blockquote>
-</li>
-</ol>
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><blockquote>
 <p>可以永久将某个特定的提交命名为里程碑，不会随着新的提交而移动，它表示了某个特定位置</p>
 </blockquote>
-<figure class="highlight plain"><figcaption><span>tag version1 C1```</span></figcaption><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 锚点</span><br><span class="line"></span><br><span class="line">&gt; 描述最近的标签，```git describe &lt;ref&gt;```，得到例ref最近的标签、二者间相差多少个提交记录</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 远程仓库</span><br><span class="line"></span><br><span class="line">### Clone</span><br><span class="line"></span><br><span class="line">&gt; 在本地创建一个远程仓库的拷贝</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 远程分支</span><br><span class="line"></span><br><span class="line">&gt; 反映了远程仓库的状态，在检出时自动进入分离 HEAD 状态。</span><br><span class="line"></span><br><span class="line">远程分支命名规范：```&lt;remote name&gt;/&lt;branch name&gt;</span><br></pre></td></tr></table></div></figure>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag version1 C1</span><br></pre></td></tr></table></div></figure>
 
+
+
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><blockquote>
+<p>描述最近的标签，</p>
+</blockquote>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git describe &lt;ref&gt;</span><br></pre></td></tr></table></div></figure>，得到例ref最近的标签、二者间相差多少个提交记录
+
+
+
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><h3 id="Clone"><a href="#Clone" class="headerlink" title="Clone"></a>Clone</h3><blockquote>
+<p>在本地创建一个远程仓库的拷贝</p>
+</blockquote>
+<h3 id="远程分支"><a href="#远程分支" class="headerlink" title="远程分支"></a>远程分支</h3><blockquote>
+<p>反映了远程仓库的状态，在检出时自动进入分离 HEAD 状态。</p>
+</blockquote>
+<p>远程分支命名规范： [remote name] / [branch name] </p>
 <p>例如：origin/master，分支为 master ，远程仓库为 origin</p>
-<p>在使用<code>git clone</code>时，git将远程仓库命名为 origin（默认命名）</p>
-<p><code>git checkout origin/master</code>（head分离）</p>
+<p>在使用 git clone 时，git将远程仓库命名为 origin（默认命名）</p>
+<figure class="highlight plain"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout origin/master（head分离）</span><br></pre></td></tr></table></div></figure>
+
+
+
 <h3 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h3><blockquote>
 <p>从远程仓库下载本地仓库缺失的提交记录</p>
 <p>更新远程分支指针</p>
@@ -86,12 +183,12 @@ window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src=
 <h3 id="Pull"><a href="#Pull" class="headerlink" title="Pull"></a>Pull</h3><blockquote>
 <p>从远程仓库获取更新并合并到本地的分支当中</p>
 </blockquote>
-<h3 id="Push"><a href="#Push" class="headerlink" title="Push"></a>Push</h3><p><code>git push</code> 将变更上传到远程仓库，并在其上合并提交记录</p>
+<h3 id="Push"><a href="#Push" class="headerlink" title="Push"></a>Push</h3><p><code>git push</code>将变更上传到远程仓库，并在其上合并提交记录</p>
 <h3 id="偏离的提交历史"><a href="#偏离的提交历史" class="headerlink" title="偏离的提交历史"></a>偏离的提交历史</h3><p>对于提交已更新的旧版本的更改，需要先合并新版本在提交更改</p>
-<p><code>git commit</code> //对于旧版本的更改</p>
-<p><code>git pull --rebase</code> //合并新版本并提交更改</p>
-<p><code>git push</code> //提交到远程分支</p>
-</div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/07/10/19-07-08/">19-07-08</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-07-10</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-07-20</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>13</span></span></div></header><div class="post-body"><div class="post-excerpt">Enter password to read.</div><div class="post-btn"><a href="/2019/07/10/19-07-08/">阅读全文 »</a></div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/06/22/hello-world/">Hello World</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-06-22</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-06-22</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>73</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>Welcome to <span class="external-link"><a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a><i class="fa fa-external-link"></i></span>! This is your very first post. Check <span class="external-link"><a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a><i class="fa fa-external-link"></i></span> for more info. If you get any problems when using Hexo, you can find the answer in <span class="external-link"><a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a><i class="fa fa-external-link"></i></span> or you can ask me on <span class="external-link"><a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a><i class="fa fa-external-link"></i></span>.</p>
+<p><code>git commit</code>//对于旧版本的更改</p>
+<p><code>git pull --rebase</code>//合并新版本并提交更改</p>
+<p><code>git push</code>//提交到远程分支</p>
+</div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/07/10/19-07-08/">19-07-08</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-07-10</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-07-20</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>15</span></span></div></header><div class="post-body"><div class="post-excerpt">Enter password to read.</div><div class="post-btn"><a href="/2019/07/10/19-07-08/">阅读全文 »</a></div></div></article><article class="post"><header class="post-header"><h1 class="post-title"><a class="post-title-link" href="/2019/06/22/hello-world/">Hello World</a></h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-06-22</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-06-22</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>73</span></span></div></header><div class="post-body"><div class="post-excerpt"><p>Welcome to <span class="external-link"><a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a><i class="fa fa-external-link"></i></span>! This is your very first post. Check <span class="external-link"><a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a><i class="fa fa-external-link"></i></span> for more info. If you get any problems when using Hexo, you can find the answer in <span class="external-link"><a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a><i class="fa fa-external-link"></i></span> or you can ask me on <span class="external-link"><a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a><i class="fa fa-external-link"></i></span>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></div></figure>
 
 <p>More info: <span class="external-link"><a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a><i class="fa fa-external-link"></i></span></p>
@@ -104,7 +201,7 @@ window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src=
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><div style="overflow: auto"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></div></figure>
 
 <p>More info: <span class="external-link"><a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a><i class="fa fa-external-link"></i></span></p>
-</div></div></article></section><nav id="paginator"><div class="paginator-inner"><span class="page-number current">1</span></div></nav></div><div class="clearfix"></div></div></main><footer id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart-o  footer-separator" style="color: #ff0000"></span><span>Acptek - All Rights Reserved</span></div><div><span class="footer-powered"> <a href="http://hexo.io/" title="hexo" target="_blank" rel="noopener">hexo</a> - 驱动</span><span class="footer-separator">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="stun" target="_blank" rel="noopener">stun</a></span><span> v1.3.1.</span></div><partial post baidustatistic></partial></div></footer><div id="back-top"><div class="back-top-inner" data-popover="回到顶部" data-popover-pos="up"><i class="fa fa-rocket"></i></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('load', function () {
+</div></div></article></section><nav id="paginator"><div class="paginator-inner"><span class="page-number current">1</span></div></nav></div><div class="clearfix"></div></div></main><footer id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart-o  footer-separator" style="color: #ff0000"></span><span>Acptek - All Rights Reserved</span></div><div><span class="footer-powered"> <a href="http://hexo.io/" title="hexo" target="_blank" rel="noopener">hexo</a> - 驱动</span><span class="footer-separator">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="stun" target="_blank" rel="noopener">stun</a></span><span> v1.3.1.</span></div></div></footer><div id="back-top"><div class="back-top-inner" data-popover="回到顶部" data-popover-pos="up"><i class="fa fa-rocket"></i></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('load', function () {
   var pjax = new Pjax({"elements":["a:not([target=_blank])"],"selectors":["head title","meta[name=description]","#main",".pjax-reload"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

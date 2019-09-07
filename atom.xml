@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acptek.github.io/"/>
-  <updated>2019-09-03T10:42:03.460Z</updated>
+  <updated>2019-09-07T06:25:09.212Z</updated>
   <id>https://acptek.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>视觉Slam十四讲 学习笔笔记1</title>
+    <link href="https://acptek.github.io/2019/09/07/%E8%A7%86%E8%A7%89Slam%E5%8D%81%E5%9B%9B%E8%AE%B2-%E5%AD%A6%E4%B9%A0%E7%AC%94%E7%AC%94%E8%AE%B01/"/>
+    <id>https://acptek.github.io/2019/09/07/视觉Slam十四讲-学习笔笔记1/</id>
+    <published>2019-09-07T04:37:05.000Z</published>
+    <updated>2019-09-07T06:25:09.212Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1-Ax-b"><a href="#1-Ax-b" class="headerlink" title="[1] Ax = b"></a>[1] Ax = b</h2><p>1）矩阵相乘关系<br>$$<br>m<em>n·n</em>s = m*s<br>$$<br>2）讨论齐次方程组『Ax = 0』的解<br>$$<br>\begin{align}定义：&amp; \eta_1,\eta_2,…\eta_t是方程 Ax = 0 的解，如果\（1）&amp; \eta_1,\eta_2,…\eta_t线性无关；\（2）&amp;方程 Ax = 0 的任一解都可由\eta_1,\eta_2,…\eta_t线性表示，\那么&amp;\eta_1,\eta_2,…\eta_t叫做方程Ax=0的一个基础解系。\end{align}<br>$$</p><p>$$<br>\Rightarrow可得通解：x = k_1\eta_1+k_2\eta_2+…k_t\eta_t<br>$$</p><p>​        </p><p>​        非其次方程有解的充要条件是 系数矩阵（A）与增广矩阵（在A的右侧加一列b）的秩r相等。当r=A的未知数个数n，方程组有一解，当r&lt;n时，有无穷多解</p><p>3）非其次方程组的解的结构</p><p>​        Ax=b若有解，则解x为他的一个解与导出组(Ax=0)解之和</p><p>即$$<br>x = k_1\xi_1+k_2\xi_2+…k_{n-r}\xi_{n-r}+\eta^*$$<br>4）所以要求Ax=b的解，首先A和b要满足系数矩阵和增广矩阵的秩要相等（有解条件），再通过初等变换（高斯消元）来求解其次方程的解，再求得非其次的一个特解（代入基）</p><h2 id="2-高斯分布"><a href="#2-高斯分布" class="headerlink" title="[2] 高斯分布"></a>[2] 高斯分布</h2><p>$$<br>\frac{1}{ \sqrt{2\pi}\sigma}{e}^{-\frac{(x-\mu)^2 }{2\sigma^2} }<br>$$<br>μ为均值，σ为方差</p><p>1 当μ=0，σ=1时，为标准高斯分布</p><p>2 当μ改变，σ不变时，分布图像平移</p><p>3 当μ不变，σ改变时，分布图像随σ增大而变扁</p><p>μ决定对称轴，σ决定扩散程度</p><blockquote><p><span class="external-link"><a href="https://www.cnblogs.com/lvchaoshun/p/7115460.html" target="_blank" rel="noopener">https://www.cnblogs.com/lvchaoshun/p/7115460.html</a><i class="fa fa-external-link"></i></span></p></blockquote><p>​        1）最大似然估计</p><p>​                似然函数：关于统计模型参数的函数，给定模型参数的情况下观测值出现的概率。定义为条件概率：<br>$$<br>p({x_i}|\mu,\sigma)<br>$$<br>​                最大似然估计是利用已知的样本结果，在使用某个模型的基础上，反推有可能导致这样结果的模型参数值</p>$$\begin{align}& \Rightarrow 给定观测值\{x_i\}，求\mu和\sigma，是的似然函数最大\\& \Rightarrow p({\{x_i\} }|\mu,\sigma)=\prod_1^Np({x_i}|\mu,\sigma)\\& \Rightarrow \hat{\mu},\hat{\sigma}=arg\: max\prod_1^Np({x_i}|\mu,\sigma)\\求得：&\hat{\mu}=\frac{1}{N}\sum_{i=1}^Nx_i\\&\hat{\sigma}=\frac{1}{N}\sum_{i=1}^N(x_i-\hat{\mu})^2\end{align}$$​即求得一元高斯分布<p>​        2）多元高斯分布</p><p>​                标准的二元高斯分布：<br>$$<br>\begin{align}&amp; D=2\&amp;x=\begin{bmatrix}x &amp; y\end{bmatrix}^T\&amp;\mu=\begin{bmatrix}0 &amp; 0\end{bmatrix}^T\&amp;\Sigma=\begin{bmatrix}1 &amp; 0\ 0 &amp; 1\end{bmatrix}\end{align}<br>$$<br>​                三元高斯分布：<br>$$<br>\begin{align}<br>&amp; D = 3 \<br>&amp; x = [x_R;x_G;x_B]\<br>&amp; \mu = [\mu_R;\mu_G;\mu_B]\<br>&amp;\Sigma=\begin{bmatrix}<br>\sigma_{x_R}^2 &amp; \sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_R}\sigma_{x_B}\<br>\sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_G}^2 &amp; \sigma_{x_G}\sigma_{x_B}\<br>\sigma_{x_R}\sigma_{x_B} &amp; \sigma_{x_G}\sigma_{x_B} &amp; \sigma_{x_B}^2<br>\end{bmatrix}<br>\end{align}<br>$$</p><h2 id="3-STL标准模板库"><a href="#3-STL标准模板库" class="headerlink" title="[3] STL标准模板库"></a>[3] STL标准模板库</h2><h2 id="4"><a href="#4" class="headerlink" title="[4]"></a>[4]</h2><h2 id="5-C-11"><a href="#5-C-11" class="headerlink" title="[5] C++11"></a>[5] C++11</h2><p>关键字和新的for循环语法，新的STL容器，多线程，智能指针内存管理</p><h2 id="6"><a href="#6" class="headerlink" title="[6]"></a>[6]</h2><h2 id="7"><a href="#7" class="headerlink" title="[7]"></a>[7]</h2><blockquote><p>在 Linux 或 Unix 操作系统中，所有的文件和目录都被组织成以一个根节点开始的倒置的树状结构。</p></blockquote><p>​    /bin命令，/boot启动时的核心文件，/etc系统配置文件，/home用户主目录，/usr应用程序和文件 类似于program files</p><p>​    当前目录：.   上级目录：..</p><h2 id="8-安装方式"><a href="#8-安装方式" class="headerlink" title="[8] 安装方式"></a>[8] 安装方式</h2><p>​    1）deb包安装：下载deb格式的软件后，sudo dpkg -i [name].deb</p><p>​    2） tar.gz软件编译安装：解压后，./configure，make，sudo make install</p><p>​    3） apt-get 安装：sudo apt-get install [software-name]</p><p>​    4）脚本安装：例如./clion.sh</p><h2 id="9"><a href="#9" class="headerlink" title="[9]"></a>[9]</h2>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;1-Ax-b&quot;&gt;&lt;a href=&quot;#1-Ax-b&quot; class=&quot;headerlink&quot; title=&quot;[1] Ax = b&quot;&gt;&lt;/a&gt;[1] Ax = b&lt;/h2&gt;&lt;p&gt;1）矩阵相乘关系&lt;br&gt;$$&lt;br&gt;m&lt;em&gt;n·n&lt;/em&gt;s = m*s&lt;br&gt;$$&lt;b
+      
+    
+    </summary>
+    
+    
+      <category term="SLAM" scheme="https://acptek.github.io/tags/SLAM/"/>
+    
+  </entry>
   
   <entry>
     <title>Git常用命令总结</title>
@@ -45,7 +68,7 @@
     <published>2019-07-10T07:25:28.000Z</published>
     <updated>2019-07-20T07:17:33.827Z</updated>
     
-    <content type="html"><![CDATA[<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script><div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX1+RNhu3THhmxHPh07wDTWZl7PnFegtclz+BE23E6felKLlriR1avE/egDT9h5+d2jXPZmob8vu3WOrmtDNh7lCovOb3IkT9YWg=</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    <content type="html"><![CDATA[<div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX18/DfG6QAev3ntRWRgUmgJLHwGsbc+i9nwRi2yY9RdhXm/enOyZ1z9+3dUWILN8Evy0uqeZLi4TlA==</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
     
     <summary type="html">
     

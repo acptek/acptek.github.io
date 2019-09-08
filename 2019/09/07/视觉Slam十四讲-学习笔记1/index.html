@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="acptek, Acptek's Blog"><meta name="author" content="acptek"><meta name="description" content="视觉Slam十四讲 学习笔记1"><meta name="copyright" content="acptek"><title>视觉Slam十四讲 学习笔记1 | Acptek's Blog</title><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=1.3.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=1.3.1" type="image/png" sizes="32x32"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.3.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async data-pjax></script><script data-pjax>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+  hm.setAttribute('data-pjax', '');
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+  hm.setAttribute('data-pjax', '');
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  sidebar: {"offsetTop":"20px","renderTocDepth":4},
+  back2top: {"enable":true},
+  reward: false,
+  fancybox: false,
+  zoom_image: {"enable":true,"mask_color":"rgba(0,0,0,0.6)"},
+  gallery_waterfall: undefined,
+  lazyload: undefined,
+  external_link: {"icon":{"enable":true,"name":"external-link"}},
+  shortcuts: {"switch_post":false},
+  prompt: {"copy_success":"复制成功","copy_error":"复制失败","creative_commons":"知识共享","copy_button":"点击复制"}
+};
+
+window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src="https://g.joyinshare.com/hc/piao.js"></script><div id="container"><header id="header"><div class="loading-bar"><div class="progress"></div></div><nav class="header-nav"><div class="header-nav-inner"><div class="fa fa-bars header-nav-menu-icon"></div><div class="header-nav-menu"><div class="menu-item"><a class="menu-item-inner" href="/"><i class="fa fa-home"></i>首页</a></div><div class="menu-item"><a class="menu-item-inner" href="/archives/"><i class="fa fa-folder-open"></i>归档</a></div><div class="menu-item"><a class="menu-item-inner" href="/categories/"><i class="fa fa-th"></i>分类</a></div><div class="menu-item"><a class="menu-item-inner" href="/tags/"><i class="fa fa-tags"></i>标签</a></div><div class="menu-item"><a class="menu-item-inner" href="/about/"><i class="fa fa-user"></i>关于</a></div></div></div></nav><div class="header-info"><div class="header-info-inner"><div class="header-info-title">Acptek's Blog</div><div class="header-info-subtitle"></div></div></div></header><main id="main"><div class="main-inner"><aside id="sidebar"><div class="sidebar-inner"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-overview">站点概览</span></div><section class="sidebar-toc"><div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Ax-b"><span class="toc-number">1.</span> <span class="toc-text">[1] Ax = b</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-高斯分布"><span class="toc-number">2.</span> <span class="toc-text">[2] 高斯分布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-STL标准模板库"><span class="toc-number">3.</span> <span class="toc-text">[3] STL标准模板库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4"><span class="toc-number">4.</span> <span class="toc-text">[4]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-C-11"><span class="toc-number">5.</span> <span class="toc-text">[5] C++11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6"><span class="toc-number">6.</span> <span class="toc-text">[6]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7"><span class="toc-number">7.</span> <span class="toc-text">[7]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-安装方式"><span class="toc-number">8.</span> <span class="toc-text">[8] 安装方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9"><span class="toc-number">9.</span> <span class="toc-text">[9]</span></a></li></ol></div></section><section class="hide sidebar-overview"><div class="sidebar-author"><img class="sidebar-author-avatar" src="/imgs/avatar_head.png" alt="avatar"><p class="sidebar-author-motto">Code 4ever</p></div><div class="sidebar-social"><span class="sidebar-social-item"><a href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><i class="fa fa-github"></i></a></span><span class="sidebar-social-item"><a href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><i class="fa fa-weixin"></i></a></span><span class="sidebar-social-item"><a href="18556723557" target="_blank" rel="noopener" data-popover="Telegram" data-popover-pos="up"><i class="fa fa-telegram"></i></a></span><span class="sidebar-social-item"><a href="762612267" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><i class="fa fa-qq"></i></a></span></div><div class="sidebar-feed"><span class="sidebar-feed-email"><a href="acptek@163.com" target="_blank" rel="noopener"><i class="fa fa-envelope sidebar-feed-icon"></i><span>Email </span><span>订阅</span></a></span><span class="sidebar-feed-rss"><a href="/atom.xml" target="_blank" rel="noopener"><i class="fa fa-rss sidebar-feed-icon"></i><span>RSS </span><span>订阅</span></a></span></div><div class="sidebar-state"><span class="sidebar-state-item sidebar-state-posts"><a href="/archives/"><div class="sidebar-state-item-count">6</div><div class="sidebar-state-item-name">归档</div></a></span><span class="sidebar-state-item sidebar-state-categories"><a href="/categories/"><div class="sidebar-state-item-count">2</div><div class="sidebar-state-item-name">分类</div></a></span><span class="sidebar-state-item sidebar-state-tags"><a href="/tags/"><div class="sidebar-state-item-count">6</div><div class="sidebar-state-item-name">标签</div></a></span></div><div class="sidebar-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg" alt="知识共享"></a></div></section><div class="sidebar-progress"><div class="sidebar-progress-read"><span>你已阅读了</span><span class="sidebar-progress-number"></span></div><div class="sidebar-progress-line"></div></div></div></aside><div class="content headings code-highlight"><header class="post-header"><h1 class="post-title">视觉Slam十四讲 学习笔记1</h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-07</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-08</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>858</span></span><span class="post-reading-count"><i class="fa fa-eye"></i><span>阅读次数 </span><span id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h2 id="1-Ax-b"><a href="#1-Ax-b" class="headerlink" title="[1] Ax = b"></a>[1] Ax = b</h2><p>1）矩阵相乘关系<br>$$<br>m<em>n·n</em>s = m*s<br>$$<br>2）讨论齐次方程组『Ax = 0』的解<br>$$<br>\begin{align}定义：&amp; \eta_1,\eta_2,…\eta_t是方程 Ax = 0 的解，如果\（1）&amp; \eta_1,\eta_2,…\eta_t线性无关；\（2）&amp;方程 Ax = 0 的任一解都可由\eta_1,\eta_2,…\eta_t线性表示，\那么&amp;\eta_1,\eta_2,…\eta_t叫做方程Ax=0的一个基础解系。\end{align}<br>$$</p>
+<p>$$<br>\Rightarrow可得通解：x = k_1\eta_1+k_2\eta_2+…k_t\eta_t<br>$$</p>
+<p>​        </p>
+<p>​        非其次方程有解的充要条件是 系数矩阵（A）与增广矩阵（在A的右侧加一列b）的秩r相等。当r=A的未知数个数n，方程组有一解，当r&lt;n时，有无穷多解</p>
+<p>3）非其次方程组的解的结构</p>
+<p>​        Ax=b若有解，则解x为他的一个解与导出组(Ax=0)解之和</p>
+<p>即
+$$<br>x = k_1\xi_1+k_2\xi_2+…k_{n-r}\xi_{n-r}+\eta^*
+$$<br>4）所以要求Ax=b的解，首先A和b要满足系数矩阵和增广矩阵的秩要相等（有解条件），再通过初等变换（高斯消元）来求解其次方程的解，再求得非其次的一个特解（代入基）</p>
+<h2 id="2-高斯分布"><a href="#2-高斯分布" class="headerlink" title="[2] 高斯分布"></a>[2] 高斯分布</h2><p>$$<br>\frac{1}{ \sqrt{2\pi}\sigma}{e}^{-\frac{(x-\mu)^2 }{2\sigma^2} }<br>$$<br>μ为均值，σ为方差</p>
+<p>1 当μ=0，σ=1时，为标准高斯分布</p>
+<p>2 当μ改变，σ不变时，分布图像平移</p>
+<p>3 当μ不变，σ改变时，分布图像随σ增大而变扁</p>
+<p>μ决定对称轴，σ决定扩散程度</p>
+<blockquote>
+<p><span class="external-link"><a href="https://www.cnblogs.com/lvchaoshun/p/7115460.html" target="_blank" rel="noopener">https://www.cnblogs.com/lvchaoshun/p/7115460.html</a><i class="fa fa-external-link"></i></span></p>
+</blockquote>
+<p>​        1）最大似然估计</p>
+<p>​                似然函数：关于统计模型参数的函数，给定模型参数的情况下观测值出现的概率。定义为条件概率：<br>$$<br>p({x_i}|\mu,\sigma)<br>$$<br>​                最大似然估计是利用已知的样本结果，在使用某个模型的基础上，反推有可能导致这样结果的模型参数值</p>
+
+$$
+\begin{align}
+& \Rightarrow 给定观测值\{x_i\}，求\mu和\sigma，是的似然函数最大\\
+& \Rightarrow p({\{x_i\} }|\mu,\sigma)=\prod_1^Np({x_i}|\mu,\sigma)\\
+& \Rightarrow \hat{\mu},\hat{\sigma}=arg\: max\prod_1^Np({x_i}|\mu,\sigma)\\
+求得：&\hat{\mu}=\frac{1}{N}\sum_{i=1}^Nx_i\\
+&\hat{\sigma}=\frac{1}{N}\sum_{i=1}^N(x_i-\hat{\mu})^2
+\end{align}
+$$
+​			即求得一元高斯分布
+
+
+
+<p>​        2）多元高斯分布</p>
+<p>​                标准的二元高斯分布：<br>$$<br>\begin{align}&amp; D=2\&amp;x=\begin{bmatrix}x &amp; y\end{bmatrix}^T\&amp;\mu=\begin{bmatrix}0 &amp; 0\end{bmatrix}^T\&amp;\Sigma=\begin{bmatrix}1 &amp; 0\ 0 &amp; 1\end{bmatrix}\end{align}<br>$$<br>​                三元高斯分布：<br>$$<br>\begin{align}<br>&amp; D = 3 \<br>&amp; x = [x_R;x_G;x_B]\<br>&amp; \mu = [\mu_R;\mu_G;\mu_B]\<br>&amp;\Sigma=\begin{bmatrix}<br>\sigma_{x_R}^2 &amp; \sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_R}\sigma_{x_B}\<br>\sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_G}^2 &amp; \sigma_{x_G}\sigma_{x_B}\<br>\sigma_{x_R}\sigma_{x_B} &amp; \sigma_{x_G}\sigma_{x_B} &amp; \sigma_{x_B}^2<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<h2 id="3-STL标准模板库"><a href="#3-STL标准模板库" class="headerlink" title="[3] STL标准模板库"></a>[3] STL标准模板库</h2><h2 id="4"><a href="#4" class="headerlink" title="[4]"></a>[4]</h2><h2 id="5-C-11"><a href="#5-C-11" class="headerlink" title="[5] C++11"></a>[5] C++11</h2><p>关键字和新的for循环语法，新的STL容器，多线程，智能指针内存管理</p>
+<h2 id="6"><a href="#6" class="headerlink" title="[6]"></a>[6]</h2><h2 id="7"><a href="#7" class="headerlink" title="[7]"></a>[7]</h2><blockquote>
+<p>在 Linux 或 Unix 操作系统中，所有的文件和目录都被组织成以一个根节点开始的倒置的树状结构。</p>
+</blockquote>
+<p>​    /bin命令，/boot启动时的核心文件，/etc系统配置文件，/home用户主目录，/usr应用程序和文件 类似于program files</p>
+<p>​    当前目录：.   上级目录：..</p>
+<h2 id="8-安装方式"><a href="#8-安装方式" class="headerlink" title="[8] 安装方式"></a>[8] 安装方式</h2><p>​    1）deb包安装：下载deb格式的软件后，sudo dpkg -i [name].deb</p>
+<p>​    2） tar.gz软件编译安装：解压后，./configure，make，sudo make install</p>
+<p>​    3） apt-get 安装：sudo apt-get install [software-name]</p>
+<p>​    4）脚本安装：例如./clion.sh</p>
+<h2 id="9"><a href="#9" class="headerlink" title="[9]"></a>[9]</h2></div><footer class="post-footer"><div class="post-footer-end"><span>------</span><span>本文结束，感谢您的阅读</span><span>------</span></div><div class="post-copyright"><div class="copyright-author"><span class="copyright-name">本文作者:</span><span class="copyright-value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-name">本文链接:</span><span class="copyright-value"><a href="https://acptek.github.io/2019/09/07/视觉Slam十四讲-学习笔记1/">https://acptek.github.io/2019/09/07/视觉Slam十四讲-学习笔记1/</a></span></div><div class="copyright-notice"><span class="copyright-name">版权声明:</span><span class="copyright-value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-footer-tags"><i class="fa fa-tags icon"></i><span><a href="https://acptek.github.io/tags/SLAM/" title="SLAM">SLAM</a></span><span><a href="https://acptek.github.io/tags/Math/" title="Math">Math</a></span></div><nav id="paginator"><div class="post-paginator"><div class="article-prev pull-left"><a href="/2019/09/08/Makefile-学习笔记/"><i class="fa fa-chevron-left"></i><span class="title">Makefile 学习笔记</span></a></div><div class="article-next pull-right"><a href="/2019/09/01/Git常用命令总结/"><span class="title">Git常用命令总结</span><i class="fa fa-chevron-right"></i></a></div></div></nav></footer></div><div class="comments content" id="comments"><div id="gitalk-container"></div></div><div class="clearfix"></div></div></main><footer id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart-o  footer-separator" style="color: #ff0000"></span><span>Acptek - All Rights Reserved</span></div><div><span class="footer-powered"> <a href="http://hexo.io/" title="hexo" target="_blank" rel="noopener">hexo</a> - 驱动</span><span class="footer-separator">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="stun" target="_blank" rel="noopener">stun</a></span><span> v1.3.1.</span></div><div class="busuanzi"><span class="busuanzi-uv"><i class="fa fa-user"></i><span>访问人数 </span><span id="busuanzi_value_site_uv"></span></span><span class="separator">|</span><span class="busuanzi-pv"><i class="fa fa-eye"></i><span>浏览总量 </span><span id="busuanzi_value_site_pv"></span></span><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async data-pjax></script></div></div></footer><div id="back-top"><div class="back-top-inner" data-popover="回到顶部" data-popover-pos="up"><i class="fa fa-rocket"></i></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('load', function () {
+  var pjax = new Pjax({"elements":["a:not([target=_blank])"],"selectors":["head title","meta[name=description]","#main",".pjax-reload"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+  // 是否第一次加载 pjax
+  var isFirstLoad = true;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    isFirstLoad = false;
+
+    $('html').velocity('scroll', {
+      duration: 500,
+      offset: $('#header').height(),
+      easing: 'easeInOutCubic'
+    });
+
+    var loadingBarWidth = 0;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    $('.loading-bar').addClass('loading');
+
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 2;
+
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+
+      $('.loading-bar .progress').css(
+        'transform', 'translateX(' + (loadingBarWidth - 100) + '%)'
+      );
+    }, 100);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar .progress').css('transform', 'translateX(0%)');
+    setTimeout(function () {
+      $('.loading-bar').removeClass('loading');
+      $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    }, 400);
+
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    Stun.utils.pjaxReloadBoot();
+    Stun.utils.pjaxReloadScroll();
+    Stun.utils.pjaxReloadSidebar();
+  }, false);
+}, false);</script><div id="pjax-reload"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css"><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.min.js"></script></div><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js" data-pjax></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js" data-pjax></script><script data-pjax>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) return;
+
+  var gitalk = new Gitalk({
+    id: md5('2019/09/07/视觉Slam十四讲-学习笔记1/'),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+
+  gitalk.render('gitalk-container');
+}
+
+if (true) {
+  loadGitalk();
+} else {
+  window.addEventListener('load', loadGitalk, false);
+}</script><script src="/js/utils.js?v=1.3.1"></script><script src="/js/stun-boot.js?v=1.3.1"></script><script src="/js/scroll.js?v=1.3.1"></script><script src="/js/header.js?v=1.3.1"></script><script src="/js/sidebar.js?v=1.3.1"></script></body></html>

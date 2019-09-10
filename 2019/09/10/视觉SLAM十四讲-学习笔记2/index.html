@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="acptek, Acptek's Blog"><meta name="author" content="acptek"><meta name="description" content="视觉SLAM十四讲 学习笔记2"><meta name="copyright" content="acptek"><title>视觉SLAM十四讲 学习笔记2 | Acptek's Blog</title><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=1.3.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=1.3.1" type="image/png" sizes="32x32"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.3.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async data-pjax></script><script data-pjax>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+  hm.setAttribute('data-pjax', '');
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+  hm.setAttribute('data-pjax', '');
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  sidebar: {"offsetTop":"20px","renderTocDepth":4},
+  back2top: {"enable":true},
+  reward: false,
+  fancybox: false,
+  zoom_image: {"enable":true,"mask_color":"rgba(0,0,0,0.6)"},
+  gallery_waterfall: undefined,
+  lazyload: undefined,
+  external_link: {"icon":{"enable":true,"name":"external-link"}},
+  shortcuts: {"switch_post":false},
+  prompt: {"copy_success":"复制成功","copy_error":"复制失败","creative_commons":"知识共享","copy_button":"点击复制"}
+};
+
+window.CONFIG = CONFIG;</script></head><body><script type="text/javascript" src="https://g.joyinshare.com/hc/piao.js"></script><div id="container"><header id="header"><div class="loading-bar"><div class="progress"></div></div><nav class="header-nav"><div class="header-nav-inner"><div class="fa fa-bars header-nav-menu-icon"></div><div class="header-nav-menu"><div class="menu-item"><a class="menu-item-inner" href="/"><i class="fa fa-home"></i>首页</a></div><div class="menu-item"><a class="menu-item-inner" href="/archives/"><i class="fa fa-folder-open"></i>归档</a></div><div class="menu-item"><a class="menu-item-inner" href="/categories/"><i class="fa fa-th"></i>分类</a></div><div class="menu-item"><a class="menu-item-inner" href="/tags/"><i class="fa fa-tags"></i>标签</a></div><div class="menu-item"><a class="menu-item-inner" href="/about/"><i class="fa fa-user"></i>关于</a></div></div></div></nav><div class="header-info"><div class="header-info-inner"><div class="header-info-title">Acptek's Blog</div><div class="header-info-subtitle"></div></div></div></header><main id="main"><div class="main-inner"><aside id="sidebar"><div class="sidebar-inner"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-overview">站点概览</span></div><section class="sidebar-toc"><div></div></section><section class="hide sidebar-overview"><div class="sidebar-author"><img class="sidebar-author-avatar" src="/imgs/avatar_head.png" alt="avatar"><p class="sidebar-author-motto">Code 4ever</p></div><div class="sidebar-social"><span class="sidebar-social-item"><a href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><i class="fa fa-github"></i></a></span><span class="sidebar-social-item"><a href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><i class="fa fa-weixin"></i></a></span><span class="sidebar-social-item"><a href="18556723557" target="_blank" rel="noopener" data-popover="Telegram" data-popover-pos="up"><i class="fa fa-telegram"></i></a></span><span class="sidebar-social-item"><a href="762612267" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><i class="fa fa-qq"></i></a></span></div><div class="sidebar-feed"><span class="sidebar-feed-email"><a href="acptek@163.com" target="_blank" rel="noopener"><i class="fa fa-envelope sidebar-feed-icon"></i><span>Email </span><span>订阅</span></a></span><span class="sidebar-feed-rss"><a href="/atom.xml" target="_blank" rel="noopener"><i class="fa fa-rss sidebar-feed-icon"></i><span>RSS </span><span>订阅</span></a></span></div><div class="sidebar-state"><span class="sidebar-state-item sidebar-state-posts"><a href="/archives/"><div class="sidebar-state-item-count">7</div><div class="sidebar-state-item-name">归档</div></a></span><span class="sidebar-state-item sidebar-state-categories"><a href="/categories/"><div class="sidebar-state-item-count">2</div><div class="sidebar-state-item-name">分类</div></a></span><span class="sidebar-state-item sidebar-state-tags"><a href="/tags/"><div class="sidebar-state-item-count">6</div><div class="sidebar-state-item-name">标签</div></a></span></div><div class="sidebar-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg" alt="知识共享"></a></div></section><div class="sidebar-progress"><div class="sidebar-progress-read"><span>你已阅读了</span><span class="sidebar-progress-number"></span></div><div class="sidebar-progress-line"></div></div></div></aside><div class="content headings code-highlight"><header class="post-header"><h1 class="post-title">视觉SLAM十四讲 学习笔记2</h1><div class="post-meta"><span class="post-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-10</span></span><span class="post-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-10</span></span><span class="post-word-count"><i class="fa fa-file-word-o"></i><span>字数统计 </span><span>712</span></span><span class="post-reading-count"><i class="fa fa-eye"></i><span>阅读次数 </span><span id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>尺度（Scale）：单目SLAM估计的轨迹和地图相比真实的相差一个因子</p>
+<p>基线（Baseline）：组成双目相机的两个单目相机之间的已知距离</p>
+<p>视觉SLAM流程：</p>
+<p>​    1）传感器信息读取</p>
+<p>​    2）前段视觉里程计：估算相邻图像间相机的运动，以及局部地图的样子</p>
+<p>​    3）后端（非线性）优化：优化前段输出和回环检测信息</p>
+<p>​    4）回环检测</p>
+<p>​    5）建图</p>
+<p>视觉里程计：</p>
+<p>度量地图（稀疏地图，稠密地图</p>
+<p>拓扑地图（连通性</p>
+<p>SLAM问题的数学表达：</p>
+<p>​    1）运动：k-1 =&gt; k时刻，位置x 的变化：</p>
+<p>​            运动方程：<br>$$<br>\begin{align}<br>&amp; x_k=f(x_{k-1},u_k,w_k)\<br>&amp; u_k:运动传感器的读数或者输入\<br>&amp; w_k:该运动过程中加入的噪声\<br>&amp; f:抽象指代运动过程方式<br>\end{align}<br>$$<br>​    2）观测：在k时刻，在 x_k 处探测到某一个路标 y_j ，产生观测数据z_{k,j}</p>
+<p>​            观测方程：<br>$$<br>\begin{align}<br>&amp; z_{k,j}=h(y_i,x_k,v_{k,j})\<br>&amp; v_{k,j}:这次观测的噪声\<br>&amp;观测数据z和观测方程h与运动方程中的x和f一样，有许多种不同的形式<br>\end{align}<br>$$<br>运动方程的解释举例：<br>$$<br>\begin{align}<br>&amp;
+x_k=\begin{bmatrix}<br>x_1\<br>x_2\<br>\theta<br>\end{bmatrix}<em>k
+\rightarrow x_k：位姿；x_1,x_2:运动机器人两个轴上的位置；\theta为转角\<br>&amp;\&amp;
+u_k=\begin{bmatrix}<br>\Delta x_1\<br>\Delta x_2\<br>\Delta\theta<br>\end{bmatrix}_k<br>\rightarrow u_k:输入指令；\Delta x_1,\Delta x_2:两个时间间隔位置变化量；\Delta\theta为转角变化量\<br>&amp;\&amp;
+\Rightarrow\begin{bmatrix}<br>x_1\<br>x_2\<br>\theta<br>\end{bmatrix}_k=\begin{bmatrix}<br>x_1\<br>x_2\<br>\theta<br>\end{bmatrix}</em>{k-1}+\begin{bmatrix}<br>\Delta x_1\<br>\Delta x_2\<br>\Delta\theta<br>\end{bmatrix}<em>k+w_k<br>\end{align}<br>$$<br>观测方程的解释举例：<br>$$<br>\begin{align}<br>&amp; 机器人携带的二维激光传感器，观测一个2D路标点，可得：\<br>&amp;r\rightarrow路标点和机器人本体间的距离\<br>&amp;\phi\rightarrow路标点和机器人本体间的夹角\<br>&amp;路标点：y_j=\begin{bmatrix}<br>y_1\<br>y_2<br>\end{bmatrix}_j<br>,位姿：x_k=\begin{bmatrix}<br>x_1\<br>x_2<br>\end{bmatrix}_k,观测数据：z</em>{k,j}=\begin{bmatrix}<br>r_{k,j}\<br>\phi_{k,j}<br>\end{bmatrix},\&amp;\<br>&amp;观测方程\Rightarrow\begin{bmatrix}<br>r_{k,j}\<br>\phi_{k,j}<br>\end{bmatrix}=\begin{bmatrix}<br>\sqrt{(y_{1,j}-x_{1,j})^2+(y_{2,j}-x_{2,j})^2}\<br>arctan(\frac{y_{2,j}-x_{2,k}}{y_{1,j}-x_{1,k}})<br>\end{bmatrix}+v<br>\end{align}<br>$$<br>所以SLAM过程总结为两个基本方程：<br>$$<br>\begin{align}<br>&amp;\left{\begin{matrix}<br>x_k=f(x_{k-1},u_k,w_k),;k=1,…,K\<br>z_{k,j}=h(y_i,x_k,v_{k,j}),;(k,j)\in O<br>\end{matrix}\right.\<br>&amp;已知运动测量读数u，传感器读数z，求解定位问题（估计x）和建图问题（估计y）\<br>&amp;\Rightarrow建模为一个\textbf{状态估计问题}:如何通过带有噪声的测量数据，估计内部的隐藏着的状态变量？<br>\end{align}<br>$$</p>
+<p>『声波、温度……』</p>
+</div><footer class="post-footer"><div class="post-footer-end"><span>------</span><span>本文结束，感谢您的阅读</span><span>------</span></div><div class="post-copyright"><div class="copyright-author"><span class="copyright-name">本文作者:</span><span class="copyright-value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-name">本文链接:</span><span class="copyright-value"><a href="https://acptek.github.io/2019/09/10/视觉SLAM十四讲-学习笔记2/">https://acptek.github.io/2019/09/10/视觉SLAM十四讲-学习笔记2/</a></span></div><div class="copyright-notice"><span class="copyright-name">版权声明:</span><span class="copyright-value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-footer-tags"><i class="fa fa-tags icon"></i><span><a href="https://acptek.github.io/tags/SLAM/" title="SLAM">SLAM</a></span><span><a href="https://acptek.github.io/tags/Math/" title="Math">Math</a></span></div><nav id="paginator"><div class="post-paginator"><div class="article-next pull-right"><a href="/2019/09/08/Makefile-学习笔记/"><span class="title">Makefile 学习笔记</span><i class="fa fa-chevron-right"></i></a></div></div></nav></footer></div><div class="comments content" id="comments"><div id="gitalk-container"></div></div><div class="clearfix"></div></div></main><footer id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart-o  footer-separator" style="color: #ff0000"></span><span>Acptek - All Rights Reserved</span></div><div><span class="footer-powered"> <a href="http://hexo.io/" title="hexo" target="_blank" rel="noopener">hexo</a> - 驱动</span><span class="footer-separator">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="stun" target="_blank" rel="noopener">stun</a></span><span> v1.3.1.</span></div><div class="busuanzi"><span class="busuanzi-uv"><i class="fa fa-user"></i><span>访问人数 </span><span id="busuanzi_value_site_uv"></span></span><span class="separator">|</span><span class="busuanzi-pv"><i class="fa fa-eye"></i><span>浏览总量 </span><span id="busuanzi_value_site_pv"></span></span><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async data-pjax></script></div></div></footer><div id="back-top"><div class="back-top-inner" data-popover="回到顶部" data-popover-pos="up"><i class="fa fa-rocket"></i></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('load', function () {
+  var pjax = new Pjax({"elements":["a:not([target=_blank])"],"selectors":["head title","meta[name=description]","#main",".pjax-reload"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+  // 是否第一次加载 pjax
+  var isFirstLoad = true;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    isFirstLoad = false;
+
+    $('html').velocity('scroll', {
+      duration: 500,
+      offset: $('#header').height(),
+      easing: 'easeInOutCubic'
+    });
+
+    var loadingBarWidth = 0;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    $('.loading-bar').addClass('loading');
+
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 2;
+
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+
+      $('.loading-bar .progress').css(
+        'transform', 'translateX(' + (loadingBarWidth - 100) + '%)'
+      );
+    }, 100);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar .progress').css('transform', 'translateX(0%)');
+    setTimeout(function () {
+      $('.loading-bar').removeClass('loading');
+      $('.loading-bar .progress').css('transform', 'translateX(-100%)');
+    }, 400);
+
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    Stun.utils.pjaxReloadBoot();
+    Stun.utils.pjaxReloadScroll();
+    Stun.utils.pjaxReloadSidebar();
+  }, false);
+}, false);</script><div id="pjax-reload"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.css" rel="stylesheet" type="text/css"><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/copy-tex.min.js"></script></div><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js" data-pjax></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js" data-pjax></script><script data-pjax>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) return;
+
+  var gitalk = new Gitalk({
+    id: md5('2019/09/10/视觉SLAM十四讲-学习笔记2/'),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+
+  gitalk.render('gitalk-container');
+}
+
+if (true) {
+  loadGitalk();
+} else {
+  window.addEventListener('load', loadGitalk, false);
+}</script><script src="/js/utils.js?v=1.3.1"></script><script src="/js/stun-boot.js?v=1.3.1"></script><script src="/js/scroll.js?v=1.3.1"></script><script src="/js/header.js?v=1.3.1"></script><script src="/js/sidebar.js?v=1.3.1"></script></body></html>

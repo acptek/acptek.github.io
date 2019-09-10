@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[视觉SLAM十四讲 学习笔记2]]></title>
+    <url>%2F2019%2F09%2F10%2F%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%2F</url>
+    <content type="text"><![CDATA[尺度（Scale）：单目SLAM估计的轨迹和地图相比真实的相差一个因子 基线（Baseline）：组成双目相机的两个单目相机之间的已知距离 视觉SLAM流程： ​ 1）传感器信息读取 ​ 2）前段视觉里程计：估算相邻图像间相机的运动，以及局部地图的样子 ​ 3）后端（非线性）优化：优化前段输出和回环检测信息 ​ 4）回环检测 ​ 5）建图 视觉里程计： 度量地图（稀疏地图，稠密地图 拓扑地图（连通性 SLAM问题的数学表达： ​ 1）运动：k-1 =&gt; k时刻，位置x 的变化： ​ 运动方程：$$\begin{align}&amp; x_k=f(x_{k-1},u_k,w_k)\&amp; u_k:运动传感器的读数或者输入\&amp; w_k:该运动过程中加入的噪声\&amp; f:抽象指代运动过程方式\end{align}$$​ 2）观测：在k时刻，在 x_k 处探测到某一个路标 y_j ，产生观测数据z_{k,j} ​ 观测方程：$$\begin{align}&amp; z_{k,j}=h(y_i,x_k,v_{k,j})\&amp; v_{k,j}:这次观测的噪声\&amp;观测数据z和观测方程h与运动方程中的x和f一样，有许多种不同的形式\end{align}$$运动方程的解释举例：$$\begin{align}&amp; x_k=\begin{bmatrix}x_1\x_2\\theta\end{bmatrix}k \rightarrow x_k：位姿；x_1,x_2:运动机器人两个轴上的位置；\theta为转角\&amp;\&amp; u_k=\begin{bmatrix}\Delta x_1\\Delta x_2\\Delta\theta\end{bmatrix}_k\rightarrow u_k:输入指令；\Delta x_1,\Delta x_2:两个时间间隔位置变化量；\Delta\theta为转角变化量\&amp;\&amp; \Rightarrow\begin{bmatrix}x_1\x_2\\theta\end{bmatrix}_k=\begin{bmatrix}x_1\x_2\\theta\end{bmatrix}{k-1}+\begin{bmatrix}\Delta x_1\\Delta x_2\\Delta\theta\end{bmatrix}k+w_k\end{align}$$观测方程的解释举例：$$\begin{align}&amp; 机器人携带的二维激光传感器，观测一个2D路标点，可得：\&amp;r\rightarrow路标点和机器人本体间的距离\&amp;\phi\rightarrow路标点和机器人本体间的夹角\&amp;路标点：y_j=\begin{bmatrix}y_1\y_2\end{bmatrix}_j,位姿：x_k=\begin{bmatrix}x_1\x_2\end{bmatrix}_k,观测数据：z{k,j}=\begin{bmatrix}r_{k,j}\\phi_{k,j}\end{bmatrix},\&amp;\&amp;观测方程\Rightarrow\begin{bmatrix}r_{k,j}\\phi_{k,j}\end{bmatrix}=\begin{bmatrix}\sqrt{(y_{1,j}-x_{1,j})^2+(y_{2,j}-x_{2,j})^2}\arctan(\frac{y_{2,j}-x_{2,k}}{y_{1,j}-x_{1,k}})\end{bmatrix}+v\end{align}$$所以SLAM过程总结为两个基本方程：$$\begin{align}&amp;\left{\begin{matrix}x_k=f(x_{k-1},u_k,w_k),;k=1,…,K\z_{k,j}=h(y_i,x_k,v_{k,j}),;(k,j)\in O\end{matrix}\right.\&amp;已知运动测量读数u，传感器读数z，求解定位问题（估计x）和建图问题（估计y）\&amp;\Rightarrow建模为一个\textbf{状态估计问题}:如何通过带有噪声的测量数据，估计内部的隐藏着的状态变量？\end{align}$$ 『声波、温度……』]]></content>
+      <categories>
+        <category>SLAM</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+        <tag>Math</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Makefile 学习笔记]]></title>
     <url>%2F2019%2F09%2F08%2FMakefile-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F</url>
     <content type="text"><![CDATA[格式 表明输出的目标，输出目标的依赖对象和生成目标需要执行的命令 目标 ： 前提依赖 『TAB』执行命令 组成 显式规则 隐式规则 ​ make推导出的规则 变量定义 文件指示 注释 执行读取makefile文件 读入关联文件 初始化变量 递归式执行（执行依赖链上的目标 显式规则依赖关系发生依赖关系，执行命令 伪目标使用.PHONY来标识，可以避免和工作目录下的实际文件名发生冲突 123.PHONYclean: rm -f *.c 隐含规则通配符 12%.o : %.c $(CC) -c %.c -o %.o 文件目录在链接不同目录下的文件时，需要告知make寻找路径： 使用VPATYH变量12# make依次按序搜索文件VPATH = /src : ../inc #不同目录中间用冒号分隔 使用vpath关键字12345678# 使用 % 来指定特定文件# 1 寻找指定目录下的特定文件vpath %.c dir1 # 寻找dir1下的.c文件# 2 清除符合特定文件的搜索目录vapth %.c# 3 清除所有（由vpath命令）已被设置好的文件搜索目录vpath 变量变量声明与使用在变量声明时，需要对变量进行赋值；在使用时需要使用$(VARNAME)的形式 123var = a.c b.ctarget : $(var) # command 变量中的变量 = 替换 := 恒等与（常量），按序声明 ?= 定义未定义过的变量 += 给一个变量追加一个值 自动化变量 $@ 目标文件 $&lt; 第一个依赖文件 $% $? $^ 所有的依赖文件 $+ $* 文件指示函数]]></content>
@@ -13,8 +25,8 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[视觉Slam十四讲 学习笔记1]]></title>
-    <url>%2F2019%2F09%2F07%2F%E8%A7%86%E8%A7%89Slam%E5%8D%81%E5%9B%9B%E8%AE%B2-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%2F</url>
+    <title><![CDATA[视觉SLAM十四讲 学习笔记1]]></title>
+    <url>%2F2019%2F09%2F07%2F%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%2F</url>
     <content type="text"><![CDATA[[1] Ax = b1）矩阵相乘关系$$mn·ns = m*s$$2）讨论齐次方程组『Ax = 0』的解$$\begin{align}定义：&amp; \eta_1,\eta_2,…\eta_t是方程 Ax = 0 的解，如果\（1）&amp; \eta_1,\eta_2,…\eta_t线性无关；\（2）&amp;方程 Ax = 0 的任一解都可由\eta_1,\eta_2,…\eta_t线性表示，\那么&amp;\eta_1,\eta_2,…\eta_t叫做方程Ax=0的一个基础解系。\end{align}$$ $$\Rightarrow可得通解：x = k_1\eta_1+k_2\eta_2+…k_t\eta_t$$ ​ ​ 非其次方程有解的充要条件是 系数矩阵（A）与增广矩阵（在A的右侧加一列b）的秩r相等。当r=A的未知数个数n，方程组有一解，当r&lt;n时，有无穷多解 3）非其次方程组的解的结构 ​ Ax=b若有解，则解x为他的一个解与导出组(Ax=0)解之和 即 $$x = k_1\xi_1+k_2\xi_2+…k_{n-r}\xi_{n-r}+\eta^* $$4）所以要求Ax=b的解，首先A和b要满足系数矩阵和增广矩阵的秩要相等（有解条件），再通过初等变换（高斯消元）来求解其次方程的解，再求得非其次的一个特解（代入基） [2] 高斯分布$$\frac{1}{ \sqrt{2\pi}\sigma}{e}^{-\frac{(x-\mu)^2 }{2\sigma^2} }$$μ为均值，σ为方差 1 当μ=0，σ=1时，为标准高斯分布 2 当μ改变，σ不变时，分布图像平移 3 当μ不变，σ改变时，分布图像随σ增大而变扁 μ决定对称轴，σ决定扩散程度 https://www.cnblogs.com/lvchaoshun/p/7115460.html ​ 1）最大似然估计 ​ 似然函数：关于统计模型参数的函数，给定模型参数的情况下观测值出现的概率。定义为条件概率：$$p({x_i}|\mu,\sigma)$$​ 最大似然估计是利用已知的样本结果，在使用某个模型的基础上，反推有可能导致这样结果的模型参数值 $$ \begin{align} & \Rightarrow 给定观测值\{x_i\}，求\mu和\sigma，是的似然函数最大\\ & \Rightarrow p({\{x_i\} }|\mu,\sigma)=\prod_1^Np({x_i}|\mu,\sigma)\\ & \Rightarrow \hat{\mu},\hat{\sigma}=arg\: max\prod_1^Np({x_i}|\mu,\sigma)\\ 求得：&\hat{\mu}=\frac{1}{N}\sum_{i=1}^Nx_i\\ &\hat{\sigma}=\frac{1}{N}\sum_{i=1}^N(x_i-\hat{\mu})^2 \end{align} $$ ​ 即求得一元高斯分布 ​ 2）多元高斯分布 ​ 标准的二元高斯分布：$$\begin{align}&amp; D=2\&amp;x=\begin{bmatrix}x &amp; y\end{bmatrix}^T\&amp;\mu=\begin{bmatrix}0 &amp; 0\end{bmatrix}^T\&amp;\Sigma=\begin{bmatrix}1 &amp; 0\ 0 &amp; 1\end{bmatrix}\end{align}$$​ 三元高斯分布：$$\begin{align}&amp; D = 3 \&amp; x = [x_R;x_G;x_B]\&amp; \mu = [\mu_R;\mu_G;\mu_B]\&amp;\Sigma=\begin{bmatrix}\sigma_{x_R}^2 &amp; \sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_R}\sigma_{x_B}\\sigma_{x_R}\sigma_{x_G} &amp; \sigma_{x_G}^2 &amp; \sigma_{x_G}\sigma_{x_B}\\sigma_{x_R}\sigma_{x_B} &amp; \sigma_{x_G}\sigma_{x_B} &amp; \sigma_{x_B}^2\end{bmatrix}\end{align}$$ [3] STL标准模板库[4][5] C++11关键字和新的for循环语法，新的STL容器，多线程，智能指针内存管理 [6][7] 在 Linux 或 Unix 操作系统中，所有的文件和目录都被组织成以一个根节点开始的倒置的树状结构。 ​ /bin命令，/boot启动时的核心文件，/etc系统配置文件，/home用户主目录，/usr应用程序和文件 类似于program files ​ 当前目录：. 上级目录：.. [8] 安装方式​ 1）deb包安装：下载deb格式的软件后，sudo dpkg -i [name].deb ​ 2） tar.gz软件编译安装：解压后，./configure，make，sudo make install ​ 3） apt-get 安装：sudo apt-get install [software-name] ​ 4）脚本安装：例如./clion.sh [9]]]></content>
       <categories>
         <category>SLAM</category>
@@ -35,7 +47,7 @@
   <entry>
     <title><![CDATA[19-07-08]]></title>
     <url>%2F2019%2F07%2F10%2F19-07-08%2F</url>
-    <content type="text"><![CDATA[Enter password to read. Incorrect Password! No content to display! U2FsdGVkX18rz9banQJnYNPQYKfUGs05809aj6VsZJSm6K6rYUPB3TDnws3W3rjN6tFNUADlm2Uub3BLytHTqg==]]></content>
+    <content type="text"><![CDATA[Enter password to read. Incorrect Password! No content to display! U2FsdGVkX19jmb1iw0yy28X0DMUQMYJbaJddBF1qDx3gtqk6yFNd10tadUBnzxrmN4Hel9nN5m2lNHQ3W9yKQQ==]]></content>
   </entry>
   <entry>
     <title><![CDATA[测试]]></title>

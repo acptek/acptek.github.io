@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="keywords" content="acptek, Acptek's Blog"><meta name="description"><title>about | Acptek's Blog</title><link rel="icon" href="/images/icons/favicon-16x16.png?v=1.4.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=1.4.1" type="image/png" sizes="32x32"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=1.4.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if (false) { hm.setAttribute('data-pjax', ''); }
+
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if (false) { hm.setAttribute('data-pjax', ''); }
+
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontawesome: {"prefix":"fa"},
+  sidebar: {"offsetTop":"30px","renderTocDepth":4},
+  back2top: {"enable":true},
+  reward: false,
+  fancybox: false,
+  zoom_image: {"enable":true,"mask_color":"rgba(0,0,0,0.6)"},
+  gallery_waterfall: undefined,
+  lazyload: undefined,
+  pjax: undefined,
+  external_link: {"icon":{"enable":true,"name":"external-link"}},
+  shortcuts: {"switch_post":false},
+  prompt: {"copy_success":"复制成功","copy_error":"复制失败","creative_commons":"知识共享","copy_button":"点击复制"}
+};
+
+window.CONFIG = CONFIG;</script></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav"><div class="header-nav-inner"><div class="header-nav-btn fa fa-bars"></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__a" href="/"><i class="fa fa-home"></i>首页</a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__a" href="/archives/"><i class="fa fa-folder-open"></i>归档</a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__a" href="/categories/"><i class="fa fa-th"></i>分类</a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__a" href="/tags/"><i class="fa fa-tags"></i>标签</a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__a" href="/about/"><i class="fa fa-user"></i>关于</a></div></div></div></nav><div class="header-info"><div class="header-info-mask"></div><div class="header-info-inner"><div class="header-info-title">Acptek's Blog</div><div class="header-info-subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content"><div class="post"><header class="post-header"><h1 class="post-header-title">VSLAM-3.1 旋转矩阵</h1><div class="post-header-meta"><span class="post-header-meta-create"><i class="fa fa-calendar-o"></i><span>发表于 </span><span>2019-09-12</span></span><span class="post-header-meta-update"><i class="fa fa-calendar-check-o"></i><span>更新于 </span><span>2019-09-16</span></span><span class="post-header-meta-reading-count"><i class="fa fa-eye"></i><span>阅读次数 </span><span id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><h2 id="旋转矩阵"><span class="heading-link">旋转矩阵</span></h2><h3 id="点，向量，坐标系"><span class="heading-link">点，向量，坐标系</span></h3><h4 id="mathbb-R-3"><span class="heading-link">$\mathbb{R}^3$</span></h4><p>$\mathbb{R}^3$描述三维空间中的某个坐标点，$(e_1, e_2, e_3)$：为空间中的一组基</p>
+<script type="math/tex; mode=display">
+\begin{align}
+向量&\textbf{a}在基(e_1,e_2,e_3)下的坐标：\\
+& \textbf{a} = [e_1,e_2,e_3]\begin{bmatrix}
+a_1\\ 
+a_2\\ 
+a_3
+\end{bmatrix}=a_1e_1+a_2e_2+a_3e_3.\\
+&(a_1,a_2,a_3)^T为\textbf{a}在基下的坐标
+
+\end{align}</script><h4 id="外积"><span class="heading-link">外积</span></h4><p>将叉乘转化为矩阵和向量相乘的线性运算</p>
+<script type="math/tex; mode=display">
+\begin{align}
+a\times b& = \begin{Vmatrix}
+e_1 & e_2 & e_3\\ 
+a_1 & a_2 & a_3\\ 
+b_1 & b_2 & b_3
+\end{Vmatrix}=(a_2b_3-a_3b_2)e_1+(a_3b_1-a_1b_3)e_2+(a_1b_2-b_2a_1)e_3\\
+&=e\begin{bmatrix}
+a_2b_3-a_3b_2\\ 
+a_3b_1-a_1b_3\\ 
+a_1b_2-b_2a_1
+\end{bmatrix}\\
+&=\begin{bmatrix}
+0 & -a_3 & a_2\\ 
+a_3 & 0 & -a_1\\ 
+-a_2 & a_1 & 0
+\end{bmatrix}\begin{bmatrix}
+b_1\\ 
+b_2\\ 
+b_3
+\end{bmatrix}
+\overset{\text{def}}{=}\textbf{a^b}
+\end{align}</script><p><strong>符号 ^ ：反对称符号 $\Rightarrow$ a^ ：是反对称矩阵</strong>，将一个向量变成矩阵形式</p>
+<p>a = $\begin{bmatrix}<br>0 &amp; -a_3 &amp; a_2\<br>a_3 &amp; 0 &amp; -a_1\<br>-a_2 &amp; a_1 &amp; 0<br>\end{bmatrix}$ ，任意向量对应唯一一个反对称矩阵.</p>
+<h3 id="欧式变换"><span class="heading-link">欧式变换</span></h3><p>刚体运动：一个旋转+一个平移（坐标系变换</p>
+<h4 id="旋转"><span class="heading-link">旋转</span></h4><p>向量本身不变但是坐标系变动，向量a在由基e转变为基e’后，再基e’中表示为a’</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&[e_1,e_2,e_3]\begin{bmatrix}
+a_1\\ 
+a_2\\ 
+a_3
+\end{bmatrix}=[{e}'_1,{e}'_2,{e}'_3]\begin{bmatrix}
+{a}'_1\\ 
+{a}'_2\\ 
+{a}'_3
+\end{bmatrix}\\
+&等式两边同时左乘[e_1^T,e_2^T,e_3^T]^T，设\:R\:为旋转矩阵：\\
+&\begin{bmatrix}
+a_1\\ 
+a_2\\ 
+a_3
+\end{bmatrix}=\begin{bmatrix}
+e^T_1{e}'_1 & e^T_1{e}'_2 & e^T_1{e}'_3\\ 
+e^T_2{e}'_1 & e^T_2{e}'_2 & e^T_2{e}'_3\\ 
+e^T_3{e}'_1 & e^T_3{e}'_2 & e^T_3{e}'_3
+\end{bmatrix}\begin{bmatrix}
+{a}'_1\\ 
+{a}'_2\\ 
+{a}'_3
+\end{bmatrix}\overset{\text{def}}{=}R{a}'
+
+
+\end{align}</script><p>旋转矩阵 R（方向余弦矩阵）行列式为1，行列式为1的正交矩阵也是一个旋转矩阵。因为行列式为1的正交矩阵的几何意义为旋转但不改变向量长度。</p>
+<p>由此，定义n维旋转矩阵：</p>
+<script type="math/tex; mode=display">
+\begin{align}\textbf{特殊正交群}:\\
+&SO(n)=\{R\in\mathbb{R}^{n\times n}|RR^T=I,det(R)=1\}.
+\end{align}</script><p>其中，I为单位矩阵</p>
+<p>关于${a}’=R^{-1}a=R^Ta$ ，同样地，正交矩阵R的逆矩阵在几何上表示一个相反的旋转，因此R的转置刻画了一个相反的旋转。</p>
+<h4 id="旋转-平移"><span class="heading-link">旋转 + 平移</span></h4><p>刚体运动（由向量a变换到向量a’），旋转Ra和平移向量t</p>
+<script type="math/tex; mode=display">
+\textbf{a'=Ra+t}</script><h3 id="变换矩阵"><span class="heading-link">变换矩阵</span></h3><p>1）前置问题：</p>
+<p>假设进行多次欧式变换，表达式之间的关系并非是线性关系（带有多项式项），所以为方便描述，<strong>设置变换矩阵（T矩阵）</strong></p>
+<p>2）定义形式</p>
+<p>将三维坐标写成齐次坐标：</p>
+<script type="math/tex; mode=display">
+\begin{align}&\begin{bmatrix}
+{a}'\\ 
+1
+\end{bmatrix}=\begin{bmatrix}
+R & t\\ 
+0^T & 1
+\end{bmatrix}\begin{bmatrix}
+a\\ 
+1
+\end{bmatrix}\overset{\text{def}}{=}T\begin{bmatrix}
+a\\ 
+1
+\end{bmatrix}\\&\\&矩阵\:T\:为变换矩阵
+\end{align}</script><p>由此，多次变换可以写为如下形式：</p>
+<script type="math/tex; mode=display">
+c=T_1T_2a</script><p>3）特殊欧式群</p>
+<script type="math/tex; mode=display">
+SE(3)=\begin{Bmatrix}
+T=\begin{bmatrix}
+R & t\\ 
+0^T & 1
+\end{bmatrix}\in
+\mathbb{R}^{4\times4}|R \in 
+SO(3),t\in\mathbb{R}^{3}
+\end{Bmatrix}</script><p>反向变换：</p>
+<script type="math/tex; mode=display">
+T^{-1}=\begin{bmatrix}
+R^T & -R^Tt\\ 
+0^T & 1
+\end{bmatrix}</script><p>（可由$A^*=A|A|$求得）</p>
+<h3 id="注"><span class="heading-link">[ 注 ]</span></h3><p>1）SO(3) 的旋转矩阵有9个量，但一次旋转只有3个自由度：</p>
+<p>​            矩阵由九个元素，却只表示了 x，y，z 三个坐标的位置变化（只有三个自由度）</p>
+<p>2）变换矩阵T用16个量（4阶T矩阵16个元素）表达了6自由度的变换，分别是三个坐标轴以及每个坐标轴的旋转变量（3个）</p>
+</div><footer class="post-footer"><div class="post-end"><span>------ </span><span>本文结束，感谢您的阅读</span><span> ------</span></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-author-name">本文作者: </span><span class="post-copyright-author-value"><a href="https://acptek.github.io">acptek</a></span></div><div class="post-copyright-link"><span class="post-copyright-link-name">本文链接: </span><span class="post-copyright-link-value"><a href="https://acptek.github.io/2019/09/12/VSLAM-3-1 旋转矩阵/">https://acptek.github.io/2019/09/12/VSLAM-3-1 旋转矩阵/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-notice-name">版权声明: </span><span class="post-copyright-notice-value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><i class="post-tags-item__i fa fa-tags"></i><a class="post-tags-item__a" href="https://acptek.github.io/tags/SLAM/">SLAM</a></span><span class="post-tags-item"><i class="post-tags-item__i fa fa-tags"></i><a class="post-tags-item__a" href="https://acptek.github.io/tags/Math/">Math</a></span></div><nav class="paginator"><div class="paginator-post"><div class="paginator-post-next"><a class="paginator-post-next__a" href="/2019/09/10/CMake-学习笔记/"><span>CMake 学习笔记</span><i class="fa fa-chevron-right"></i></a></div></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><aside class="sidebar" id="sidebar"><div class="sidebar-inner"><section class="sidebar-toc hide"><div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">关于我</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#简历："><span class="toc-number">1.1.</span> <span class="toc-text">简历：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他："><span class="toc-number">1.2.</span> <span class="toc-text">其他：</span></a></li></ol></li></ol></div></section><!-- ov = overview --><section class="sidebar-ov"><div class="sidebar-ov-author"><img class="sidebar-ov-author__img" src="/images/avatar_head.png" alt="avatar"><p class="sidebar-ov-author__p">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social__item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><i class="sidebar-ov-social__item--icon fa fa-github"></i></a><a class="sidebar-ov-social__item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><i class="sidebar-ov-social__item--icon fa fa-weixin"></i></a><a class="sidebar-ov-social__item" href="18556723557" target="_blank" rel="noopener" data-popover="Telegram" data-popover-pos="up"><i class="sidebar-ov-social__item--icon fa fa-telegram"></i></a><a class="sidebar-ov-social__item" href="762612267" target="_blank" rel="noopener" data-popover="QQ" data-popover-pos="up"><i class="sidebar-ov-social__item--icon fa fa-qq"></i></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__a" href="acptek@163.com" target="_blank" rel="noopener"><i class="sidebar-ov-feed-email__a--icon fa fa-envelope"></i><span>Email </span><span>订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__a" href="/atom.xml" target="_blank" rel="noopener"><i class="sidebar-ov-feed-rss__a--icon fa fa-rss"></i><span>RSS </span><span>订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state__a posts" href="/archives/"><div class="sidebar-ov-state__a--count">9</div><div class="sidebar-ov-state__a--name">归档</div></a><a class="sidebar-ov-state__a categories" href="/categories/"><div class="sidebar-ov-state__a--count">2</div><div class="sidebar-ov-state__a--name">分类</div></a><a class="sidebar-ov-state__a tags" href="/tags/"><div class="sidebar-ov-state__a--count">7</div><div class="sidebar-ov-state__a--name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" data-popover="知识共享" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg" alt="知识共享"></a></div></section></div></aside><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>&copy; 2019</span><span class="fa fa-heart-o footer-icon"></span><span>Acptek - All Rights Reserved</span></div><div><span>由 <a href="http://hexo.io/" title="hexo" target="_blank" rel="noopener">hexo</a> 强力驱动</span><span class="separator">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="stun" target="_blank" rel="noopener">stun</a></span></div><div class="busuanzi"><span class="busuanzi-site_uv"><i class="fa fa-user"></i><span>访问人数 </span><span id="busuanzi_value_site_uv"></span></span><span class="separator">|</span><span class="busuanzi-site_pv"><i class="fa fa-eye"></i><span>浏览总量 </span><span id="busuanzi_value_site_pv"></span></span><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async="async"></script></div></div></footer><div class="loading-bar" id="loading-bar"><div class="progress"></div></div><div class="back2top" id="back2top"><div data-popover="回到顶部" data-popover-pos="up"><i class="back2top-icon fa fa-rocket"></i></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script type="text/x-mathjax-config">var mathjaxMhchem = '';
+var mathJaxTex = {
+  equationNumbers: {
+    // autoNumber: "AMS"
+  }
+};
+
+if (false) {
+  mathjaxMhchem = 'https://cdn.jsdelivr.net/npm/mathjax-mhchem@3.3.2/mhchem.min.js';
+  MathJax.Ajax.config.path['mhchem'] = mathjaxMhchem;
+
+  mathJaxTex.extensions = [mathjaxMhchem];
+} else {
+  mathJaxTex.extensions = ["AMSmath.js","AMSsymbols.js"];
+}
+
+MathJax.Hub.Config({
+  menuSettings: {
+    zoom: "None"
+  },
+  showMathMenu: false,
+  jax: ["input/TeX","output/CommonHTML"],
+  extensions: ["tex2jax.js"],
+  TeX: mathJaxTex,
+  tex2jax: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [["\\[", "\\]"]],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+
+MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+  MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+    if (data.display) {
+      var next = data.script.nextSibling;
+      while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling; }
+      if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next); }
+    }
+  });
+});
+
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i = 0; i < all.length; i++) {
+    document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) return;
+
+  var gitalk = new Gitalk({
+    id: md5('2019/09/12/VSLAM-3-1 旋转矩阵/'),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=1.4.1"></script><script src="/js/stun-boot.js?v=1.4.1"></script><script src="/js/scroll.js?v=1.4.1"></script><script src="/js/header.js?v=1.4.1"></script><script src="/js/sidebar.js?v=1.4.1"></script></body></html>

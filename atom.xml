@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acptek.github.io/"/>
-  <updated>2019-09-16T04:37:02.294Z</updated>
+  <updated>2019-09-17T07:35:30.015Z</updated>
   <id>https://acptek.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>VSALM-3.2 旋转向量 欧拉角 四元数</title>
+    <link href="https://acptek.github.io/2019/09/17/VSALM-3-2-%E6%97%8B%E8%BD%AC%E5%90%91%E9%87%8F-%E6%AC%A7%E6%8B%89%E8%A7%92-%E5%9B%9B%E5%85%83%E6%95%B0/"/>
+    <id>https://acptek.github.io/2019/09/17/VSALM-3-2-旋转向量-欧拉角-四元数/</id>
+    <published>2019-09-17T07:34:00.000Z</published>
+    <updated>2019-09-17T07:35:30.015Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="旋转向量"><span class="heading-link">旋转向量</span></h2><h3 id="表现形式"><span class="heading-link">表现形式</span></h3><p><strong>旋转向量/轴角</strong>：用一个旋转轴和一人个旋转角来刻画任意一个旋转，<strong>方向和旋转轴一致，长度等于旋转角</strong></p><p>所以，对于变换矩阵T，可以使用一个旋转向量和一个平移变量来表示，总共6个变量</p><h3 id="旋转向量转化为旋转矩阵"><span class="heading-link">旋转向量转化为旋转矩阵</span></h3><p><strong>罗德里格斯公式</strong>：</p><p>​        长度为$\theta$，轴角为$n$（单位长度的向量），用向量$\theta n$表示旋转。</p><script type="math/tex; mode=display">R=cos\theta I+(1-cos\theta )nn^T+sin\theta n\text{^}</script><p>​        根据 迹 的性质，对该公式两边取迹，求得转角和旋转矩阵的关系。</p><script type="math/tex; mode=display">\Rightarrow \theta=arccos\frac{tr(R)-1}{2}</script><h3 id="转轴"><span class="heading-link">转轴</span></h3><p>转轴$n$上的旋转向量在旋转后不发生改变，</p><script type="math/tex; mode=display">Rn=n \;\Leftarrow\left\{\begin{matrix}Rn=\lambda n\\ \lambda = 1\end{matrix}\right.</script><p>所以，可以推导出$n$为旋转矩阵$R$特征值为1对应的特征向量。因此，已知旋转矩阵，即可求得旋转轴。</p><h2 id="欧拉角"><span class="heading-link">欧拉角</span></h2><p>将三个轴的旋转方向作定义，更加直观的表示旋转的过程。</p><p>但是在使用欧拉角时，会出现“万向锁问题”，例如可能导致三个轴的旋转实际只表示了两次旋转等情况。</p><h2 id="四元数"><span class="heading-link">四元数</span></h2><h3 id="定义"><span class="heading-link">定义</span></h3><script type="math/tex; mode=display">\begin{align}& q=[s,v]^T,\;s=q_0  \in \mathbb{R},\;v=[q_1, q_2, q_3]^T \in \mathbb{R} . \\&q = q_0+q_1i+q_2j+q_3k .\\& s为实部，v为虚部\end{align}</script><h3 id="运算"><span class="heading-link">运算</span></h3><p>1）自身三个虚部满足的乘法运算关系</p><p>2）两四元数加减法</p><p>3）两四元数的乘法</p><script type="math/tex; mode=display">\begin{align}& q_a\: [s_a, v_a]^T,\;q_a=s_a+x_ai+y_aj+z_ak\\& q_b\:[s_b,v_b]^T,q_b=s_b+x_bi+y_bj+z_bk\\\rightarrow\\&q_aq_b=[s_as_b-v_a^Tv_b, s_av_b+s_bv_a+v_a\times v_b]^T\end{align}</script><p>4）模长 $||q||$</p><p>5）共轭 $q^*$</p><script type="math/tex; mode=display">q^*q=qq^*=[s_a^2+v^Tv, 0]^T.</script><p>6）逆 $q^{-1}$ </p><script type="math/tex; mode=display">\begin{align}&q^{-1}=q^*/||q||^2\\&q^{-1}q=qq^{-1}=1\end{align}</script><p>7）数乘</p><h3 id="用四元数表示旋转"><span class="heading-link">用四元数表示旋转</span></h3><p>在二维平面中，旋转数可以写为 $q=cos\theta+i*sin\theta$</p><p>引申到三维旋转中，四元数向量表示为 $q\;[cos\theta, v*sin\theta]$</p><h4 id="三维空间点的旋转"><span class="heading-link">三维空间点的旋转</span></h4><p>空间三维点：$p=[x,y,z]\in \mathbb{R^3}$</p><p>单位四元数：$q$ ,用于指定旋转</p><p>1）将三维空间点用虚四元数表示：</p><script type="math/tex; mode=display">p=[0, x,y,z]^T=[0,v]^T</script><p>2）旋转</p><script type="math/tex; mode=display">p'=extend(R)p \Rightarrow p'=qpq^{-1}</script><p>通过先乘q再作q逆乘法，相当与先用右手坐标系将空间点旋转二分之一的旋转角，再用左手坐标系逆向旋转二分之一旋转角，以此使得最终得到的四元数时纯虚四元数，从而直接表示三维空间坐标。（从几何意义上是将三维向量转化为四维后再回到三维）</p><h3 id="四元数到其他旋转表示的转换"><span class="heading-link">四元数到其他旋转表示的转换</span></h3><p>定义：（将四元数的乘法写成矩阵乘法）</p><script type="math/tex; mode=display">q^+=\begin{bmatrix}s & -v^T\\ v & sI+v\text{^}\end{bmatrix},q^\oplus=\begin{bmatrix}s & -v^T\\ v & sI-v\text{^}\end{bmatrix}</script><script type="math/tex; mode=display">\Rightarrow q_1q_2=q_1^+q_2=q_2^\oplus q_1</script><script type="math/tex; mode=display">\Rightarrow p'=qpq^{-1}=q^+p^+q^{-1}=q^+{q^{-1}}^\oplus p</script><p>即$q^+{q^{-1}}^\oplus=extend(R)$，所以</p><h4 id="四元数转换到旋转矩阵"><span class="heading-link">四元数转换到旋转矩阵</span></h4><script type="math/tex; mode=display">q^+{q^{-1}}^\oplus=\begin{bmatrix}s & -v^T\\ v & sI+v\text{^}\end{bmatrix}\begin{bmatrix}s & v^T\\ -v & sI+v\text{^}\end{bmatrix}=\begin{bmatrix}1 & 0\\ 0^T & vv^T+s^2I+2sv\text{^}+(v\text{^})^2\end{bmatrix}</script><script type="math/tex; mode=display">\Rightarrow R=vv^T+s^2I+2sv\text{^}+(v\text{^})^2  \tag{*}</script><h4 id="四元数转换到旋转向量"><span class="heading-link">四元数转换到旋转向量</span></h4><p>对两边取迹，得：</p><script type="math/tex; mode=display">tr(R)=4s^2-1</script><p>其中，关于 $v(v_1,v_2,v_3)$，$v\text{^}$是向量$v$的反对称矩阵形式</p><script type="math/tex; mode=display">tr((v\text{^})^2)=2(v_1^2+v_2^2+v_3^2) \tag{1}</script><p>又由罗德里斯公式中：</p><script type="math/tex; mode=display">\Rightarrow \theta=arccos\frac{tr(R)-1}{2}\tag{2}</script><p>最终得到四元数与旋转向量的转换关系</p><script type="math/tex; mode=display">\Rightarrow \theta=2\arccos{s}</script><p>综上，四元数到旋转向量的转换公式：</p><script type="math/tex; mode=display">\left\{\begin{matrix}\theta=2\arccos{q_0}\\ [n_x,n_y,n_z]^T=[q_1,q_2,q_3]^T/\sin{\frac{\theta}{2}}\end{matrix}\right. \tag{*}</script>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;旋转向量&quot;&gt;&lt;span class=&quot;heading-link&quot;&gt;旋转向量&lt;/span&gt;&lt;/h2&gt;&lt;h3 id=&quot;表现形式&quot;&gt;&lt;span class=&quot;heading-link&quot;&gt;表现形式&lt;/span&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;旋转向量/轴角&lt;/strong
+      
+    
+    </summary>
+    
+      <category term="SLAM" scheme="https://acptek.github.io/categories/SLAM/"/>
+    
+    
+      <category term="SLAM" scheme="https://acptek.github.io/tags/SLAM/"/>
+    
+      <category term="Math" scheme="https://acptek.github.io/tags/Math/"/>
+    
+  </entry>
   
   <entry>
     <title>VSLAM-3.1 旋转矩阵</title>
@@ -72,7 +99,7 @@
     <link href="https://acptek.github.io/2019/09/10/VSLAM-2%20SLAM%E6%A6%82%E8%A7%88/"/>
     <id>https://acptek.github.io/2019/09/10/VSLAM-2 SLAM概览/</id>
     <published>2019-09-10T06:35:11.000Z</published>
-    <updated>2019-09-15T03:12:32.524Z</updated>
+    <updated>2019-09-16T05:08:40.684Z</updated>
     
     <content type="html"><![CDATA[<p>尺度（Scale）：单目SLAM估计的轨迹和地图相比真实的相差一个因子</p><p>基线（Baseline）：组成双目相机的两个单目相机之间的已知距离</p><p>视觉SLAM流程：</p><p>​    1）传感器信息读取</p><p>​    2）前段视觉里程计：估算相邻图像间相机的运动，以及局部地图的样子</p><p>​    3）后端（非线性）优化：优化前段输出和回环检测信息</p><p>​    4）回环检测</p><p>​    5）建图</p><p>视觉里程计：</p><p>度量地图（稀疏地图，稠密地图</p><p>拓扑地图（连通性</p><p>SLAM问题的数学表达：</p><p>​    1）运动：k-1 =&gt; k时刻，位置x 的变化：</p><p>​            运动方程：</p><script type="math/tex; mode=display">\begin{align}& x_k=f(x_{k-1},u_k,w_k)\\& u_k:运动传感器的读数或者输入\\& w_k:该运动过程中加入的噪声\\& f\:抽象指代运动过程方式\end{align}</script><p>​    2）观测：在k时刻，在 x<em>k 处探测到某一个路标 y_j ，产生观测数据z</em>{k,j}</p><p>​            观测方程：</p><script type="math/tex; mode=display">\begin{align}& z_{k,j}=h(y_i,x_k,v_{k,j})\\& v_{k,j}:这次观测的噪声\\&观测数据z和观测方程h与运动方程中的x和f一样，有许多种不同的形式\end{align}</script><p>运动方程的解释举例：</p><script type="math/tex; mode=display">\begin{align}&x_k=\begin{bmatrix}x_1\\ x_2\\ \theta\end{bmatrix}_k\rightarrow x_k：位姿；x_1,x_2:运动机器人两个轴上的位置；\theta为转角\\&\\&u_k=\begin{bmatrix}\Delta x_1\\ \Delta x_2\\ \Delta\theta\end{bmatrix}_k\rightarrow u_k:输入指令；\Delta x_1,\Delta x_2:两个时间间隔位置变化量；\Delta\theta为转角变化量\\&\\&\Rightarrow\begin{bmatrix}x_1\\ x_2\\ \theta\end{bmatrix}_k=\begin{bmatrix}x_1\\ x_2\\ \theta\end{bmatrix}_{k-1}+\begin{bmatrix}\Delta x_1\\ \Delta x_2\\ \Delta\theta\end{bmatrix}_k+w_k\end{align}</script><p>观测方程的解释举例：</p><script type="math/tex; mode=display">\begin{align}& 机器人携带的二维激光传感器，观测一个2D路标点，可得：\\&r\rightarrow路标点和机器人本体间的距离\\&\phi\rightarrow路标点和机器人本体间的夹角\\&路标点：y_j=\begin{bmatrix}y_1\\ y_2\end{bmatrix}_j,位姿：x_k=\begin{bmatrix}x_1\\ x_2\end{bmatrix}_k,观测数据：z_{k,j}=\begin{bmatrix}r_{k,j}\\ \phi_{k,j}\end{bmatrix},\\&\\&观测方程\Rightarrow\begin{bmatrix}r_{k,j}\\ \phi_{k,j}\end{bmatrix}=\begin{bmatrix}\sqrt{(y_{1,j}-x_{1,j})^2+(y_{2,j}-x_{2,j})^2}\\ arctan(\frac{y_{2,j}-x_{2,k}}{y_{1,j}-x_{1,k}})\end{bmatrix}+v\end{align}</script><p>所以SLAM过程总结为两个基本方程：</p><script type="math/tex; mode=display">\begin{align}&\left\{\begin{matrix}x_k=f(x_{k-1},u_k,w_k),\;k=1,...,K\\ z_{k,j}=h(y_i,x_k,v_{k,j}),\;(k,j)\in O\end{matrix}\right.\\&已知运动测量读数u，传感器读数z，求解定位问题（估计x）和建图问题（估计y）\\&\Rightarrow建模为一个\textbf{状态估计问题}:如何通过带有噪声的测量数据，估计内部的隐藏着的状态变量？\end{align}</script><p>『声波、温度……』</p>]]></content>
     
@@ -188,7 +215,7 @@ m*n·n*s = m*s&lt;/scrip
     <published>2019-07-10T07:25:28.000Z</published>
     <updated>2019-07-20T07:17:33.827Z</updated>
     
-    <content type="html"><![CDATA[<div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX19ACzCmsWTs/9kdjO+jalxUt2S2LpHonzNXY5k7tEfqkrwX39Hs+HsB8+s1whW9MofkDruXgWof9Q==</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    <content type="html"><![CDATA[<div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX1/Nd2R8PzMeY1ITbNKx49aSgKXN/0ZOXd8Op0sp7xHrLn1PBWEni0oBoiZWFKT0v6PHTczftigjpA==</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
     
     <summary type="html">
     

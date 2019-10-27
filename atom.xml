@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://acptek.github.io/"/>
-  <updated>2019-10-16T11:40:41.773Z</updated>
+  <updated>2019-10-27T03:49:55.168Z</updated>
   <id>https://acptek.github.io/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>特征点提取与匹配</title>
+    <link href="https://acptek.github.io/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/"/>
+    <id>https://acptek.github.io/2019/10/27/特征点提取与匹配/</id>
+    <published>2019-10-27T03:45:11.000Z</published>
+    <updated>2019-10-27T03:49:55.168Z</updated>
+    
+    <content type="html"><![CDATA[<p>视觉里程计：根据相邻图像的信息估计相机的运动，作为后端的初值</p><p>特征点法、直接法</p><p>在相机运动过程中观测到的路标点，在某一个位姿，相机观测到物体的像素坐标为$(u,v)$，则对应满足相机模型关系：</p><script type="math/tex; mode=display">Z P_{uv}=Z\begin{bmatrix}u\\v\\1\end{bmatrix}=K(RP_w+t)=KTP_w</script><h2 id="特征点提取与匹配"><span class="heading-link">特征点提取与匹配</span></h2><h3 id="特征点概念"><span class="heading-link">特征点概念</span></h3><p>​    1）路标：有代表性的点</p><p>​    2）特征：图像信息的另一种数字表达形式，角点&gt;特征&gt;区块</p><p>特征点 = 关键点 + 描述子</p><h4 id="关键点"><span class="heading-link">关键点</span></h4><p>特征点在图像中的位置</p><h4 id="描述子"><span class="heading-link">描述子</span></h4><p>描述关键点周围像素信息的向量，例如对关键点周围亮度的表现。</p><p>在ORB中，在关键点周围随机选择128对或256对点（对于每张相机图像里的每个关键点，都可以使用相同的随机选择模板），以每一对的亮度相似程度按二进制赋值，生成一个128或256位的二进制数，以此数来表述描述子。</p><p>同时，在ORB-BRIEF描述子中，考虑到图像的旋转，针对每张图像以灰度质心法计算图像中每个特征点方向，或者计算整体图像旋转的向量，以此旋转向量调整随机选择模板（对随机选择的点也进行旋转），再生成描述子。</p><p>最后，对描述子进行特征匹配。在ORB中，描述子的匹配以汉明匹配方式进行匹配。但是在ORB中，BRIEF描述子没有涉及到尺度这一特征。</p><p>​    </p><h3 id="特征提取算法"><span class="heading-link">特征提取算法</span></h3><p>SIFT：尺度不变特征变换（计算量大）</p><p>FAST关键点：没有描述子（计算快） </p><p>ORB：FAST特征点 + BRIEF描述子</p><h3 id="ORB特征提取和匹配"><span class="heading-link">ORB特征提取和匹配</span></h3><p><img src="/images/ORB_Feature.jpg" alt="ORB_Feature"></p><h4 id="FAST关键点"><span class="heading-link">FAST关键点</span></h4><p>目的是对图像的 平移、旋转、尺度 进行特征提取。</p><h5 id="图像金字塔："><span class="heading-link">图像金字塔：</span></h5><p>用于提取图像的尺度特征，描述相机前后运动的过程</p><p>​    1 塔底为原始图像，每往上一层对图像进行固定倍率（例：1.2，1.5，2倍等）缩放，得到不同分辨率图像（小远大近）</p><p>​    2 两图像间，匹配不同层上的图像</p><p>Oriented FAST关键点中没有涉及到这一特性</p><h5 id="特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）"><span class="heading-link">特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心 ）</span></h5><p>​    1 图像块的矩：$m<em>{pq}=\sum\limits</em>{x,y\in B}x^py^qI(x,y),\;p,q={0,1}$，其中，I(x, y)为f(x, y)的二值图像，取值0或1</p><p>​    2 图像块的质心：$C=(m<em>{10}/m</em>{00},m<em>{01}/m</em>{00})$</p><p>​    3 特征方向：表示为$\theta=\arctan(m<em>{01}/m</em>{10})$，连接几何中心O和质心C得到的方向向量</p><h4 id="BRIEF描述子"><span class="heading-link">BRIEF描述子</span></h4><p>在关键点附近随机选取K对点，以K位二进制的形式反映他们的大小关系，以此作为对一个特征点的描述。又由于在FAST关键点中计算了关键点的方向，利用方向信息计算旋转后的特征。</p><h4 id="ORB特征匹配"><span class="heading-link">ORB特征匹配</span></h4><p>数据关联问题：确定前后看到的路标间的对应关系</p><p>问题：1 误匹配  2 匹配方法</p><p>描述点的距离表示了两个特征之间的相似程度</p><p>注：（SIFT……）快速近似邻近（FLANN），但不适用于计算汉明距离</p><hr><p><img src="/images/ORB_Feature_Frame.jpg" alt="ORB_Feature"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;视觉里程计：根据相邻图像的信息估计相机的运动，作为后端的初值&lt;/p&gt;
+&lt;p&gt;特征点法、直接法&lt;/p&gt;
+&lt;p&gt;在相机运动过程中观测到的路标点，在某一个位姿，相机观测到物体的像素坐标为$(u,v)$，则对应满足相机模型关系：&lt;/p&gt;
+&lt;script type=&quot;math/tex
+      
+    
+    </summary>
+    
+      <category term="SLAM" scheme="https://acptek.github.io/categories/SLAM/"/>
+    
+    
+      <category term="SLAM" scheme="https://acptek.github.io/tags/SLAM/"/>
+    
+      <category term="Math" scheme="https://acptek.github.io/tags/Math/"/>
+    
+      <category term="OpenCV" scheme="https://acptek.github.io/tags/OpenCV/"/>
+    
+  </entry>
   
   <entry>
     <title>状态估计中的最小二乘</title>
@@ -82,7 +114,7 @@
     <link href="https://acptek.github.io/2019/09/22/VSLAM-4-2-%E6%9D%8E%E4%BB%A3%E6%95%B0%E6%B1%82%E5%AF%BC/"/>
     <id>https://acptek.github.io/2019/09/22/VSLAM-4-2-李代数求导/</id>
     <published>2019-09-22T12:49:43.000Z</published>
-    <updated>2019-10-16T11:40:18.462Z</updated>
+    <updated>2019-10-27T03:45:56.946Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>1） SLAM的过程就是不断的估计相机的位姿和建立地图，在此过程中会出现一定的误差，所以目的是寻找一个最佳位姿（通过优化方法，一般采用迭代优化方法，每次迭代都更新一个位姿的增量delta，使得目标函数最小。这个delta就是通过误差函数对T微分得到的。也就是说我们需要对变换矩阵T求微分），使得整体误差最小。</p><p>为此，可以列出关于变换矩阵T的目标函数，要求解方程需要对变换矩阵求导。</p><p>2） 就旋转矩阵而言，其矩阵加法不封闭，为此不满足导数定义中“加一个极小量”。所以，要使得矩阵满足求导运算，引出李群和李代数。</p><p>李群是具有连续性质的群，群上定义了某种矩阵的集合。对于旋转矩阵、变换矩阵都是满足李群的定义，例如旋转矩阵在旋转矩阵的集合中关于乘法运算满足李群。李群运算不满足求导，但与李群对应的李代数满足加法后保持性质。至此，将变换矩阵求导的问题转化为了求李代数的导数问题。</p><p>在讨论李代数的物理意义时，so(3)就代表了旋转向量组成的空间。实际上，so(3)是三维向量phi的集合，每个向量phi^表达了这个李代数对应的李群SO(3)上旋转矩阵R的导数。其中，R与phi是一个指数映射关系。</p><p>关于李代数和李群在几何意义上的关系：李代数对应李群的正切空间，描述了李群的局部导数。</p></blockquote><h2 id="李代数求导"><span class="heading-link">李代数求导</span></h2><h3 id="BCH公式"><span class="heading-link">BCH公式</span></h3><script type="math/tex; mode=display">\ln(\exp(A)\exp(B))=A+B+\frac{1}{2}[A,B]+\frac{1}{12}[A,[A,B]]-\frac{1}{12}[B[A,B]]+...</script><p>其中“[ , ]”为李括号。</p><p>考虑SO(3)上的李代数：</p><script type="math/tex; mode=display">\ln(\exp(\phi_1^\wedge)\exp(\phi_2^\wedge))^\vee=\left\{\begin{matrix}{J_l(\phi_2)}^{-1}\phi_1+\phi_2\;\;当\phi_1为小量\\ {J_r(\phi_1)}^{-1}\phi_2+\phi_1\;\;当\phi_2为小量\end{matrix}\right.\tag{*}</script><p>第一个近似描述了：对一个旋转矩阵$R2$（李代数$\phi_2$），左乘一个微小旋转$R_1$，近似看作：在李代数$\phi_2$上加了一项${J_l(\phi_2)}^{-1}\phi_1$.</p><script type="math/tex; mode=display">J_l=J=\frac{\sin\theta}{\theta}I+(1-\frac{\sin\theta}{\theta})\alpha\alpha^T+\frac{1-\cos\theta}{\theta}\alpha^\wedge\tag{**}</script><script type="math/tex; mode=display">J^{-1}=\frac{\theta}{2}\cot\frac{\theta}{2}I+(1-\frac{\theta}{2}\cot\frac{\theta}{2})\alpha\alpha^T-\frac{\theta}{2}\alpha^\wedge\tag{**}</script><p>右乘：$J_r(\phi)=J_l(-\phi)$</p><p>至此，得到李群乘法和李代数加法的关系</p><h3 id="BCH近似"><span class="heading-link">BCH近似</span></h3><p>$旋转矩阵R，其李代数\phi，微小旋转\Delta R，其李代数\Delta\phi$，李群乘法$\rightarrow$李代数加法</p><script type="math/tex; mode=display">\exp(\Delta\phi^\wedge)\exp(\phi^\wedge)=\exp((\phi+J_l^{-1}(\phi)\Delta\phi)^\wedge)\tag{***}</script><p>李代数加法$\rightarrow$李群乘法</p><script type="math/tex; mode=display">\exp((\phi+\Delta\phi)^\wedge)=\exp((J_l\Delta\phi)^\wedge)\exp(\phi^\wedge)=\exp(\phi^\wedge)\exp((J_r\Delta\phi)^\wedge)\tag{***}</script><h3 id="李代数求导-1"><span class="heading-link">李代数求导</span></h3><p>两种思路：</p><p>1 导数模型 ， 2 扰动模型</p><h4 id="SO-3-上的李代数求导"><span class="heading-link">SO(3)上的李代数求导</span></h4><p>$位姿T，观察点的世界坐标p，产生的观测数据z，随即噪声w$，对于N个观测误差$e=z-Tp$，（寻找一个最优T，使误差最小）</p><script type="math/tex; mode=display">\underset{T}{\min}J(T)=\sum_{i=1}^N||z_i-Tp_i||_2^2</script><h4 id="李代数求导-2"><span class="heading-link">李代数求导</span></h4><p>1）按照导数模型，（根据李代数的加法结合导数的定义来求旋转后点的坐标对于旋转的导数，或者说是求旋转很小时偏移的变化率），可以求得：</p><script type="math/tex; mode=display">\begin{align}& \frac{\partial (\exp(\phi^\wedge)p)}{\partial \phi}\approx-(Rp)^\wedge J_l\\&\\\Rightarrow &\frac{\partial (Rp)}{\partial \phi}=(-Rp)^\wedge J_l\tag{旋转后的点对于李代数的导数}\end{align}</script><p>2）扰动模型，对旋转矩阵R进行一次扰动$\Delta R$（对应的李代数为$\varphi $），看结果相对于扰动的变化率。</p><script type="math/tex; mode=display">\frac{\partial (Rp)}{\partial \phi}=(-Rp)^\wedge</script><h4 id="SE-3-上的李代数求导"><span class="heading-link">SE(3)上的李代数求导</span></h4><p>空间点p，变换T（对应的李代数为$\xi$），扰动变换$\Delta T=\exp(\delta\xi^\wedge)$，其李代数为$\delta\xi=[\delta\rho,\delta\phi]^T$：</p><script type="math/tex; mode=display">\frac{\partial (Tp)}{\partial \delta\xi}=\begin{bmatrix}I & -(Rp+t)^\wedge\\ 0^T & 0^T\end{bmatrix}git</script>]]></content>
     
@@ -332,7 +364,7 @@ m*n·n*s = m*s&lt;/scrip
     <published>2019-07-10T07:25:28.000Z</published>
     <updated>2019-07-20T07:17:33.827Z</updated>
     
-    <content type="html"><![CDATA[<div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX1+zRFdlqQWkbBFl5WgOfI3DIWAYV2IfAA3gX3oMDIMnYIYuwDTSTnrk/ZOdF1YMIuTHpiiOMIiINA==</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
+    <content type="html"><![CDATA[<div id="hbe-security">  <div class="hbe-input-container">  <input type="password" class="hbe-form-control" id="pass" placeholder="Enter password to read." />    <label for="pass">Enter password to read.</label>    <div class="bottom-line"></div>  </div></div><div id="decryptionError" style="display: none;">Incorrect Password!</div><div id="noContentError" style="display: none;">No content to display!</div><div id="encrypt-blog" style="display:none">U2FsdGVkX19UxrWtpuur71MVvgLdBGNlroKpHeyS4EMmsOFw8y8iz+ir36HwEuaye0ALk9k46lHCuONhgaOd3g==</div><script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
     
     <summary type="html">
     

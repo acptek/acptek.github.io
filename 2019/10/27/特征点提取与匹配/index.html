@@ -62,9 +62,10 @@ Z P_{uv}=Z\begin{bmatrix}u\\v\\1\end{bmatrix}=K(RP_w+t)=KTP_w</script><h2 id="�
 <p>​    1 塔底为原始图像，每往上一层对图像进行固定倍率（例：1.2，1.5，2倍等）缩放，得到不同分辨率图像（小远大近）</p>
 <p>​    2 两图像间，匹配不同层上的图像</p>
 <p>Oriented FAST关键点中没有涉及到这一特性</p>
-<h5 id="特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）"><span class="heading-link">特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心 ）</span></h5><p>​    1 图像块的矩：$m<em>{pq}=\sum\limits</em>{x,y\in B}x^py^qI(x,y),\;p,q={0,1}$，其中，I(x, y)为f(x, y)的二值图像，取值0或1</p>
-<p>​    2 图像块的质心：$C=(m<em>{10}/m</em>{00},m<em>{01}/m</em>{00})$</p>
-<p>​    3 特征方向：表示为$\theta=\arctan(m<em>{01}/m</em>{10})$，连接几何中心O和质心C得到的方向向量</p>
+<h5 id="特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）"><span class="heading-link">特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心 ）</span></h5><p>​    1 图像块的矩：其中，I(x, y)为f(x, y)的二值图像，取值0或1</p>
+<script type="math/tex; mode=display">
+m_{pq}=\sum\limits_{x,y\in B}x^py^qI(x,y),\;p,q=\{0,1\}</script><p>​    2 图像块的质心：$ C=(m<em>{10}/m</em>{00},m<em>{01}/m</em>{00}) $</p>
+<p>​    3 特征方向：表示为 $ \theta=\arctan(m<em>{01}/m</em>{10}) $，连接几何中心O和质心C得到的方向向量</p>
 <h4 id="BRIEF描述子"><span class="heading-link">BRIEF描述子</span></h4><p>在关键点附近随机选取K对点，以K位二进制的形式反映他们的大小关系，以此作为对一个特征点的描述。又由于在FAST关键点中计算了关键点的方向，利用方向信息计算旋转后的特征。</p>
 <h4 id="ORB特征匹配"><span class="heading-link">ORB特征匹配</span></h4><p>数据关联问题：确定前后看到的路标间的对应关系</p>
 <p>问题：1 误匹配  2 匹配方法</p>

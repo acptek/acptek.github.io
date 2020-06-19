@@ -1,29 +1,46 @@
 $(document).ready(function () {
-  CONFIG.shortcuts.switch_post && Stun.utils.registerHotkeyToSwitchPost();
+  Stun.utils.showThemeInConsole();
+
+  if (CONFIG.shortcuts && CONFIG.shortcuts.switchPost) {
+    Stun.utils.registerSwitchPost();
+  }
 
   // Not reload this, because it's changeless.
-  if (CONFIG.external_link) {
+  if (CONFIG.externalLink) {
     Stun.utils.addIconToExternalLink('#footer');
   }
 
   Stun.utils.pjaxReloadBoot = function () {
-    this.addCopyButton();
-    this.registerCopyEvent();
-
-    CONFIG.reward && this.registerShowReward();
-    CONFIG.lazyload && this.lazyLoadImage();
-    CONFIG.gallery_waterfall && this.showImageToWaterfall();
-
-    if (CONFIG.external_link) {
-      var WRAPPER = '.archive, .post-header-title';
-
-      this.addIconToExternalLink(WRAPPER);
+    if (CONFIG.codeblock) {
+      var codeStyle = CONFIG.codeblock.style;
+      if (codeStyle === 'default') {
+        this.addCodeHeader();
+        this.addCopyButton();
+      } else if (codeStyle === 'carbon') {
+        this.addCodeHeader('carbon');
+        this.addCopyButton('carbon');
+      } else if (codeStyle === 'simple') {
+        this.addCopyButton('simple');
+      }
+      this.registerCopyEvent();
     }
-
+    if (CONFIG.reward) {
+      this.registerShowReward();
+    }
+    if (CONFIG.lazyload) {
+      this.lazyLoadImage();
+    }
+    if (CONFIG.galleryWaterfall) {
+      this.showImageToWaterfall();
+    }
+    if (CONFIG.externalLink) {
+      var CONTAINER = '.archive, .post-title';
+      this.addIconToExternalLink(CONTAINER);
+    }
     if (CONFIG.fancybox) {
       this.wrapImageWithFancyBox();
-    } else if (CONFIG.zoom_image) {
-      this.registerClickToZoomImage();
+    } else if (CONFIG.zoomImage) {
+      this.registerZoomImage();
     }
   };
 

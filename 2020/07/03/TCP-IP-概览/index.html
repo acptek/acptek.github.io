@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="概览">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 概览">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="概览">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-03T09:05:34.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:56:04.015Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP 概览 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 概览</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="概览"   >
+          <a href="#概览" class="heading-link"><i class="fas fa-link"></i></a>概览</h1>
+      <a id="more"></a>
+
+        <h3 id="Internet"   >
+          <a href="#Internet" class="heading-link"><i class="fas fa-link"></i></a>Internet</h3>
+      <p>​    特指网络环境</p>
+<p>IP -&gt; 分组传递 -&gt; 无连接传输<br>TCP -&gt; 可靠的流传输 (针对TCP协议提供的服务，是一种面向连接的服务)</p>
+<p>作为标准的RFC在系统中都有实现</p>
+
+        <h3 id="Internetworking"   >
+          <a href="#Internetworking" class="heading-link"><i class="fas fa-link"></i></a>Internetworking</h3>
+      <p>​    互联异构的（完全不同类型的）物理网络</p>
+
+        <h3 id="TCP-IP-的发展："   >
+          <a href="#TCP-IP-的发展：" class="heading-link"><i class="fas fa-link"></i></a>TCP/IP 的发展：</h3>
+      <p>​    ARPA -&gt; DARPA ：定义了体系结构与相关协议</p>
+
+        <h3 id="Internet-Services：因特网提供的服务"   >
+          <a href="#Internet-Services：因特网提供的服务" class="heading-link"><i class="fas fa-link"></i></a>Internet Services：因特网提供的服务</h3>
+      <p>​    是一个协议簇，一系列的协议<br>​        1 定义报文格式<br>​        2 收到响应的动作<br>​        3 差错的处理<br>​    优点：隐藏底层网络的细节</p>
+
+        <h3 id="如何看待因特网提供的服务："   >
+          <a href="#如何看待因特网提供的服务：" class="heading-link"><i class="fas fa-link"></i></a>如何看待因特网提供的服务：</h3>
+      
+        <h4 id="1-从用户视角："   >
+          <a href="#1-从用户视角：" class="heading-link"><i class="fas fa-link"></i></a>1 从用户视角：</h4>
+      <p>​        一系列的应用程序（常用的如www，云访问，远程桌面，电子邮件，文件传输，流媒体等</p>
+
+        <h4 id="2-从网络层视角：因特网提供两种服务"   >
+          <a href="#2-从网络层视角：因特网提供两种服务" class="heading-link"><i class="fas fa-link"></i></a>2 从网络层视角：因特网提供两种服务</h4>
+      <p>​        1 无连接的分组传递服务<br>​        2 可靠的流传送服务</p>
+
+        <h3 id="因特网服务的一些特点："   >
+          <a href="#因特网服务的一些特点：" class="heading-link"><i class="fas fa-link"></i></a>因特网服务的一些特点：</h3>
+      <p>​        1 网络技术的独立性，协议独立于任何类型的网络硬件<br>​        2 通用的互联，网络中的任意两台计算机都能进行通信<br>​        3 端到端的确认，可靠的流传输，主机到主机与中间路由无关<br>​        4 应用协议标准</p>
+
+        <h3 id="因特网的历史："   >
+          <a href="#因特网的历史：" class="heading-link"><i class="fas fa-link"></i></a>因特网的历史：</h3>
+      <p>​    1979 APRA<br>​    1980s 从第一代协议迁移到第二代协议（相关操作系统支持的代表：BSD Unix<br>​    1983 APRA -&gt;1 (MILNET)民用  -&gt;2 (ARPANET)军用<br>​    1986 NSFNET 加入到APRA，成为APRA的主干</p>
+
+        <h3 id="因特网的管理机构："   >
+          <a href="#因特网的管理机构：" class="heading-link"><i class="fas fa-link"></i></a>因特网的管理机构：</h3>
+      <p>​    IAB<br>​    1989 IAB重新组着成IRTF和IETF</p>
+
+        <h3 id="因特网协议文档-RFC"   >
+          <a href="#因特网协议文档-RFC" class="heading-link"><i class="fas fa-link"></i></a>因特网协议文档 RFC</h3>
+      <p>​    从IETF上获取：www.ietf.org</p>
+
+        <h3 id="从IPv4到IPv6的转换"   >
+          <a href="#从IPv4到IPv6的转换" class="heading-link"><i class="fas fa-link"></i></a>从IPv4到IPv6的转换</h3>
+      <p>​     IPv6：<br>​    1 更大的地址空间<br>​    2 地址分层的层次结构上分的更多更细<br>​    3 首部格式是一个全新的格式，做了一定的简化<br>​    4 选项作为扩展首部<br>​    5 扩展性上适应新的网络硬件和应用<br>​    6 支持自动的配置和分配IP地址<br>​    7 支持资源的分配</p>
+<p>IPv6 支持 自动配置 （配置TCPIP参数等<br>        支持 QoS</p>
+
+        <h3 id="概览中涉及的一些概念"   >
+          <a href="#概览中涉及的一些概念" class="heading-link"><i class="fas fa-link"></i></a>概览中涉及的一些概念</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1 分层</span><br><span class="line">	TCP&#x2F;IP是一组不同层次上的多个协议的组合</span><br><span class="line">	TCP&#x2F;IP 四层协议系统</span><br><span class="line">		1）链路层：OS中的设备驱动程序、网卡</span><br><span class="line">		2）网络层：处理分组在网络中的活动（例如分组选路</span><br><span class="line">			IP、ICMP、ICMP</span><br><span class="line">		3）运输层：为两台主机上的应用程序提供端到端的通信</span><br><span class="line">			TCP 可靠数据通信</span><br><span class="line">			UDP 任何必需的可靠性必须由应用层来提供</span><br><span class="line">		4）应用层：负责处理特定的应用程序细节</span><br><span class="line">			Telnet，FTP，SMTP，SNMP，……</span><br><span class="line"></span><br><span class="line">2 互联网地址</span><br><span class="line"></span><br><span class="line">3 域名系统</span><br><span class="line"></span><br><span class="line">4 封装</span><br><span class="line"></span><br><span class="line">5 分用</span><br><span class="line"></span><br><span class="line">6 端口号</span><br><span class="line"></span><br><span class="line">7 RFC</span><br></pre></td></tr></table></div></figure>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/">https://acptek.github.io/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP 底层网络技术概述</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/"><span class="paginator-prev__text">特征点提取与匹配</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概览"><span class="toc-number">1.</span> <span class="toc-text">
+          概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet"><span class="toc-number">1.0.1.</span> <span class="toc-text">
+          Internet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internetworking"><span class="toc-number">1.0.2.</span> <span class="toc-text">
+          Internetworking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-IP-的发展："><span class="toc-number">1.0.3.</span> <span class="toc-text">
+          TCP&#x2F;IP 的发展：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet-Services：因特网提供的服务"><span class="toc-number">1.0.4.</span> <span class="toc-text">
+          Internet Services：因特网提供的服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何看待因特网提供的服务："><span class="toc-number">1.0.5.</span> <span class="toc-text">
+          如何看待因特网提供的服务：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-从用户视角："><span class="toc-number">1.0.5.1.</span> <span class="toc-text">
+          1 从用户视角：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-从网络层视角：因特网提供两种服务"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">
+          2 从网络层视角：因特网提供两种服务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#因特网服务的一些特点："><span class="toc-number">1.0.6.</span> <span class="toc-text">
+          因特网服务的一些特点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#因特网的历史："><span class="toc-number">1.0.7.</span> <span class="toc-text">
+          因特网的历史：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#因特网的管理机构："><span class="toc-number">1.0.8.</span> <span class="toc-text">
+          因特网的管理机构：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#因特网协议文档-RFC"><span class="toc-number">1.0.9.</span> <span class="toc-text">
+          因特网协议文档 RFC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从IPv4到IPv6的转换"><span class="toc-number">1.0.10.</span> <span class="toc-text">
+          从IPv4到IPv6的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#概览中涉及的一些概念"><span class="toc-number">1.0.11.</span> <span class="toc-text">
+          概览中涉及的一些概念</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

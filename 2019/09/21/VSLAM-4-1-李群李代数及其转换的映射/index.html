@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="李群与李代数                           （1）群       代数结构：一种集合+集合上的一种运算 满足性质：封闭性、结合率、幺元、逆 李群：具有连续（光滑）性质的群                     （2）李代数       与李群对应的一种数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="李群李代数及其转换的映射">
+<meta property="og:url" content="https://acptek.github.io/2019/09/21/VSLAM-4-1-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E8%BD%AC%E6%8D%A2%E7%9A%84%E6%98%A0%E5%B0%84/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="李群与李代数                           （1）群       代数结构：一种集合+集合上的一种运算 满足性质：封闭性、结合率、幺元、逆 李群：具有连续（光滑）性质的群                     （2）李代数       与李群对应的一种数据结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/SLAM/LGA.png">
+<meta property="article:published_time" content="2019-09-21T13:01:32.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:58:10.209Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/SLAM/LGA.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>李群李代数及其转换的映射 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2019/09/21/VSLAM-4-1-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E8%BD%AC%E6%8D%A2%E7%9A%84%E6%98%A0%E5%B0%84/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">李群李代数及其转换的映射</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2019-09-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h2 id="李群与李代数"   >
+          <a href="#李群与李代数" class="heading-link"><i class="fas fa-link"></i></a>李群与李代数</h2>
+      
+        <h3 id="（1）群"   >
+          <a href="#（1）群" class="heading-link"><i class="fas fa-link"></i></a>（1）群</h3>
+      <p>代数结构：一种集合+集合上的一种运算</p>
+<p>满足性质：封闭性、结合率、幺元、逆</p>
+<p>李群：具有连续（光滑）性质的群</p>
+
+        <h3 id="（2）李代数"   >
+          <a href="#（2）李代数" class="heading-link"><i class="fas fa-link"></i></a>（2）李代数</h3>
+      <p>与李群对应的一种数据结构</p>
+<a id="more"></a>
+
+        <h4 id="引出李代数"   >
+          <a href="#引出李代数" class="heading-link"><i class="fas fa-link"></i></a>引出李代数</h4>
+      <p>旋转矩阵$R$是某个相机的旋转，并随时间连续地变化</p>
+<script type="math/tex; mode=display">
+\begin{align}
+& R(t)R(t)^T=I\tag{两边对t求导} \\
+\Rightarrow\;& \dot{R}(t)R(t)^T+R(t)\dot{R}(t)^T=0\\
+\Rightarrow\;& \dot{R}(t)R(t)^T = -(\dot{R}(t)R(t)^T)^T\\&\\
+\rightarrow\;&\dot{R}(t)R(t)^T是一个反对称矩阵
+\end{align}</script><p>所以，找到一个三维向量$\phi(t)\in\mathbb{R^3}$记：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+& \phi(t)\text{^}=\dot{R}(t)R(t)^T \tag{1}\\&\\
+\Rightarrow\;&\dot{R}(t)=\phi(t)\text{^}R(t)\tag{2}
+\end{align}</script><p>考虑：$t_0=0时，R(0)=I$，在0处泰勒展开：</p>
+<script type="math/tex; mode=display">
+R(t)\approx R(t_0)+\dot{R}(t_0)(t-t_0)=I+\phi(t_0)\text{^}t</script><p>在$t_0$附近，$\phi(t_0)=\phi_0$为常数，所以得到关于R的微分方程，得：</p>
+<script type="math/tex; mode=display">
+R(t)=e^{\phi\text{^}t} \tag{3}</script>
+        <h4 id="李代数的定义"   >
+          <a href="#李代数的定义" class="heading-link"><i class="fas fa-link"></i></a>李代数的定义</h4>
+      <p>每个李群对应一个李代数。李代数描述了李群的局部性质，是单位元附近的正切空间（tangent Space切线空间，是一种三维空间）</p>
+<p>集合$\mathbb{V}$ + 数域$\mathbb{F}$ + 二元运算（李括号）[ , ] = 李代数</p>
+<script type="math/tex; mode=display">
+\mathfrak{g}=(\mathbb{V},\mathbb{F},[,])</script><p>性质：封闭性、双线性、自反性（与自身运算结果为零）、雅可比等价</p>
+
+        <h4 id="李代数-mathfrak-so-3"   >
+          <a href="#李代数-mathfrak-so-3" class="heading-link"><i class="fas fa-link"></i></a>李代数$\mathfrak{so}(3)$</h4>
+      <p>定义$\Phi=\phi^\wedge$，得 李括号为：</p>
+<script type="math/tex; mode=display">
+[\phi_1,\phi_2]=(\Phi_1\Phi_2-\Phi_2\Phi_1)^\vee</script><script type="math/tex; mode=display">
+\mathfrak{so}(3)=\begin{Bmatrix}
+\phi=\mathbb{R^3},\Phi=\phi^\wedge\in\mathbb{R^{3\times3} }
+\end{Bmatrix}\tag{*}</script><p>所以，so(3)是一个由三维向量组成的集合，每个向量对应一个反对称矩阵，表达旋转矩阵的导数</p>
+<p>对应SO(3)，$ R(t)=e^{\phi\text{^}t}  $</p>
+<script type="math/tex; mode=display">
+SO(3)=\{R\in\mathbb{R}^{3\times 3}|RR^T=I,det(R)=1\}\tag{*}</script>
+        <h4 id="李代数-mathfrak-se-3"   >
+          <a href="#李代数-mathfrak-se-3" class="heading-link"><i class="fas fa-link"></i></a>李代数$\mathfrak{se}(3)$</h4>
+      <script type="math/tex; mode=display">
+\mathfrak{se}(3)=\begin{Bmatrix}
+\xi =\begin{bmatrix}
+\rho \\ 
+\phi 
+\end{bmatrix}\in\mathbb{R}^6,\rho\in\mathbb{R}^3,\phi\in\mathfrak{so}(3),\xi^\wedge =\begin{bmatrix}
+\phi^\wedge & \rho\\ 
+0^T & 0
+\end{bmatrix}\in\mathbb{R}^{4\times4}
+\end{Bmatrix}</script><p>$\mathfrak{se}(3) $：由一个平移+一个$\mathfrak{so}(3)$构成的向量</p>
+<p>$\mathfrak{se}(3)$对应的李括号：</p>
+<script type="math/tex; mode=display">
+[\xi_1,\xi_2]=(\xi_1^\wedge\xi_2^\wedge-\xi_2^\wedge\xi_1^\wedge)^\vee</script>
+        <h2 id="指数与对数映射"   >
+          <a href="#指数与对数映射" class="heading-link"><i class="fas fa-link"></i></a>指数与对数映射</h2>
+      
+        <h3 id="（1）SO-3-上的指数映射"   >
+          <a href="#（1）SO-3-上的指数映射" class="heading-link"><i class="fas fa-link"></i></a>（1）SO(3)上的指数映射</h3>
+      <p>1 指数映射：在李群李代数中，一个矩阵的指数</p>
+<p>2 通过泰勒展开，得$\mathfrak{so}(3)中的任意元素\phi的指数映射$：</p>
+<script type="math/tex; mode=display">
+\text{exp}(\phi^\wedge)=\sum_{n=0}^\infty \frac{1}{n!}(\phi^\wedge)^n</script><p>3 关于上述定义的计算：</p>
+<p>定义$\phi$的 模长$\theta$，方向$\alpha$，$\phi=\theta\alpha$，其中$||a||=1$</p>
+<p>关于$\alpha$的性质：$\alpha^\wedge\alpha^\wedge=\alpha\alpha^T-I$，$\alpha^\wedge\alpha^\wedge\alpha^\wedge=-\alpha^\wedge$，将$\theta\alpha$代入指数映射：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{exp}(\phi^\wedge)&=\text{exp}(\theta^\wedge\alpha)\\
+&=\cos{\theta I}+(1-\cos\theta)\alpha\alpha^T+\sin\theta\alpha^\wedge
+\end{align}</script><p>【注】</p>
+<script type="math/tex; mode=display">
+罗德里格斯公式：R=cos\theta I+(1-cos\theta )nn^T+sin\theta n\text{^}</script><p><strong>由此表明，$\mathfrak{so}(3)$实际上就是旋转向量组成的空间（李代数$\rightarrow$李群）其物理意义就是旋转向量，指数映射就是罗德里格斯公式（旋转向量$\rightarrow$旋转矩阵）</strong>（旋转矩阵的导数可以由旋转向量指定）</p>
+<p>所以</p>
+<script type="math/tex; mode=display">
+\Rightarrow\;\phi =ln(R)^\vee=(\sum_{n=0}^\infty\frac{(-1)^n}{n+1}(R-I)^{n+1})^\vee</script><p>但是，可以通过求解转角和转轴，可以更加简便的得到 $\theta$ 和 $\alpha$  </p>
+<script type="math/tex; mode=display">
+ \theta=arccos\frac{tr(R)-1}{2},Rn=n</script><p>综上所述，得到李群SO(3)和李代数so(3)的对应关系，将旋转角控制在$（-\pi,\pi）$之间，二者成一一对应关系</p>
+
+        <h3 id="（2）SE-3-上的指数映射"   >
+          <a href="#（2）SE-3-上的指数映射" class="heading-link"><i class="fas fa-link"></i></a>（2）SE(3)上的指数映射</h3>
+      <script type="math/tex; mode=display">
+\text{exp}(\xi^\wedge)=\begin{bmatrix}
+\sum_{n=0}^\infty \frac{1}{n!}(\phi^\wedge)^n & \sum_{n=0}^\infty \frac{1}{()n+1)!}(\phi^\wedge)^n\rho\\ 
+0^T & 1
+\end{bmatrix} \overset{\Delta}{=}\begin{bmatrix}
+R & J\rho\\ 
+0^T & 1
+\end{bmatrix}=T</script><p>经求解，得：$J=\frac{\sin\theta}{\theta}I+(1-\frac{\sin\theta}{\theta})\alpha\alpha^T+\frac{1-\cos\theta}{\theta}\alpha^\wedge$（雅可比矩阵）</p>
+<p>SE(3)右上角的平移向量t，结合$t=J\rho$，$J可由\phi求得$，可以求得 $\rho$</p>
+<p>由此，确定SE(3)和se(3)的转换关系</p>
+<hr>
+<p><img src="http://acptek.gitee.io/blogpictures/SLAM/LGA.png" alt="李群李代数转换关系"></p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>视觉SLAM十四讲：从理论到实践（第2版）.  高翔.</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2019/09/21/VSLAM-4-1-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E8%BD%AC%E6%8D%A2%E7%9A%84%E6%98%A0%E5%B0%84/">https://acptek.github.io/2019/09/21/VSLAM-4-1-%E6%9D%8E%E7%BE%A4%E6%9D%8E%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E8%BD%AC%E6%8D%A2%E7%9A%84%E6%98%A0%E5%B0%84/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/SLAM/">SLAM</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/Math/">Math</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2019/09/22/VSLAM-4-2-%E6%9D%8E%E4%BB%A3%E6%95%B0%E6%B1%82%E5%AF%BC/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">李代数求导</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/09/17/VSALM-3-2-%E6%97%8B%E8%BD%AC%E5%90%91%E9%87%8F-%E6%AC%A7%E6%8B%89%E8%A7%92-%E5%9B%9B%E5%85%83%E6%95%B0/"><span class="paginator-prev__text">旋转向量 欧拉角 四元数</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#李群与李代数"><span class="toc-number">1.</span> <span class="toc-text">
+          李群与李代数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）群"><span class="toc-number">1.1.</span> <span class="toc-text">
+          （1）群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）李代数"><span class="toc-number">1.2.</span> <span class="toc-text">
+          （2）李代数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#引出李代数"><span class="toc-number">1.2.1.</span> <span class="toc-text">
+          引出李代数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#李代数的定义"><span class="toc-number">1.2.2.</span> <span class="toc-text">
+          李代数的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#李代数-mathfrak-so-3"><span class="toc-number">1.2.3.</span> <span class="toc-text">
+          李代数$\mathfrak{so}(3)$</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#李代数-mathfrak-se-3"><span class="toc-number">1.2.4.</span> <span class="toc-text">
+          李代数$\mathfrak{se}(3)$</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#指数与对数映射"><span class="toc-number">2.</span> <span class="toc-text">
+          指数与对数映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）SO-3-上的指数映射"><span class="toc-number">2.1.</span> <span class="toc-text">
+          （1）SO(3)上的指数映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）SE-3-上的指数映射"><span class="toc-number">2.2.</span> <span class="toc-text">
+          （2）SE(3)上的指数映射</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script type="text/x-mathjax-config">var mathjaxMhchem = '';
+var mathJaxTex = {
+  equationNumbers: {
+    autoNumber: 'AMS'
+  }
+};
+
+if (false) {
+  mathjaxMhchem = 'https://cdn.jsdelivr.net/npm/mathjax-mhchem@3.3.2/mhchem.min.js';
+  MathJax.Ajax.config.path['mhchem'] = mathjaxMhchem;
+
+  mathJaxTex.extensions = [mathjaxMhchem];
+} else {
+  mathJaxTex.extensions = ['AMSmath.js','AMSsymbols.js'];
+}
+
+MathJax.Hub.Config({
+  menuSettings: {
+    zoom: 'None'
+  },
+  showMathMenu: false,
+  jax: ['input/TeX','output/CommonHTML'],
+  extensions: ['tex2jax.js'],
+  TeX: mathJaxTex,
+  tex2jax: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+
+MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+  MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+    if (data.display) {
+      var next = data.script.nextSibling;
+      while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling; }
+      if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next); }
+    }
+  });
+});
+
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i = 0; i < all.length; i++) {
+    document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

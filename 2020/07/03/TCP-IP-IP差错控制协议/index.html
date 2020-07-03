@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="IP差错控制协议       ICMP-因特网控制报文协议差错控制，是IP的补充">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP IP差错控制协议">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="IP差错控制协议       ICMP-因特网控制报文协议差错控制，是IP的补充">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMPv4_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMPv6_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_EchoFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_PseudoHeader.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_DestUnrechFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_DU_CodeType.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_RedriectFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_RedriectFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_RT_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv4_ParaProbelmFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_ParaProblemFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_TimestampFormat.png">
+<meta property="article:published_time" content="2020-07-03T11:03:30.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:48:26.265Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="ICMP">
+<meta property="article:tag" content="Echo">
+<meta property="article:tag" content="DU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMPv4_Format.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP IP差错控制协议 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP IP差错控制协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="IP差错控制协议"   >
+          <a href="#IP差错控制协议" class="heading-link"><i class="fas fa-link"></i></a>IP差错控制协议</h1>
+      <p>ICMP-因特网控制报文协议<br>差错控制，是IP的补充</p>
+<a id="more"></a>
+
+        <h2 id="ICMP传输方法"   >
+          <a href="#ICMP传输方法" class="heading-link"><i class="fas fa-link"></i></a>ICMP传输方法</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">通过IP来发送，封装在IP的数据区</span><br><span class="line">发送的信息包括一些差错和控制信息</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ICMP提供的功能"   >
+          <a href="#ICMP提供的功能" class="heading-link"><i class="fas fa-link"></i></a>ICMP提供的功能</h2>
+      <ul>
+<li>属于报错的功能，只进行报错不进行纠错</li>
+<li>只将差错报告给原始的发送者（源节点）</li>
+</ul>
+
+        <h2 id="ICMP报文传输"   >
+          <a href="#ICMP报文传输" class="heading-link"><i class="fas fa-link"></i></a>ICMP报文传输</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ICMP封装在IP数据区，但只是IP的补充非IP的上层协议</span><br><span class="line">对ICMP报文的错误不再产生ICMP报文</span><br><span class="line">	</span><br><span class="line">IPv4：IP首部protocol字段，ICMP在其中占据了一个位置 |value -&gt; 1|</span><br><span class="line">IPv6：NEXT HEADER  |value -&gt; 58|</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ICMP报文格式"   >
+          <a href="#ICMP报文格式" class="heading-link"><i class="fas fa-link"></i></a>ICMP报文格式</h2>
+      <ul>
+<li>TYPE ：8bit ，报文的大的类别</li>
+<li>CODE ：8bit ，大类中的子类  (若没有子类，则为0）</li>
+<li>CHECKSUM ：16bit ，校验和 （算法与IP的首部校验和算法相同，求16位整数序列反码和的反码）</li>
+</ul>
+
+        <h3 id="IPv4和IPv6的ICMP报文类型："   >
+          <a href="#IPv4和IPv6的ICMP报文类型：" class="heading-link"><i class="fas fa-link"></i></a>IPv4和IPv6的ICMP报文类型：</h3>
+      <ul>
+<li>v6中包含很多简化的工作，（取消v4中的一些类型<pre><code>      MLD ： 组管理协议 -&gt; 对应v4中的IGMP
+</code></pre></li>
+<li>v4中的常用类型：<pre><code>      0 echo (request reply)
+      3 目标不可达
+      11 time Execced 超时
+  （在v6中，很多都借用了ICMP的类型）
+</code></pre></li>
+</ul>
+
+        <h2 id="一些ICMP报文"   >
+          <a href="#一些ICMP报文" class="heading-link"><i class="fas fa-link"></i></a>一些ICMP报文</h2>
+      <ul>
+<li>ICMPv4报文类型</li>
+</ul>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMPv4_Format.png" alt="ICMPv4"></p>
+<ul>
+<li>ICMPv6报文类型</li>
+</ul>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMPv6_Format.png" alt="ICMPv6"></p>
+
+        <h3 id="Echo"   >
+          <a href="#Echo" class="heading-link"><i class="fas fa-link"></i></a>Echo</h3>
+      <p>(ping命令：测试IP地址是否响应和可达)<br>(ping中的ICMP -&gt; echo request , echo reply)<br>(不同OS对ping的实现有差异)</p>
+
+        <h4 id="Echo报文格式"   >
+          <a href="#Echo报文格式" class="heading-link"><i class="fas fa-link"></i></a>Echo报文格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_EchoFormat.png" alt="Echo报文格式"></p>
+<ul>
+<li>Type<br>IPv4<pre><code>8：请求 Echo request
+0：响应 Echo response
+</code></pre>IPv6<pre><code>128：请求
+129：响应
+</code></pre></li>
+<li>Code：可指定数据</li>
+<li>Id，Seq：<br>目标用于信息匹配的字段<br>-&gt; 与源站请求的一致，则匹配进行响应</li>
+<li>Checksum (16bit)：</li>
+</ul>
+<p>IPv4：仅仅计算ICMP报文本身进行校验和计算（首部+携带的数据<br>IPv6：还需要加入一个 “伪首部(pseudo-header)”进行计算 （为了统一 TCP，UDP</p>
+<p>IPv6伪首部格式：</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_PseudoHeader.png" alt="IPv6伪首部格式"></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">伪头部：</span><br><span class="line">	源地址IP</span><br><span class="line">	目的地址IP</span><br><span class="line">	报文长度（首部+数据   TCP,UDP,ICMP...</span><br><span class="line">	上层的协议号（对v6而言：nextheader字段，对v4而言：protocol字段）</span><br><span class="line">	32位长度，不足用0填充</span><br><span class="line">		TCP 7</span><br><span class="line">		UDP 19</span><br><span class="line">		ICMPv4-17  ICMPv6-58</span><br><span class="line">			</span><br><span class="line">	使用伪首部的目的：</span><br><span class="line">	1 要与UDP和TCP校验和的算法表示一致</span><br><span class="line">	2 区分通信双方以及双方通信所使用的协议</span><br></pre></td></tr></table></div></figure>
+<ul>
+<li>Optional Data：<br>所带数据长度是可变长度，用于给网络管理员测试</li>
+</ul>
+
+        <h3 id="目标不可达"   >
+          <a href="#目标不可达" class="heading-link"><i class="fas fa-link"></i></a>目标不可达</h3>
+      
+        <h4 id="报文格式"   >
+          <a href="#报文格式" class="heading-link"><i class="fas fa-link"></i></a>报文格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_DestUnrechFormat.png" alt="DU报文格式"></p>
+<ul>
+<li><p>type<br>IPv4:16种<br>IPv6：8种</p>
+</li>
+<li><p>code</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_DU_CodeType.png" alt="DU报文类型"></p>
+</li>
+<li><p>checksum</p>
+</li>
+</ul>
+<p>// 未使用的保留0<br>// 出问题的IPv6报文的前缀部分：首部头+前64bit(IPv4)   ICMPv6的最大长度</p>
+<p>​        </p>
+
+        <h3 id="Source-Quench-报文"   >
+          <a href="#Source-Quench-报文" class="heading-link"><i class="fas fa-link"></i></a>Source Quench 报文</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拥塞控制相关</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="Redirect-重定向"   >
+          <a href="#Redirect-重定向" class="heading-link"><i class="fas fa-link"></i></a>Redirect 重定向</h3>
+      <ul>
+<li><p>发生背景：在通信时，路由器发现有另一条更优的路径，则会通知源端可以下一次路由走更优的一跳，发送一个 redirect ICMP报文</p>
+</li>
+<li><p>缺点：不能结局所有的路由问题，因为ICMP报文只会发送给源端</p>
+</li>
+</ul>
+<ul>
+<li><p>ICMP重定向报文格式</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_RedriectFormat.png" alt="ICMP重定向报文格式"></p>
+</li>
+<li><p>IPv6重定向报文格式    </p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_RedriectFormat.png" alt="IPv6重定向报文格式"></p>
+</li>
+</ul>
+
+        <h3 id="Time-Exceeded-超时"   >
+          <a href="#Time-Exceeded-超时" class="heading-link"><i class="fas fa-link"></i></a>Time Exceeded 超时</h3>
+      
+        <h4 id="问题背景："   >
+          <a href="#问题背景：" class="heading-link"><i class="fas fa-link"></i></a>问题背景：</h4>
+      <p>通信中可能出现路由环路，生命期或跳数耗尽，丢弃报文向源端发送超时报文</p>
+
+        <h4 id="报文格式-1"   >
+          <a href="#报文格式-1" class="heading-link"><i class="fas fa-link"></i></a>报文格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_RT_Format.png" alt="ICMP超时报文格式"></p>
+<ul>
+<li>Type:<br>IPv4 :11<br>IPv6 :3</li>
+<li>Code:<br>0: 到达生命期<br>1: 碎片重装超时</li>
+</ul>
+
+        <h3 id="Parameter-Problem-参数问题"   >
+          <a href="#Parameter-Problem-参数问题" class="heading-link"><i class="fas fa-link"></i></a>Parameter Problem 参数问题</h3>
+      <ul>
+<li>IPv4：<br><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv4_ParaProbelmFormat.png" alt="IPv4参数错误报文"></li>
+<li>IPv6：<br><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_IPv6_ParaProblemFormat.png" alt="IPv6参数错误报文"></li>
+</ul>
+<p>例如：取值超范围，不可辨认下一个头部……</p>
+
+        <h3 id="Timestamp-Request-时间戳-（request-reply）"   >
+          <a href="#Timestamp-Request-时间戳-（request-reply）" class="heading-link"><i class="fas fa-link"></i></a>Timestamp Request 时间戳 （request reply）</h3>
+      <p>用于主机间的时钟同步 (IPv4)</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch9_ICMP_TimestampFormat.png" alt="ICMP时间戳报文"></p>
+<p>1 源时间戳 (发送请求的站点填入)<br>2 接收时间戳 （接收者填入）<br>3 传输时间戳 （接收者填入）<br>（2,3 基本一致， 差异主要在1之间，还要将往返事件包括进去）</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE/">https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/ICMP/">ICMP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/Echo/">Echo</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/DU/">DU</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP 用户数据报协议</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-IP%E8%BD%AC%E5%8F%91/"><span class="paginator-prev__text">TCP/IP IP转发</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IP差错控制协议"><span class="toc-number">1.</span> <span class="toc-text">
+          IP差错控制协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP传输方法"><span class="toc-number">1.1.</span> <span class="toc-text">
+          ICMP传输方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP提供的功能"><span class="toc-number">1.2.</span> <span class="toc-text">
+          ICMP提供的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP报文传输"><span class="toc-number">1.3.</span> <span class="toc-text">
+          ICMP报文传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP报文格式"><span class="toc-number">1.4.</span> <span class="toc-text">
+          ICMP报文格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4和IPv6的ICMP报文类型："><span class="toc-number">1.4.1.</span> <span class="toc-text">
+          IPv4和IPv6的ICMP报文类型：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些ICMP报文"><span class="toc-number">1.5.</span> <span class="toc-text">
+          一些ICMP报文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Echo"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          Echo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Echo报文格式"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">
+          Echo报文格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#目标不可达"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          目标不可达</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#报文格式"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">
+          报文格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Source-Quench-报文"><span class="toc-number">1.5.3.</span> <span class="toc-text">
+          Source Quench 报文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redirect-重定向"><span class="toc-number">1.5.4.</span> <span class="toc-text">
+          Redirect 重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Time-Exceeded-超时"><span class="toc-number">1.5.5.</span> <span class="toc-text">
+          Time Exceeded 超时</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题背景："><span class="toc-number">1.5.5.1.</span> <span class="toc-text">
+          问题背景：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#报文格式-1"><span class="toc-number">1.5.5.2.</span> <span class="toc-text">
+          报文格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parameter-Problem-参数问题"><span class="toc-number">1.5.6.</span> <span class="toc-text">
+          Parameter Problem 参数问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timestamp-Request-时间戳-（request-reply）"><span class="toc-number">1.5.7.</span> <span class="toc-text">
+          Timestamp Request 时间戳 （request reply）</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

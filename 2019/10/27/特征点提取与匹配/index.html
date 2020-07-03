@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="视觉里程计：根据相邻图像的信息估计相机的运动，作为后端的初值 特征点法、直接法 在相机运动过程中观测到的路标点，在某一个位姿，相机观测到物体的像素坐标为$(u,v)$，则对应满足相机模型关系：  Z P_{uv}&#x3D;Z\begin{bmatrix}u\\v\\1\end{bmatrix}&#x3D;K(RP_w+t)&#x3D;KTP_w                    特征点提取与匹配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征点提取与匹配">
+<meta property="og:url" content="https://acptek.github.io/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="视觉里程计：根据相邻图像的信息估计相机的运动，作为后端的初值 特征点法、直接法 在相机运动过程中观测到的路标点，在某一个位姿，相机观测到物体的像素坐标为$(u,v)$，则对应满足相机模型关系：  Z P_{uv}&#x3D;Z\begin{bmatrix}u\\v\\1\end{bmatrix}&#x3D;K(RP_w+t)&#x3D;KTP_w                    特征点提取与匹配">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/SLAM/ORB_Feature.jpg">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/SLAM/ORB_Feature_Frame.jpg">
+<meta property="article:published_time" content="2019-10-27T03:45:11.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:59:11.264Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="Math">
+<meta property="article:tag" content="OpenCV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/SLAM/ORB_Feature.jpg"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>特征点提取与匹配 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">特征点提取与匹配</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2019-10-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>视觉里程计：根据相邻图像的信息估计相机的运动，作为后端的初值</p>
+<p>特征点法、直接法</p>
+<p>在相机运动过程中观测到的路标点，在某一个位姿，相机观测到物体的像素坐标为$(u,v)$，则对应满足相机模型关系：</p>
+<script type="math/tex; mode=display">
+Z P_{uv}=Z\begin{bmatrix}u\\v\\1\end{bmatrix}=K(RP_w+t)=KTP_w</script>
+        <h2 id="特征点提取与匹配"   >
+          <a href="#特征点提取与匹配" class="heading-link"><i class="fas fa-link"></i></a>特征点提取与匹配</h2>
+      <a id="more"></a>
+
+        <h3 id="特征点概念"   >
+          <a href="#特征点概念" class="heading-link"><i class="fas fa-link"></i></a>特征点概念</h3>
+      <p>​    1）路标：有代表性的点</p>
+<p>​    2）特征：图像信息的另一种数字表达形式，角点&gt;特征&gt;区块</p>
+<p>特征点 = 关键点 + 描述子</p>
+
+        <h4 id="关键点"   >
+          <a href="#关键点" class="heading-link"><i class="fas fa-link"></i></a>关键点</h4>
+      <p>特征点在图像中的位置</p>
+
+        <h4 id="描述子"   >
+          <a href="#描述子" class="heading-link"><i class="fas fa-link"></i></a>描述子</h4>
+      <p>描述关键点周围像素信息的向量，例如对关键点周围亮度的表现。</p>
+<p>在ORB中，在关键点周围随机选择128对或256对点（对于每张相机图像里的每个关键点，都可以使用相同的随机选择模板），以每一对的亮度相似程度按二进制赋值，生成一个128或256位的二进制数，以此数来表述描述子。</p>
+<p>同时，在ORB-BRIEF描述子中，考虑到图像的旋转，针对每张图像以灰度质心法计算图像中每个特征点方向，或者计算整体图像旋转的向量，以此旋转向量调整随机选择模板（对随机选择的点也进行旋转），再生成描述子。</p>
+<p>最后，对描述子进行特征匹配。在ORB中，描述子的匹配以汉明匹配方式进行匹配。但是在ORB中，BRIEF描述子没有涉及到尺度这一特征。</p>
+<p>​    </p>
+
+        <h3 id="特征提取算法"   >
+          <a href="#特征提取算法" class="heading-link"><i class="fas fa-link"></i></a>特征提取算法</h3>
+      <p>SIFT：尺度不变特征变换（计算量大）</p>
+<p>FAST关键点：没有描述子（计算快） </p>
+<p>ORB：FAST特征点 + BRIEF描述子</p>
+
+        <h3 id="ORB特征提取和匹配"   >
+          <a href="#ORB特征提取和匹配" class="heading-link"><i class="fas fa-link"></i></a>ORB特征提取和匹配</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/SLAM/ORB_Feature.jpg" alt="ORB_Feature"></p>
+
+        <h4 id="FAST关键点"   >
+          <a href="#FAST关键点" class="heading-link"><i class="fas fa-link"></i></a>FAST关键点</h4>
+      <p>目的是对图像的 平移、旋转、尺度 进行特征提取。</p>
+
+        <h5 id="图像金字塔："   >
+          <a href="#图像金字塔：" class="heading-link"><i class="fas fa-link"></i></a>图像金字塔：</h5>
+      <p>用于提取图像的尺度特征，描述相机前后运动的过程</p>
+<p>​    1 塔底为原始图像，每往上一层对图像进行固定倍率（例：1.2，1.5，2倍等）缩放，得到不同分辨率图像（小远大近）</p>
+<p>​    2 两图像间，匹配不同层上的图像</p>
+<p>Oriented FAST关键点中没有涉及到这一特性</p>
+
+        <h5 id="特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）"   >
+          <a href="#特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）" class="heading-link"><i class="fas fa-link"></i></a>特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心 ）</h5>
+      <p>​    1 图像块的矩：其中，I(x, y)为f(x, y)的二值图像，取值0或1</p>
+<script type="math/tex; mode=display">
+m_{pq}=\sum\limits_{x,y\in B}x^py^qI(x,y),\;p,q=\{0,1\}</script><p>​    2 图像块的质心：$ C=(m<em>{10}/m</em>{00},m<em>{01}/m</em>{00}) $</p>
+<p>​    3 特征方向：表示为 $ \theta=\arctan(m<em>{01}/m</em>{10}) $，连接几何中心O和质心C得到的方向向量</p>
+
+        <h4 id="BRIEF描述子"   >
+          <a href="#BRIEF描述子" class="heading-link"><i class="fas fa-link"></i></a>BRIEF描述子</h4>
+      <p>在关键点附近随机选取K对点，以K位二进制的形式反映他们的大小关系，以此作为对一个特征点的描述。又由于在FAST关键点中计算了关键点的方向，利用方向信息计算旋转后的特征。</p>
+
+        <h4 id="ORB特征匹配"   >
+          <a href="#ORB特征匹配" class="heading-link"><i class="fas fa-link"></i></a>ORB特征匹配</h4>
+      <p>数据关联问题：确定前后看到的路标间的对应关系</p>
+<p>问题：1 误匹配  2 匹配方法</p>
+<p>描述点的距离表示了两个特征之间的相似程度</p>
+<p>注：（SIFT……）快速近似邻近（FLANN），但不适用于计算汉明距离</p>
+<hr>
+<p><img src="http://acptek.gitee.io/blogpictures/SLAM/ORB_Feature_Frame.jpg" alt="ORB_Feature"></p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>视觉SLAM十四讲：从理论到实践（第2版）.  高翔.</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/">https://acptek.github.io/2019/10/27/%E7%89%B9%E5%BE%81%E7%82%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E5%8C%B9%E9%85%8D/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/SLAM/">SLAM</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/Math/">Math</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/OpenCV/">OpenCV</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP 概览</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2019/10/16/%E7%8A%B6%E6%80%81%E4%BC%B0%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98/"><span class="paginator-prev__text">状态估计中的最小二乘</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#特征点提取与匹配"><span class="toc-number">1.</span> <span class="toc-text">
+          特征点提取与匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特征点概念"><span class="toc-number">1.1.</span> <span class="toc-text">
+          特征点概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#关键点"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          关键点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#描述子"><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          描述子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特征提取算法"><span class="toc-number">1.2.</span> <span class="toc-text">
+          特征提取算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ORB特征提取和匹配"><span class="toc-number">1.3.</span> <span class="toc-text">
+          ORB特征提取和匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#FAST关键点"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          FAST关键点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#图像金字塔："><span class="toc-number">1.3.1.1.</span> <span class="toc-text">
+          图像金字塔：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心-）"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">
+          特征旋转：计算图像灰度质心（以图像块灰度值作为权重的中心 ）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BRIEF描述子"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          BRIEF描述子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ORB特征匹配"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          ORB特征匹配</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script type="text/x-mathjax-config">var mathjaxMhchem = '';
+var mathJaxTex = {
+  equationNumbers: {
+    autoNumber: 'AMS'
+  }
+};
+
+if (false) {
+  mathjaxMhchem = 'https://cdn.jsdelivr.net/npm/mathjax-mhchem@3.3.2/mhchem.min.js';
+  MathJax.Ajax.config.path['mhchem'] = mathjaxMhchem;
+
+  mathJaxTex.extensions = [mathjaxMhchem];
+} else {
+  mathJaxTex.extensions = ['AMSmath.js','AMSsymbols.js'];
+}
+
+MathJax.Hub.Config({
+  menuSettings: {
+    zoom: 'None'
+  },
+  showMathMenu: false,
+  jax: ['input/TeX','output/CommonHTML'],
+  extensions: ['tex2jax.js'],
+  TeX: mathJaxTex,
+  tex2jax: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+
+MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+  MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+    if (data.display) {
+      var next = data.script.nextSibling;
+      while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling; }
+      if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next); }
+    }
+  });
+});
+
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i = 0; i < all.length; i++) {
+    document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

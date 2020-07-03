@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="ARP 协议  —  将IP地址映射成物理地址       分组带上发送者和接收者地址在帧的首部填上物理地址 问题描述，A和B进行通信A   —-   BIa  —-  IbPa  —-  Pb 一般问题    1 源和目标在同一网段    2 源和目标由路由器相连（跨多个网络）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP ARP协议">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-ARP%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="ARP 协议  —  将IP地址映射成物理地址       分组带上发送者和接收者地址在帧的首部填上物理地址 问题描述，A和B进行通信A   —-   BIa  —-  IbPa  —-  Pb 一般问题    1 源和目标在同一网段    2 源和目标由路由器相连（跨多个网络）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogPictures/TCPIP/Ch6_Ethernet_ARP_MessageFormat.png">
+<meta property="article:published_time" content="2020-07-03T10:15:51.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:55:27.936Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="ARP">
+<meta property="article:tag" content="RARP">
+<meta property="article:tag" content="ARP Proxy">
+<meta property="article:tag" content="NDP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogPictures/TCPIP/Ch6_Ethernet_ARP_MessageFormat.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP ARP协议 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-ARP%E5%8D%8F%E8%AE%AE/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP ARP协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="ARP-协议-—-将IP地址映射成物理地址"   >
+          <a href="#ARP-协议-—-将IP地址映射成物理地址" class="heading-link"><i class="fas fa-link"></i></a>ARP 协议  —  将IP地址映射成物理地址</h1>
+      <p>分组带上发送者和接收者地址<br>在帧的首部填上物理地址</p>
+<p>问题描述，A和B进行通信<br>A   —-   B<br>Ia  —-  Ib<br>Pa  —-  Pb</p>
+<p>一般问题<br>    1 源和目标在同一网段<br>    2 源和目标由路由器相连（跨多个网络）</p>
+<a id="more"></a>    
+
+        <h2 id="物理地址-硬件地址-类型"   >
+          <a href="#物理地址-硬件地址-类型" class="heading-link"><i class="fas fa-link"></i></a>物理地址/硬件地址 类型</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">IPv4 总空间32位，无法容纳一个MAC地址</span><br><span class="line"></span><br><span class="line">在IPv4上的地址映射举例：</span><br><span class="line">1 proNET &#x3D;&gt; 接口卡上的开关可以拨动，只有8bit</span><br><span class="line">	--&gt; 直接地址映射</span><br><span class="line">	例如，在IPv4&#x2F;IPv6中可以直接映射实现</span><br><span class="line">	配置方案：在IP地址的主机号部分进行一一对应</span><br><span class="line">	</span><br><span class="line">2 Ethernet &#x3D;&gt; 48位物理地址，无法装载</span><br><span class="line">	--&gt; 动态绑定法：</span><br><span class="line">	ARP协议：先向地址广播一个ARP请求，目标匹配自身IP地址响应ARP请求</span><br><span class="line">		跨网发生在每一个子网内</span><br><span class="line"></span><br><span class="line">	不直接广播IP地址方式的原因：</span><br><span class="line">		1 广播不会跨网</span><br><span class="line">		2 浪费资源</span><br><span class="line">		ARP采用广播方式开销大</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ARP-Cache：改善ARP性能"   >
+          <a href="#ARP-Cache：改善ARP性能" class="heading-link"><i class="fas fa-link"></i></a>ARP Cache：改善ARP性能</h2>
+      <p>先保存目标IP的物理地址，可以使得下一次不需要发起一次ARP请求<br>表项：<br>    -&gt; IP , MAC<br>    -&gt; TTY<br>维护：使用定时器（典型的生命期是20min，超时删去）</p>
+<p>软状态：匿名（当信息发生改变/过时的时候，不会告知相关的节点）<br>缺点：延迟时间较长，例如在出现节点崩溃的情况需要等到节点不活跃时期（到生命期）</p>
+
+        <h2 id="改进ARP："   >
+          <a href="#改进ARP：" class="heading-link"><i class="fas fa-link"></i></a>改进ARP：</h2>
+      <ul>
+<li>被查询的机器若收到请求则添加到自己的Cache中，所有的本网的节点都收到ARP请求，发送者的地址信息则在本网站点中都更新</li>
+<li>同时，机器在崩溃重启的时候向外发送一个ARP请求，此时原先的节点会对自己的表项做一个更新</li>
+</ul>
+
+        <h2 id="关于地址映射："   >
+          <a href="#关于地址映射：" class="heading-link"><i class="fas fa-link"></i></a>关于地址映射：</h2>
+      <p>​    1 ARP只是其中的一种方案，并非所有网络都需要此过程<br>​    2 ARP的解析属于底层技术，属于底层物理网络有关的部分</p>
+
+        <h1 id="ARP-实现"   >
+          <a href="#ARP-实现" class="heading-link"><i class="fas fa-link"></i></a>ARP 实现</h1>
+      
+        <h2 id="ARP功能的分类"   >
+          <a href="#ARP功能的分类" class="heading-link"><i class="fas fa-link"></i></a>ARP功能的分类</h2>
+      <ul>
+<li>地址的映射</li>
+<li>响应ARP请求</li>
+</ul>
+
+        <h2 id="ARP过程中的一些分析"   >
+          <a href="#ARP过程中的一些分析" class="heading-link"><i class="fas fa-link"></i></a>ARP过程中的一些分析</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1 当用户发送一个报文的时候，需要对地址进行映射；</span><br><span class="line">ARP使用cache技术，如果在cache中能够找到地址对，就直接使用；如果找不到，则发送ARP请求。（在发送ARP请求后可能得不到响应，1 请求丢失，2 目标主机处于关机状态）</span><br><span class="line">2 发送分组后，在地址解析成功之前分组先被存储到缓冲队列当中（即一个应用还在运行的过程中），如果系统上同时有多个应用都需要解析这样的地址，底层ARP模块要确保不能产生多个这样的请求。</span><br><span class="line">3 当ARP响应返回的时候</span><br><span class="line">	3.1 需要对ARP Cache进行更新</span><br><span class="line">	3.2 上层等待传输的分组得到地址解析结果后，从队列中移除</span><br><span class="line">4 收到ARP请求后，进行响应</span><br><span class="line">	4.1 从请求报文抽取发送方信息（发送方的IP地址和物理地址），更新本地Cache</span><br><span class="line">	4.2 处理分组（响应&#x2F;丢弃）</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ARP的封装关系"   >
+          <a href="#ARP的封装关系" class="heading-link"><i class="fas fa-link"></i></a>ARP的封装关系</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">封装在链路层 帧的数据区中</span><br><span class="line">报文TYPE ： 0806H</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ARP-报文格式"   >
+          <a href="#ARP-报文格式" class="heading-link"><i class="fas fa-link"></i></a>ARP 报文格式</h2>
+      <ul>
+<li><p><strong>非定长格式</strong><br>因为不同的物理网络报文的长度，格式不一样；网络层上的地址也有多种不同类型的地址，格式也可能不一样</p>
+</li>
+<li><p><strong>在以太网中的报文格式</strong> </p>
+<p><img src="http://acptek.gitee.io/blogPictures/TCPIP/Ch6_Ethernet_ARP_MessageFormat.png" alt="以太网报文格式"></p>
+<p>Sender HA  6字节（物理地址）<br>Sender IP  4字节（IP地址）<br>Target HA （目标物理地址）<br>Target IP （目标IP地址）</p>
+<p>HARDWARE TYPE：以太网MAC地址，类型值为1<br>PROTOCOL TYPE：表示网络层的协议类型，以太网0x0800<br>OPERATION：报文类型</p>
+<pre><code>1 ：ARP请求
+2 ：ARP响应
+3 ：RARP请求
+4 ：RARP响应
+</code></pre></li>
+</ul>
+
+        <h2 id="自动缓存再检验"   >
+          <a href="#自动缓存再检验" class="heading-link"><i class="fas fa-link"></i></a>自动缓存再检验</h2>
+      
+        <h3 id="Jitter-抖动现象"   >
+          <a href="#Jitter-抖动现象" class="heading-link"><i class="fas fa-link"></i></a>Jitter 抖动现象</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">指连续传输的分组从一个站传输到另一个站，接受分组的延迟时间有变化</span><br><span class="line">当传输延迟很大时，对某些应用（多媒体应用）造成很大影响</span><br><span class="line">所以，需要避免这种抖动。</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="ARP造成的抖动："   >
+          <a href="#ARP造成的抖动：" class="heading-link"><i class="fas fa-link"></i></a>ARP造成的抖动：</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cache表项中包含和cache表项中映射由于定时器超时失效；当失效时需要重新发起一次ARP请求需要额外的时间解析。</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="解决方法：early-revalidation（早期再检验）"   >
+          <a href="#解决方法：early-revalidation（早期再检验）" class="heading-link"><i class="fas fa-link"></i></a>解决方法：early revalidation（早期再检验）</h3>
+      <ul>
+<li>解决思路：<br>减少分组传输中的抖动：延迟时间的变化值</li>
+<li>方案：<br>另外设置一个定时器（每个表项都设置一个）：<br>重新验证定时器，超时间隔比原先计时器小一些，如果响应还存在，则重新复位计时器</li>
+</ul>
+
+        <h2 id="RARP-RARP-gt-BOOTP-gt-DHCP"   >
+          <a href="#RARP-RARP-gt-BOOTP-gt-DHCP" class="heading-link"><i class="fas fa-link"></i></a>RARP  |  RARP -&gt; BOOTP -&gt; DHCP</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">已知物理地址，求对应的IP地址（是一个反向的地址映射）</span><br><span class="line">	</span><br><span class="line">针对无硬盘系统:</span><br><span class="line">	本地的局域网安装一个RARP服务器，包含一个地址对的数据库，有管理员人工配置绑定表</span><br><span class="line"></span><br><span class="line">以太网：	ARP  0x0806</span><br><span class="line">                            RARP 0x8035</span><br><span class="line"></span><br><span class="line">应用场景：虚拟机从一个IP迁移到另一个IP</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="ARP-Cache-在3层交换机上的实现"   >
+          <a href="#ARP-Cache-在3层交换机上的实现" class="heading-link"><i class="fas fa-link"></i></a>ARP Cache 在3层交换机上的实现</h2>
+      <ul>
+<li>目标：<br>减少ARP的流量</li>
+<li>实现举例：<br>A向B发送一个ARP请求<br>交换机先收到A发的ARP请求，查询自己的Cache，若有B的物理地址则向A发送响应（相当于一个代理，一个节流的过程）</li>
+</ul>
+
+        <h2 id="代理ARP"   >
+          <a href="#代理ARP" class="heading-link"><i class="fas fa-link"></i></a>代理ARP</h2>
+      <ul>
+<li>作用：<br>将一个IP网络映射到两个物理的网络地址（两个或多个不同的物理子网）</li>
+<li>使用范围：<br>应用于使用ARP的网络环境中</li>
+<li>分析：<br>运行代理ARP的路由采用了一种说谎的方式<br>1 利用了ARP协议之间的信任<br>2 需要在地址绑定表中插入，在安装的时候合法性与一致性都存在问题<br>3 具体实现上的安全问题，例如Spoofing欺骗</li>
+<li>spoofing欺骗：<br>例如：三台机器A，B，C连在一个网络中，A和B通信，C是入侵者，C要截取A和B间的通信。C监听ARP请求，获取到A和B的IP地址和MAC地址，那么此时C可以向B发送ARP请求：IP地址是A的，MAC地址是C的；同样，发给A时IP地址是B，MAC地址是C的；（发送多次才能奏效）；此时，促使了A和B修改了它们的ARP表项。所以A和B中的通信都经过C。</li>
+<li>不同的IP地址对应一个同一个物理地址<br>优点：加进一个单独的路由器不会影响网络中的其他节点<br>缺点：1只用于ARP地址解析的场景下 2不适用于复杂的网络 3不支持合理的路由表（受控管理的规模有限）</li>
+</ul>
+
+        <h2 id="IPv6-邻居发现协议"   >
+          <a href="#IPv6-邻居发现协议" class="heading-link"><i class="fas fa-link"></i></a>IPv6 邻居发现协议</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1 IP地址是邻居发现协议（NDP）中的一项功能</span><br><span class="line">2 在传输的时候封装在 ICMPv6中</span><br><span class="line">3 一般在系统启动过程中执行NDP协议</span><br><span class="line">4 一个节点需要周期性的连续的检测邻居的状态</span><br><span class="line">5 使用多播</span><br><span class="line">6 NDP使用solicited-node（被恳求节点）多播地址</span><br></pre></td></tr></table></div></figure>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-ARP%E5%8D%8F%E8%AE%AE/">https://acptek.github.io/2020/07/03/TCP-IP-ARP%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/ARP/">ARP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/RARP/">RARP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/ARP-Proxy/">ARP Proxy</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/NDP/">NDP</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-IP%E5%8D%8F%E8%AE%AE/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP IP协议</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E5%AF%BB%E5%9D%80%E6%96%B9%E6%A1%88/"><span class="paginator-prev__text">TCP/IP 因特网的寻址方案</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ARP-协议-—-将IP地址映射成物理地址"><span class="toc-number">1.</span> <span class="toc-text">
+          ARP 协议  —  将IP地址映射成物理地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#物理地址-硬件地址-类型"><span class="toc-number">1.1.</span> <span class="toc-text">
+          物理地址&#x2F;硬件地址 类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP-Cache：改善ARP性能"><span class="toc-number">1.2.</span> <span class="toc-text">
+          ARP Cache：改善ARP性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改进ARP："><span class="toc-number">1.3.</span> <span class="toc-text">
+          改进ARP：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于地址映射："><span class="toc-number">1.4.</span> <span class="toc-text">
+          关于地址映射：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ARP-实现"><span class="toc-number">2.</span> <span class="toc-text">
+          ARP 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP功能的分类"><span class="toc-number">2.1.</span> <span class="toc-text">
+          ARP功能的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP过程中的一些分析"><span class="toc-number">2.2.</span> <span class="toc-text">
+          ARP过程中的一些分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP的封装关系"><span class="toc-number">2.3.</span> <span class="toc-text">
+          ARP的封装关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP-报文格式"><span class="toc-number">2.4.</span> <span class="toc-text">
+          ARP 报文格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动缓存再检验"><span class="toc-number">2.5.</span> <span class="toc-text">
+          自动缓存再检验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jitter-抖动现象"><span class="toc-number">2.5.1.</span> <span class="toc-text">
+          Jitter 抖动现象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ARP造成的抖动："><span class="toc-number">2.5.2.</span> <span class="toc-text">
+          ARP造成的抖动：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法：early-revalidation（早期再检验）"><span class="toc-number">2.5.3.</span> <span class="toc-text">
+          解决方法：early revalidation（早期再检验）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RARP-RARP-gt-BOOTP-gt-DHCP"><span class="toc-number">2.6.</span> <span class="toc-text">
+          RARP  |  RARP -&gt; BOOTP -&gt; DHCP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP-Cache-在3层交换机上的实现"><span class="toc-number">2.7.</span> <span class="toc-text">
+          ARP Cache 在3层交换机上的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代理ARP"><span class="toc-number">2.8.</span> <span class="toc-text">
+          代理ARP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6-邻居发现协议"><span class="toc-number">2.9.</span> <span class="toc-text">
+          IPv6 邻居发现协议</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

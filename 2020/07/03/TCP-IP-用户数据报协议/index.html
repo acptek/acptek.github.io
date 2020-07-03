@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="用户数据报协议        传输层的协议 区分统一主机的应用 对于通讯而言（最终目标）：区分任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 用户数据报协议">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="用户数据报协议        传输层的协议 区分统一主机的应用 对于通讯而言（最终目标）：区分任务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_UDP_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_IPv4_PseudoHeaderFormat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_IPv6_PseudoHeaderFormat.png">
+<meta property="article:published_time" content="2020-07-03T11:20:22.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:49:32.304Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="UDP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_UDP_Format.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP 用户数据报协议 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 用户数据报协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="用户数据报协议"   >
+          <a href="#用户数据报协议" class="heading-link"><i class="fas fa-link"></i></a>用户数据报协议</h1>
+      <ul>
+<li>传输层的协议</li>
+<li>区分统一主机的应用</li>
+<li>对于通讯而言（最终目标）：区分任务</li>
+</ul>
+<a id="more"></a>
+
+        <h2 id="UDP-用户报文协议"   >
+          <a href="#UDP-用户报文协议" class="heading-link"><i class="fas fa-link"></i></a>UDP 用户报文协议</h2>
+      <p>无连接的服务，不可靠的传输，由应用解决差错</p>
+
+        <h3 id="报文格式"   >
+          <a href="#报文格式" class="heading-link"><i class="fas fa-link"></i></a>报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_UDP_Format.png" alt="UDP报文格式"></p>
+<ul>
+<li><p>结构 ： 首部 + 数据</p>
+</li>
+<li><p>首部：<br>源端口号，目标端口 (16bit)<br>UDP报文长度：长度包括了头部的长度<br>UDP报文校验和 （整个报文+伪头部） （针对IP的扩展，校验自身报文确保数据的完整性）<br>Checksum：实现的时候如果值为零，双方则在通信的时候默认不校验。</p>
+</li>
+<li><p>UDP伪首部：加入通讯双方的IP地址，将通讯双方明确的区分<br>IPv4伪首部格式：<br><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_IPv4_PseudoHeaderFormat.png" alt="IPv4伪首部格式"></p>
+<pre><code>源IP
+目标IP
+报文的协议号（同于 IP协议的协议编号字段protocol）（UDP对应值为17）
+报文长度：指收到的实际的报文长度
+</code></pre><p>（分组发送的时候不包含伪首部，仅仅用在校验的计算）</p>
+<p>IPv6伪首部格式：<br><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch10_IPv6_PseudoHeaderFormat.png" alt="IPv6伪首部格式"></p>
+<pre><code>    NEXT HEADER 字段填写的与UDP的协议号一致 (17)
+</code></pre></li>
+</ul>
+
+        <h2 id="UDP-协议的封装关系"   >
+          <a href="#UDP-协议的封装关系" class="heading-link"><i class="fas fa-link"></i></a>UDP 协议的封装关系</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">UDP：message，user datagram protocol</span><br><span class="line">UDP报文封装在IP数据区</span><br><span class="line">	</span><br><span class="line">层与层之间提供服务接口</span><br><span class="line">UDP -&gt; 确定主机内的一个进程</span><br><span class="line">IP  -&gt; 确定一个主机</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="UDP-多路复用-与-解多路复用"   >
+          <a href="#UDP-多路复用-与-解多路复用" class="heading-link"><i class="fas fa-link"></i></a>UDP 多路复用 与 解多路复用</h2>
+      <ul>
+<li>依据：端口号</li>
+<li>发送方：收到报文后交付IP层再交付到链路层</li>
+<li>接收方：根据分组的首部协议号交给UDP模块处理，UDP根据端口号交给对应的应用进程<br>接收队列（关联应用进程，队列长度有限</li>
+</ul>
+
+        <h3 id="端口号的获取"   >
+          <a href="#端口号的获取" class="heading-link"><i class="fas fa-link"></i></a>端口号的获取</h3>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1 中心管理机构统一分配（全球分配方法，well-known）</span><br><span class="line">2 动态分配（进程服务器动态分配）</span><br><span class="line">	客户端先与进程服务器联系</span><br><span class="line">	进程服务器收到客户端请求后，会动态的将进程服务启动</span><br><span class="line">	再将动态分配的端口号反馈给客户端</span><br></pre></td></tr></table></div></figure>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE/">https://acptek.github.io/2020/07/03/TCP-IP-%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/UDP/">UDP</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/%E7%9F%A9%E9%98%B5%E5%BE%AE%E5%88%86/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">矩阵微分</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-IP%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE/"><span class="paginator-prev__text">TCP/IP IP差错控制协议</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用户数据报协议"><span class="toc-number">1.</span> <span class="toc-text">
+          用户数据报协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP-用户报文协议"><span class="toc-number">1.1.</span> <span class="toc-text">
+          UDP 用户报文协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#报文格式"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          报文格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP-协议的封装关系"><span class="toc-number">1.2.</span> <span class="toc-text">
+          UDP 协议的封装关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UDP-多路复用-与-解多路复用"><span class="toc-number">1.3.</span> <span class="toc-text">
+          UDP 多路复用 与 解多路复用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#端口号的获取"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          端口号的获取</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="IP协议        无连接的协议 为上层通讯应用提供了最基本的服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP IP协议">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="IP协议        无连接的协议 为上层通讯应用提供了最基本的服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_Format.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_BaseHeaderFromat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_Fragment.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionHeader.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_OptionRecordRouter.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_OptionSourceRouter.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionOption.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionOptionFormat.png">
+<meta property="article:published_time" content="2020-07-03T10:19:48.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:48:32.671Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="IP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_Format.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP IP协议 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%8D%8F%E8%AE%AE/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP IP协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="IP协议"   >
+          <a href="#IP协议" class="heading-link"><i class="fas fa-link"></i></a>IP协议</h1>
+      <ul>
+<li>无连接的协议</li>
+<li>为上层通讯应用提供了最基本的服务</li>
+</ul>
+<a id="more"></a>
+
+        <h2 id="因特网设计的思想"   >
+          <a href="#因特网设计的思想" class="heading-link"><i class="fas fa-link"></i></a>因特网设计的思想</h2>
+      
+        <h3 id="对用户而言"   >
+          <a href="#对用户而言" class="heading-link"><i class="fas fa-link"></i></a>对用户而言</h3>
+      <p>抽象成为一个单一的网络<br>与底层的物理网络无关，运行在任何物理网络之上</p>
+
+        <h3 id="从概念上划分层次"   >
+          <a href="#从概念上划分层次" class="heading-link"><i class="fas fa-link"></i></a>从概念上划分层次</h3>
+      <ul>
+<li>应用层要求可靠传输服务</li>
+<li>传输层提供增强的传输服务</li>
+<li>网际层提供无连接的分组传递服务</li>
+</ul>
+
+        <h2 id="IP的目的（主要功能）"   >
+          <a href="#IP的目的（主要功能）" class="heading-link"><i class="fas fa-link"></i></a>IP的目的（主要功能）</h2>
+      <p>1 定义了报文的基本单位<br>2 定义了分组的转发<br>3 定义传输中遵循的一些规则（处理主机、路由器……<br>    ICMP辅助处理差错</p>
+
+        <h2 id="因特网数据报（IP分组）格式"   >
+          <a href="#因特网数据报（IP分组）格式" class="heading-link"><i class="fas fa-link"></i></a>因特网数据报（IP分组）格式</h2>
+      <p>帧格式：包含一个首部、数据区、尾部。<br>IP数据报（datagram）格式：包含首部（Header）和数据区（Payload）</p>
+
+        <h3 id="IPv4报文格式"   >
+          <a href="#IPv4报文格式" class="heading-link"><i class="fas fa-link"></i></a>IPv4报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_Format.png" alt="IPv4报文格式"></p>
+
+        <h3 id="字段含义"   >
+          <a href="#字段含义" class="heading-link"><i class="fas fa-link"></i></a>字段含义</h3>
+      <ul>
+<li>VERS:版本，4个bit</li>
+<li>HLEN:首部长度，4个bit，以四个字节为一个单位(4*15)</li>
+<li>Service Type:</li>
+</ul>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">服务类型 , 8bit,</span><br><span class="line">0-2:Precedence  3:D（低延迟）  T:4（高吞吐量） R:5（高可靠性）</span><br><span class="line"></span><br><span class="line">改进：（补充 -&gt; 适应媒体流的传输</span><br><span class="line"></span><br><span class="line">IPv4 ToS</span><br><span class="line">IPv6 Traffic class</span><br><span class="line">Service Type：0-5 CODEPOINT(DSCP)</span><br><span class="line"></span><br><span class="line">区分服务代码点：DSCP</span><br><span class="line">	对流量进行分类，给不同类别的流量以不同的优先级</span><br><span class="line">	低两位为未使用，高三位定义优先级</span><br><span class="line">	将高六位进行划分，管理池：</span><br><span class="line">		pool1: xxxxx0	可以定义32个类别，IETF来定义</span><br><span class="line">		pool2: xxxx11	用于本地或实验</span><br><span class="line">		pool3: xxxx01	用于本地或实验，可以用于扩充第一个组</span><br></pre></td></tr></table></div></figure>
+<ul>
+<li>Total Length:总长度</li>
+<li>Identification:分组分片</li>
+<li>Flags: DF（不允许分片）, MF（有更多分片）…</li>
+<li>Fragment Offset:分片的偏移（重装的时候的偏移量），13bit，分片的长度取8的整数倍 &gt; offset的数值是除以 8的数值，因为8的倍数可以向左偏移三位，与Flags的3位错开</li>
+<li>TTL:分组的生命期，8bit（实际用途用于跳数的限制</li>
+<li>Protocol:上层协议的编号</li>
+<li>Header Checksum:首部校验（求16进制反码和的反码）</li>
+<li>Source IP Address</li>
+<li>Destination IP Address</li>
+<li>Payload</li>
+</ul>
+
+        <h3 id="IPv6-报文格式"   >
+          <a href="#IPv6-报文格式" class="heading-link"><i class="fas fa-link"></i></a>IPv6 报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_Format.png" alt="IPv6报文格式"></p>
+
+        <h4 id="IPv6特点"   >
+          <a href="#IPv6特点" class="heading-link"><i class="fas fa-link"></i></a>IPv6特点</h4>
+      <ul>
+<li>相比IPv4去掉了很多字段</li>
+<li>基本首部固定长度</li>
+</ul>
+
+        <h4 id="字段含义-1"   >
+          <a href="#字段含义-1" class="heading-link"><i class="fas fa-link"></i></a>字段含义</h4>
+      <ul>
+<li><p>Next Header字段<br>基本首部和扩展首部都包含这样的字段</p>
+<pre><code>基本首部
+</code></pre><p>​    扩展首部<br>通过Next Header将这些首部链在一起，例如<br>1 基本首部 + TCP报文段<br>2 基本首部 + 路由首部 + TCP报文段<br>3 基本首部 + 路由首部 + 认证首部 + TCP报文段</p>
+</li>
+</ul>
+
+        <h4 id="40个8位长度的IPv6固定长度基本首部格式"   >
+          <a href="#40个8位长度的IPv6固定长度基本首部格式" class="heading-link"><i class="fas fa-link"></i></a>40个8位长度的IPv6固定长度基本首部格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_BaseHeaderFromat.png" alt="IPv6基本首部格式"></p>
+<ul>
+<li>VERS</li>
+<li>TRAFFIC CLASS : 对应v4的ToS</li>
+<li>FLOW LABEL：        流的标识号，用于取代目标IP，中间转发是根据流的ID进行转发</li>
+<li>PAYLOAD LENGTH：    不包括首部的40字节基本长度</li>
+<li>NEXT HEADER ：        将首部串到一起（也可以用来指定上层的协议</li>
+<li>HOP LIMIT：对应IPv4中的TTL</li>
+<li>SOURCE ADDRESS 128bit</li>
+<li>DST ADD 128bit</li>
+</ul>
+<p>​    </p>
+
+        <h2 id="物理网的最大传输单位-MTU"   >
+          <a href="#物理网的最大传输单位-MTU" class="heading-link"><i class="fas fa-link"></i></a>物理网的最大传输单位 MTU</h2>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">太小：降低效率</span><br><span class="line">太大：分片问题</span><br><span class="line">例如：以太网 MTU&#x3D;1500</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="IP-分片"   >
+          <a href="#IP-分片" class="heading-link"><i class="fas fa-link"></i></a>IP 分片</h2>
+      
+        <h3 id="IPv4分片"   >
+          <a href="#IPv4分片" class="heading-link"><i class="fas fa-link"></i></a>IPv4分片</h3>
+      <p>IPv4分片的大小是8的整数倍<br>IPv4在目标节点负责重装，中间路由器不负责重装</p>
+
+        <h3 id="IPv6-分片"   >
+          <a href="#IPv6-分片" class="heading-link"><i class="fas fa-link"></i></a>IPv6 分片</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_Fragment.png" alt="IPv6分片"></p>
+<p>对于v6不允许中间的路由器分片，所以源站会先找出到目标站路径上的最小MTU</p>
+<p>分片功能放到 扩展首部<br>规定只能在源主机进行分片，源到目标主机路径上的路由器不允许分片</p>
+
+        <h4 id="Path-MTU："   >
+          <a href="#Path-MTU：" class="heading-link"><i class="fas fa-link"></i></a>Path MTU：</h4>
+      <p>从源到目标所经过的所有链路上MTU中最小的MTU</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">找到 path MTU （PMTUD）, 主机同时周期性进行查询</span><br><span class="line">查询过程：二分试探，如果中间传输报文过大，则返回</span><br><span class="line">ICMPv6：Packet Too Big 报文</span><br><span class="line">ICMPv4：Dest Unreach 报错，（DF 设为 1）</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="IPv6-分片扩展首部-格式"   >
+          <a href="#IPv6-分片扩展首部-格式" class="heading-link"><i class="fas fa-link"></i></a>IPv6 分片扩展首部 格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionHeader.png" alt="IPv6分片扩展首部格式"></p>
+<ul>
+<li>FRAGMENT OFFSET  13bit</li>
+<li>MF 1bit</li>
+<li>IDENTIFICATION: 标识号，32bit</li>
+</ul>
+
+        <h4 id="IPv6-分片的重装"   >
+          <a href="#IPv6-分片的重装" class="heading-link"><i class="fas fa-link"></i></a>IPv6 分片的重装</h4>
+      <p>在目标进行重装，中间节点不进行重装</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">缺点：</span><br><span class="line">	1 若MTU较大，引起效率低</span><br><span class="line">	2 分片数量多后丢失的可能性较大</span><br><span class="line">优点：</span><br><span class="line">	1 每个分片进行独立路由传输</span><br><span class="line">	2 中间节点不需要进行存储</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="选项"   >
+          <a href="#选项" class="heading-link"><i class="fas fa-link"></i></a>选项</h2>
+      <p>源IP 和 目标IP<br>IPv4选项部分是可变长度的，需要进行填充，填到32bit为止</p>
+<p>IPv4选项定义在首部：可变长，一般用来进行测试、调试<br>IPv6首部不包含选项：这些功能被移到了扩展首部</p>
+
+        <h3 id="IPv4-选项"   >
+          <a href="#IPv4-选项" class="heading-link"><i class="fas fa-link"></i></a>IPv4 选项</h3>
+      <p>（在实际通信中使用较少</p>
+
+        <h4 id="选项的组成："   >
+          <a href="#选项的组成：" class="heading-link"><i class="fas fa-link"></i></a>选项的组成：</h4>
+      <ul>
+<li>option code：定义选项的类型</li>
+<li>length：选项总长度</li>
+<li>data：数据</li>
+</ul>
+
+        <h4 id="选项-Option-code字段"   >
+          <a href="#选项-Option-code字段" class="heading-link"><i class="fas fa-link"></i></a>选项 Option code字段</h4>
+      <p>8bit</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0 ： copy</span><br><span class="line">	copy &#x3D; 0：只有第一个带上原来分组的选项</span><br><span class="line">	copy &#x3D; 1：在分片的时候所有分片需要带上选项</span><br><span class="line">1-2：Option Class</span><br><span class="line">	分成了4类，0、2有定义，1、3保留</span><br><span class="line">	option class &#x3D; 0：进行控制</span><br><span class="line">	option class &#x3D; 1：调试与测试</span><br><span class="line">3-7：Option number</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="IPv4选项举例"   >
+          <a href="#IPv4选项举例" class="heading-link"><i class="fas fa-link"></i></a>IPv4选项举例</h4>
+      <ul>
+<li><p>记录路由选项：</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_OptionRecordRouter.png" alt="IPv4记录路由选项"></p>
+<p>源站发出分组，初始化一个空地址列表，中间路由器在转发分组时依次加入IP地址</p>
+</li>
+<li><p>源路由选项 ：</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv4_OptionSourceRouter.png" alt="IPv4源路由选项"></p>
+<p>用于吞吐量测试</p>
+</li>
+<li><p>时间戳选项</p>
+</li>
+</ul>
+
+        <h3 id="IPv6-选项扩展"   >
+          <a href="#IPv6-选项扩展" class="heading-link"><i class="fas fa-link"></i></a>IPv6 选项扩展</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionOption.png" alt="IPv6的一些扩展选项"></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch7_IPv6_ExtensionOptionFormat.png" alt="IPv6扩展选项格式"></p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%8D%8F%E8%AE%AE/">https://acptek.github.io/2020/07/03/TCP-IP-IP%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/IP/">IP</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-IP%E8%BD%AC%E5%8F%91/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP IP转发</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-ARP%E5%8D%8F%E8%AE%AE/"><span class="paginator-prev__text">TCP/IP ARP协议</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IP协议"><span class="toc-number">1.</span> <span class="toc-text">
+          IP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#因特网设计的思想"><span class="toc-number">1.1.</span> <span class="toc-text">
+          因特网设计的思想</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对用户而言"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          对用户而言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从概念上划分层次"><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          从概念上划分层次</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP的目的（主要功能）"><span class="toc-number">1.2.</span> <span class="toc-text">
+          IP的目的（主要功能）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#因特网数据报（IP分组）格式"><span class="toc-number">1.3.</span> <span class="toc-text">
+          因特网数据报（IP分组）格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4报文格式"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          IPv4报文格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字段含义"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          字段含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6-报文格式"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          IPv6 报文格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6特点"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">
+          IPv6特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#字段含义-1"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">
+          字段含义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#40个8位长度的IPv6固定长度基本首部格式"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">
+          40个8位长度的IPv6固定长度基本首部格式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#物理网的最大传输单位-MTU"><span class="toc-number">1.4.</span> <span class="toc-text">
+          物理网的最大传输单位 MTU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP-分片"><span class="toc-number">1.5.</span> <span class="toc-text">
+          IP 分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4分片"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          IPv4分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6-分片"><span class="toc-number">1.5.2.</span> <span class="toc-text">
+          IPv6 分片</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Path-MTU："><span class="toc-number">1.5.2.1.</span> <span class="toc-text">
+          Path MTU：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6-分片扩展首部-格式"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">
+          IPv6 分片扩展首部 格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6-分片的重装"><span class="toc-number">1.5.2.3.</span> <span class="toc-text">
+          IPv6 分片的重装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">1.6.</span> <span class="toc-text">
+          选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4-选项"><span class="toc-number">1.6.1.</span> <span class="toc-text">
+          IPv4 选项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选项的组成："><span class="toc-number">1.6.1.1.</span> <span class="toc-text">
+          选项的组成：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#选项-Option-code字段"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">
+          选项 Option code字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv4选项举例"><span class="toc-number">1.6.1.3.</span> <span class="toc-text">
+          IPv4选项举例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6-选项扩展"><span class="toc-number">1.6.2.</span> <span class="toc-text">
+          IPv6 选项扩展</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

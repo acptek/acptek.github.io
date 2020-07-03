@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="协议分层        节点（主机、路由器）上的软件结构 分层的基本原理 IP的实现软件通过分层后便于理解 在此协议架构上，分组传递的路径">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 协议分层">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="协议分层        节点（主机、路由器）上的软件结构 分层的基本原理 IP的实现软件通过分层后便于理解 在此协议架构上，分组传递的路径">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-03T10:10:30.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:49:12.052Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="协议分层">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP 协议分层 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 协议分层</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="协议分层"   >
+          <a href="#协议分层" class="heading-link"><i class="fas fa-link"></i></a>协议分层</h1>
+      <ul>
+<li>节点（主机、路由器）上的软件结构</li>
+<li>分层的基本原理</li>
+<li>IP的实现软件通过分层后便于理解</li>
+<li>在此协议架构上，分组传递的路径</li>
+</ul>
+<a id="more"></a>
+
+        <h3 id="1-分层的原因"   >
+          <a href="#1-分层的原因" class="heading-link"><i class="fas fa-link"></i></a>1 分层的原因</h3>
+      <p>协议需要解决的问题：<br>    1 硬件故障<br>    2 网络拥塞<br>    3 分组丢失<br>    4 延迟<br>    5 数据污染<br>    6 数据包重复、乱序<br>    ……<br>所以需要分成子问题，再分别对子问题进行解决</p>
+
+        <h3 id="2-分层的基本原理"   >
+          <a href="#2-分层的基本原理" class="heading-link"><i class="fas fa-link"></i></a>2 分层的基本原理</h3>
+      
+        <h4 id="ISO-7-layer-没有具体的实现-X-25-（数字通信，非模拟）"   >
+          <a href="#ISO-7-layer-没有具体的实现-X-25-（数字通信，非模拟）" class="heading-link"><i class="fas fa-link"></i></a>ISO 7-layer  (没有具体的实现) - X.25 - （数字通信，非模拟）</h4>
+      <p>​    物理层：        主机需要与分组交换机连接，（串形线<br>​    数据链路层：        主机与分组交换机之间传输数据（帧，校验与确认<br>​    网络层：        定义传输的基本单位（分组 -&gt; 分成几个帧进行传输，处理拥塞问题）<br>​    传输层：        提供端到端的可靠传输 double check<br>​    会话层：        处理远程终端接入<br>​    表示层：        为应用层提供服务（语法转换、数据压缩加密、格式转换等<br>​    应用层：        用户使用的最终目标</p>
+<p>（复杂功能定义在网络核心上）</p>
+
+        <h4 id="TCP-IP-5-layer（层与层之间的接口-gt-消息，传输分组，IP数据报，帧）"   >
+          <a href="#TCP-IP-5-layer（层与层之间的接口-gt-消息，传输分组，IP数据报，帧）" class="heading-link"><i class="fas fa-link"></i></a>TCP/IP 5-layer（层与层之间的接口 -&gt; 消息，传输分组，IP数据报，帧）</h4>
+      <p>​    应用层：        应用，（根据自身需求选择传输服务，提供报文的序号，确保传输顺序或是连续的流（流服务）<br>​    传输层：        端到端的可靠通信<br>​    网络层：        主机到主机间的通信（传递IP分组，使用路由算法转发）<br>​            （一个节点收到IP分组后：检查IP分组的合法性，选择路由输出接口，ICMP协议报文交换）<br>​    网络接口层：         将网络层交付来的IP分组在具体的物理网络上传输 （例如在局域网使用MAC协议）</p>
+<p>（网络的核心功能相对较弱，主要智能部分在传输层以上部分）</p>
+
+        <h3 id="TCPIP分层传输的两种模型："   >
+          <a href="#TCPIP分层传输的两种模型：" class="heading-link"><i class="fas fa-link"></i></a>TCPIP分层传输的两种模型：</h3>
+      <p>1 端到端 （分层原理：接收方收到的东西与发送方收到的东西完全一致）<br>    高层协议（网际层以上的部分</p>
+<p>2 机器到机器<br>    网际层（IP分组在进过路由转发TTL时，会减1，发生的数据的改变，所以也是机器到机器<br>    低层（网际层以下</p>
+
+        <h3 id="分层的缺点："   >
+          <a href="#分层的缺点：" class="heading-link"><i class="fas fa-link"></i></a>分层的缺点：</h3>
+      <p>效率降低（解决效率问题是跨层优化问题的解决方案） </p>
+
+        <h3 id="多路复用-和-解多路复用"   >
+          <a href="#多路复用-和-解多路复用" class="heading-link"><i class="fas fa-link"></i></a>多路复用 和 解多路复用</h3>
+      <p>上层向下层递交的时候会添加信息，是用来解多路复用的依据</p>
+<p>说明：</p>
+<p>​    1 链路层上的传输基本单位为帧，帧的TYPE字段是作为解多路复用的依据。</p>
+<p>​        例如，TYPE=0x800-&gt;IP, TYPE=0x806-&gt;ARP, TYPE=0x8035-&gt;RARP</p>
+<p>​    2 网络层上传输的IP报文中，首部Protocol字段作为解多路复用的依据。</p>
+<p>​        例如，protocol=1-&gt;ICMP, protocol=17-&gt;UDP, protocol=6-&gt;TCP</p>
+<p>​    3 传输层上的TCP/UDP报文根据目标端口号来解多路复用，对应到特定的应用。</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/">https://acptek.github.io/2020/07/03/TCP-IP-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/">协议分层</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E5%AF%BB%E5%9D%80%E6%96%B9%E6%A1%88/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP 因特网的寻址方案</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/"><span class="paginator-prev__text">TCP/IP 底层网络技术概述</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#协议分层"><span class="toc-number">1.</span> <span class="toc-text">
+          协议分层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-分层的原因"><span class="toc-number">1.0.1.</span> <span class="toc-text">
+          1 分层的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-分层的基本原理"><span class="toc-number">1.0.2.</span> <span class="toc-text">
+          2 分层的基本原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ISO-7-layer-没有具体的实现-X-25-（数字通信，非模拟）"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">
+          ISO 7-layer  (没有具体的实现) - X.25 - （数字通信，非模拟）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP-IP-5-layer（层与层之间的接口-gt-消息，传输分组，IP数据报，帧）"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">
+          TCP&#x2F;IP 5-layer（层与层之间的接口 -&gt; 消息，传输分组，IP数据报，帧）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCPIP分层传输的两种模型："><span class="toc-number">1.0.3.</span> <span class="toc-text">
+          TCPIP分层传输的两种模型：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分层的缺点："><span class="toc-number">1.0.4.</span> <span class="toc-text">
+          分层的缺点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多路复用-和-解多路复用"><span class="toc-number">1.0.5.</span> <span class="toc-text">
+          多路复用 和 解多路复用</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

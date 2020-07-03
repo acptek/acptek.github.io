@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="底层网络技术概述        分组交换技术 底层硬件技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 底层网络技术概述">
+<meta property="og:url" content="https://acptek.github.io/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="底层网络技术概述        分组交换技术 底层硬件技术">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch2_Ethernet_FrameFormat.png">
+<meta property="article:published_time" content="2020-07-03T09:57:36.000Z">
+<meta property="article:modified_time" content="2020-07-03T12:48:54.778Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="MAC">
+<meta property="article:tag" content="以太网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch2_Ethernet_FrameFormat.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP 底层网络技术概述 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if () {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 底层网络技术概述</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="底层网络技术概述"   >
+          <a href="#底层网络技术概述" class="heading-link"><i class="fas fa-link"></i></a>底层网络技术概述</h1>
+      <ul>
+<li>分组交换技术</li>
+<li>底层硬件技术</li>
+</ul>
+<a id="more"></a>
+
+        <h3 id="网络通信的两种解决方法"   >
+          <a href="#网络通信的两种解决方法" class="heading-link"><i class="fas fa-link"></i></a>网络通信的两种解决方法</h3>
+      <p>​    1 面向连接 ： 电路交换 circuit switch，（永久性连接，是专用连接<br>​        优点：保证网络的带宽<br>​        缺点：代价高</p>
+<p>​    2 无连接 ： 分组交换网络 packet switch<br>​        优点：代价低<br>​        缺点：无法保证网络带宽，但是可以通过构建高带宽的分组交换网络</p>
+
+        <h3 id="网络分类（覆盖范围"   >
+          <a href="#网络分类（覆盖范围" class="heading-link"><i class="fas fa-link"></i></a>网络分类（覆盖范围</h3>
+      <p>​    WAN<br>​    LAN</p>
+
+        <h3 id="网络硬件地址"   >
+          <a href="#网络硬件地址" class="heading-link"><i class="fas fa-link"></i></a>网络硬件地址</h3>
+      <p>​    不同网络类型的地址格式有差别<br>​    四种应用的网络<br>​        以太网 Ethernet<br>​        无线局域网 Wi-Fi<br>​        ZigBee<br>​        同步光纤网 SONET</p>
+
+        <h3 id="以太网"   >
+          <a href="#以太网" class="heading-link"><i class="fas fa-link"></i></a>以太网</h3>
+      <p>​    分组交换式的局域网<br>​    DIX -&gt; IEEE802.3</p>
+
+        <h4 id="以太网不同的媒体方案："   >
+          <a href="#以太网不同的媒体方案：" class="heading-link"><i class="fas fa-link"></i></a>以太网不同的媒体方案：</h4>
+      <ul>
+<li>1 粗同轴电缆：10Base5 （10Mbps 500m）<br>收发器transceiver连在电缆上，网卡（网络接口卡）连在主机上，二者间需要一根专门的电缆连接</li>
+<li>2 细同轴电缆：10Base2 （10Mbps 185m）<br>收发器集成在接口卡中</li>
+<li>3 双绞线：10Base-T<br>有4对双绞线<pre><code>   高速以太网 100Base-T
+</code></pre></li>
+<li>4 光纤：10Base-F<br>抗干扰强，用于远距离的连接</li>
+</ul>
+
+        <h4 id="以太网使用的MAC层协议-："   >
+          <a href="#以太网使用的MAC层协议-：" class="heading-link"><i class="fas fa-link"></i></a>以太网使用的MAC层协议 ：</h4>
+      <p><strong>CSMA/CD，碰撞检测功能</strong><br>接口卡中的收发器：侦听信号的功能 （区分信号空闲或忙碌状态<br>CSMA/CD 要求站点在传输数据帧之前，先要侦听信道的状态</p>
+
+        <h4 id="以太网使用PoE技术：Power-of-Ethernet"   >
+          <a href="#以太网使用PoE技术：Power-of-Ethernet" class="heading-link"><i class="fas fa-link"></i></a>以太网使用PoE技术：Power of Ethernet</h4>
+      <p>小型设备供电支持加载双绞线电缆上对设备进行供电</p>
+
+        <h4 id="以太网的特点："   >
+          <a href="#以太网的特点：" class="heading-link"><i class="fas fa-link"></i></a>以太网的特点：</h4>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 带宽的不同种类</span><br><span class="line">2 自动协商，例如以双方都能支持的最高速率来进行工作</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="以太网的重要属性："   >
+          <a href="#以太网的重要属性：" class="heading-link"><i class="fas fa-link"></i></a>以太网的重要属性：</h4>
+      <figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 广播策略：通信是以广播的方式</span><br><span class="line">2 尽最大努力交付</span><br><span class="line">3 CSMA&#x2F;CD：媒体访问控制所使用的协议</span><br></pre></td></tr></table></div></figure>
+
+        <h4 id="以太网物理地址（MAC地址"   >
+          <a href="#以太网物理地址（MAC地址" class="heading-link"><i class="fas fa-link"></i></a>以太网物理地址（MAC地址</h4>
+      <p>48位</p>
+
+        <h4 id="以太网帧格式（单位字节）"   >
+          <a href="#以太网帧格式（单位字节）" class="heading-link"><i class="fas fa-link"></i></a>以太网帧格式（单位字节）</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch2_Ethernet_FrameFormat.png" alt="以太网帧格式"></p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">目标地址 6</span><br><span class="line">原地址 6</span><br><span class="line">帧类型&#x2F;数据区长度 2 （但是padding不算在内，数据区长度为0那padding即为46）</span><br><span class="line">数据 46 - 1500 （最小46padding）</span><br><span class="line">帧校验序列 4 （CRC，由硬件产生）</span><br><span class="line"></span><br><span class="line">区分类型与长度的方法：</span><br><span class="line">	将类型值都取成比1500大的值</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="无线局域网-Wi-Fi-（IEEE802-11）"   >
+          <a href="#无线局域网-Wi-Fi-（IEEE802-11）" class="heading-link"><i class="fas fa-link"></i></a>无线局域网 Wi-Fi （IEEE802.11）</h3>
+      <p>​    AP + STAs<br>​    Ad Hoc：点对点<br>​    WiMax 802.16</p>
+
+        <h3 id="ZigBee-802-15-4"   >
+          <a href="#ZigBee-802-15-4" class="heading-link"><i class="fas fa-link"></i></a>ZigBee 802.15.4</h3>
+      <p>​    个域网<br>​    低功耗的无线网络技术<br>​    分组长度：127字节<br>​    payload（有效负荷长度）：102字节<br>​    两种MAC地址格式（长、短）：16位、64位</p>
+
+        <h3 id="点对点网络"   >
+          <a href="#点对点网络" class="heading-link"><i class="fas fa-link"></i></a>点对点网络</h3>
+      <p>peer to peer ，无须物理地址来区分</p>
+
+        <h3 id="VLAN：虚拟局域网"   >
+          <a href="#VLAN：虚拟局域网" class="heading-link"><i class="fas fa-link"></i></a>VLAN：虚拟局域网</h3>
+      <p>​    配置交换机 -&gt; 将一个交换机看成对个更小交换机的集合<br>​    每一个VLAN定义一个独立的广播域</p>
+
+        <h3 id="底层网络设备"   >
+          <a href="#底层网络设备" class="heading-link"><i class="fas fa-link"></i></a>底层网络设备</h3>
+      
+        <h4 id="中继器"   >
+          <a href="#中继器" class="heading-link"><i class="fas fa-link"></i></a>中继器</h4>
+      <p>​    工作在物理层<br>​    延伸电缆长度<br>​    最多经过四个中继器（12345原则</p>
+
+        <h4 id="桥"   >
+          <a href="#桥" class="heading-link"><i class="fas fa-link"></i></a>桥</h4>
+      <p>​    工作在链路层，识别帧的格式<br>​    桥收到一个完整的帧然后转发。整个过程对主机来说是透明的（透明桥）</p>
+
+        <h3 id="链路层目的："   >
+          <a href="#链路层目的：" class="heading-link"><i class="fas fa-link"></i></a>链路层目的：</h3>
+      <p>​    1 为IP模块发送和接收IP数据报<br>​    2 为ARP模块发送ARP请求和接收ARP应答<br>​    3 为RARP发送RARP请求和接收RARP应答</p>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/">https://acptek.github.io/2020/07/03/TCP-IP-%E5%BA%95%E5%B1%82%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/MAC/">MAC</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/%E4%BB%A5%E5%A4%AA%E7%BD%91/">以太网</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/07/03/TCP-IP-%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP/IP 协议分层</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/TCP-IP-%E6%A6%82%E8%A7%88/"><span class="paginator-prev__text">TCP/IP 概览</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#底层网络技术概述"><span class="toc-number">1.</span> <span class="toc-text">
+          底层网络技术概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网络通信的两种解决方法"><span class="toc-number">1.0.1.</span> <span class="toc-text">
+          网络通信的两种解决方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络分类（覆盖范围"><span class="toc-number">1.0.2.</span> <span class="toc-text">
+          网络分类（覆盖范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络硬件地址"><span class="toc-number">1.0.3.</span> <span class="toc-text">
+          网络硬件地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#以太网"><span class="toc-number">1.0.4.</span> <span class="toc-text">
+          以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网不同的媒体方案："><span class="toc-number">1.0.4.1.</span> <span class="toc-text">
+          以太网不同的媒体方案：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网使用的MAC层协议-："><span class="toc-number">1.0.4.2.</span> <span class="toc-text">
+          以太网使用的MAC层协议 ：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网使用PoE技术：Power-of-Ethernet"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">
+          以太网使用PoE技术：Power of Ethernet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网的特点："><span class="toc-number">1.0.4.4.</span> <span class="toc-text">
+          以太网的特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网的重要属性："><span class="toc-number">1.0.4.5.</span> <span class="toc-text">
+          以太网的重要属性：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网物理地址（MAC地址"><span class="toc-number">1.0.4.6.</span> <span class="toc-text">
+          以太网物理地址（MAC地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以太网帧格式（单位字节）"><span class="toc-number">1.0.4.7.</span> <span class="toc-text">
+          以太网帧格式（单位字节）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无线局域网-Wi-Fi-（IEEE802-11）"><span class="toc-number">1.0.5.</span> <span class="toc-text">
+          无线局域网 Wi-Fi （IEEE802.11）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZigBee-802-15-4"><span class="toc-number">1.0.6.</span> <span class="toc-text">
+          ZigBee 802.15.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#点对点网络"><span class="toc-number">1.0.7.</span> <span class="toc-text">
+          点对点网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VLAN：虚拟局域网"><span class="toc-number">1.0.8.</span> <span class="toc-text">
+          VLAN：虚拟局域网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#底层网络设备"><span class="toc-number">1.0.9.</span> <span class="toc-text">
+          底层网络设备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#中继器"><span class="toc-number">1.0.9.1.</span> <span class="toc-text">
+          中继器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#桥"><span class="toc-number">1.0.9.2.</span> <span class="toc-text">
+          桥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链路层目的："><span class="toc-number">1.0.10.</span> <span class="toc-text">
+          链路层目的：</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acptek@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

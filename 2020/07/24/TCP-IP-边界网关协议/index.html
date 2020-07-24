@@ -1,0 +1,449 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="BGP 协议       在自治系统之间进行路由的协议 任何一个单一的路由协议都无法解决因特网这么大规模包含这么多路由器的这种环境下进行路由交换的路由需求。 所以需要对其进行划分成一些独立的组，称为AS。它们相互独立，由不同的管理机构来管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 边界网关协议">
+<meta property="og:url" content="https://acptek.github.io/2020/07/24/TCP-IP-%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="BGP 协议       在自治系统之间进行路由的协议 任何一个单一的路由协议都无法解决因特网这么大规模包含这么多路由器的这种环境下进行路由交换的路由需求。 所以需要对其进行划分成一些独立的组，称为AS。它们相互独立，由不同的管理机构来管理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Message_Type.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Message_Header.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_OPEN_Message.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_UPDATE.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message_Code.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message_Subcode.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_LENGTH-PREFIX.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_Path_Attribute_type.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_Path_Attribute_type_value.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_NLRI-type14.png">
+<meta property="article:published_time" content="2020-07-24T14:14:21.000Z">
+<meta property="article:modified_time" content="2020-07-24T14:29:12.491Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="BGP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Message_Type.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><title>TCP/IP 边界网关协议 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/07/24/TCP-IP-%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title"></div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 边界网关协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-24</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="BGP-协议"   >
+          <a href="#BGP-协议" class="heading-link"><i class="fas fa-link"></i></a>BGP 协议</h1>
+      <p>在自治系统之间进行路由的协议</p>
+<p>任何一个单一的路由协议都无法解决因特网这么大规模包含这么多路由器的这种环境下进行路由交换的路由需求。</p>
+<p>所以需要对其进行划分成一些独立的组，称为AS。它们相互独立，由不同的管理机构来管理。</p>
+<a id="more"></a>
+
+        <h2 id="1-路由协议"   >
+          <a href="#1-路由协议" class="heading-link"><i class="fas fa-link"></i></a>1  路由协议</h2>
+      
+        <h3 id="路由更新协议"   >
+          <a href="#路由更新协议" class="heading-link"><i class="fas fa-link"></i></a>路由更新协议</h3>
+      <ul>
+<li><p>在单一的主干（单一的网络）上工作</p>
+</li>
+<li><p>在主干核心网中工作，但是不能进行扩展</p>
+<p>原因：随着网络站点的增加，影响路由更新协议正常工作</p>
+<ul>
+<li>每个路由器处理接收转发的流量会增加</li>
+<li>同时因特网上的网络数量也会增加</li>
+<li>这些网络由不同的机构管理，是相对独立的</li>
+</ul>
+</li>
+</ul>
+<p>在巨大的网络中使用一个单一的路由更新协议是不实际的</p>
+
+        <h3 id="将路由器分成一些独立的组"   >
+          <a href="#将路由器分成一些独立的组" class="heading-link"><i class="fas fa-link"></i></a>将路由器分成一些独立的组</h3>
+      <p>原因：</p>
+<ul>
+<li>考虑到流量增加问题</li>
+<li>路由器间是间接通信的</li>
+<li>网络和路由器非单一机构管理</li>
+</ul>
+
+        <h3 id="组的大小限制"   >
+          <a href="#组的大小限制" class="heading-link"><i class="fas fa-link"></i></a>组的大小限制</h3>
+      <p>需要考虑的因素：</p>
+<ul>
+<li>交换路由信息的算法</li>
+<li>网络容量、带宽等</li>
+<li>路由协议的细节</li>
+</ul>
+<p>涉及到的两个问题：1 延迟  2 额外开销</p>
+
+        <h3 id="额外跳"   >
+          <a href="#额外跳" class="heading-link"><i class="fas fa-link"></i></a>额外跳</h3>
+      <p>访问一个网络时使用默认路由导致额外的跳数</p>
+
+        <h3 id="自治系统-AS"   >
+          <a href="#自治系统-AS" class="heading-link"><i class="fas fa-link"></i></a>自治系统 AS</h3>
+      <p>定义：由一个单一的管理机构管辖的一组网络和路由器。</p>
+<p>内部路由器使用的路由协议：由管理机构决定</p>
+<p>内部：路由协议由管理机构决定</p>
+<p>区分不同AS：属于两个不同的AS的路由器间交换路由信息时，应该包含对方AS的编号</p>
+
+        <h2 id="2-外部网关协议及其可达性问题"   >
+          <a href="#2-外部网关协议及其可达性问题" class="heading-link"><i class="fas fa-link"></i></a>2 外部网关协议及其可达性问题</h2>
+      
+        <h3 id="EGP-外部网关协议"   >
+          <a href="#EGP-外部网关协议" class="heading-link"><i class="fas fa-link"></i></a>EGP 外部网关协议</h3>
+      <p>指的是一类协议，能够在不同的自治系统中传递可达性信息的协议，使用较多的是BGP协议。</p>
+
+        <h4 id="BGP：边界网关协议"   >
+          <a href="#BGP：边界网关协议" class="heading-link"><i class="fas fa-link"></i></a>BGP：边界网关协议</h4>
+      <ul>
+<li>目前流行使用的版本是第四版，称为BGP4</li>
+<li>在自治系统内部包含很多路由器，从中选出一个作为边界路由器。两个自治系统的边界路由器之间交换路由信息时，使用BGP</li>
+</ul>
+
+        <h3 id="BGP-边界网关协议"   >
+          <a href="#BGP-边界网关协议" class="heading-link"><i class="fas fa-link"></i></a>BGP 边界网关协议</h3>
+      <p>只是用于传递网络可达性，而非作为路由信息来进行传递</p>
+
+        <h4 id="特性"   >
+          <a href="#特性" class="heading-link"><i class="fas fa-link"></i></a>特性</h4>
+      <ul>
+<li>用于AS与AS之间的通信</li>
+<li>IBGP：内部BGP，对于特定的AS有多个边界路由器，IBGP保证通过不同的边界路由器传播出去的本地AS路由信息一致（协调内部信息）</li>
+<li>能向外传播可达性的消息（包括中间AS作为转发等）</li>
+<li>下一跳方式进行每个目标通告</li>
+<li><strong>BGP支持策略路由</strong></li>
+<li>使用可靠传输服务</li>
+<li>以增量方式更新（只发送新的路由信息，节约带宽）</li>
+<li>支持无类别的寻址方案</li>
+<li>路由汇聚（多条路由压缩成一条）</li>
+<li>认证身份</li>
+</ul>
+
+        <h4 id="功能："   >
+          <a href="#功能：" class="heading-link"><i class="fas fa-link"></i></a>功能：</h4>
+      <ul>
+<li>能够进行邻居（对等方 peer）发现与邻居之间连接创建</li>
+<li>任何一方可以向另一方发送正向（可达的合法目标）或负向（先前公布的目标已失效）的可达性信息（使用UPDATE）</li>
+<li>在维持的过程中不断进行验证，确保连接 （使用KEEPALIVE）</li>
+</ul>
+
+        <h4 id="报文类型"   >
+          <a href="#报文类型" class="heading-link"><i class="fas fa-link"></i></a>报文类型</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Message_Type.png" alt="BGP报文格式"></p>
+<ul>
+<li>OPEN：双方建立连接</li>
+<li>UPDATE：路由信息更新报文</li>
+<li>NOTIFICATION：进行差错处理（例如拆除连接）</li>
+<li>KEEPALIVE：不断验证保证连接</li>
+<li>REFRESH：动态向对方申请相应路由信息</li>
+</ul>
+
+        <h4 id="BGP报文首部"   >
+          <a href="#BGP报文首部" class="heading-link"><i class="fas fa-link"></i></a>BGP报文首部</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Message_Header.png" alt="BGP报文首部"></p>
+<ul>
+<li>3个固定长度字段，19个字节</li>
+</ul>
+<p>字段：</p>
+<ul>
+<li>MARKER：用于定界，表示报文的开始与结束的位置</li>
+<li>LENGTH：表示整个报文的长度，最大长度为4096字节</li>
+<li>TYPE：报文类型</li>
+</ul>
+
+        <h4 id="BGP-OPEN报文"   >
+          <a href="#BGP-OPEN报文" class="heading-link"><i class="fas fa-link"></i></a>BGP OPEN报文</h4>
+      <p>用于创建BGP对等体之间的连接</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_OPEN_Message.png" alt="BGP OPEN报文"></p>
+<ul>
+<li><p>HOLD TIME</p>
+<p>一对BGP peers之间连接的有效期，时钟超时间隔，超时终止（接收方两个连续的报文的最大时间间隔）</p>
+<p>将HOLD TIME的值设为0，表示双方不进程保持连接的交换，则不需要KEEPALIVE报文</p>
+<p>KEEPALIVE的时间间隔是hold timer的1/3，KEEPALIVE是以秒为单位的，所以hold timer的值不少于3</p>
+<p>s</p>
+</li>
+<li><p>BGP IDENTIFIER</p>
+<p>用于唯一区分一个AS的编号：一般使用IP地址进行标识（多接口路由器从则中选取一个作为ID）</p>
+</li>
+<li><p>Optional Parameter</p>
+<p>可选参数</p>
+</li>
+<li><p>收到OPEN报文，则以KEEPALIVE报文进行响应</p>
+</li>
+</ul>
+
+        <h4 id="BGP-UPDATE报文"   >
+          <a href="#BGP-UPDATE报文" class="heading-link"><i class="fas fa-link"></i></a>BGP UPDATE报文</h4>
+      <p>由于连接建立后的数据交换</p>
+<p>传递的信息：</p>
+<ul>
+<li>可达的新的目标</li>
+<li>需要撤销的原来的现在不可用的目标</li>
+</ul>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_UPDATE.png" alt="BGP UPDATE报文"></p>
+<ul>
+<li><p>WITHDRAWN：需要撤销的现在非法的老的目标</p>
+</li>
+<li><p>PATH ATTR：路径属性</p>
+<p>新的目标前都带有<strong>公共的</strong>路径属性。所以路径属性不一样时需要发多个UPDATE报文。</p>
+</li>
+</ul>
+
+        <h4 id="BGP-KEEPALIVE报文"   >
+          <a href="#BGP-KEEPALIVE报文" class="heading-link"><i class="fas fa-link"></i></a>BGP KEEPALIVE报文</h4>
+      <ul>
+<li><p>作为连接创建的确认，作为连接维持的报文</p>
+</li>
+<li><p>报文后不带数据，只包含报文首部：19字节</p>
+</li>
+<li><p>使用的理由：</p>
+<p>1 BGP使用TCP传输服务</p>
+<p>2 考虑节约带宽：报文中不带有数据，报文长度最短，有利于保持连接的传输</p>
+</li>
+<li><p>KEEPALIVE的时间间隔是hold timer的1/3</p>
+</li>
+</ul>
+
+        <h4 id="BGP-Notification报文"   >
+          <a href="#BGP-Notification报文" class="heading-link"><i class="fas fa-link"></i></a>BGP Notification报文</h4>
+      <p>主要是用于差错处理</p>
+<p>一旦发生错误，发送Notification报文关闭TCP连接</p>
+<p><strong>报文格式：</strong></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message.png" alt="Notification报文格式"></p>
+<p><strong>错误码：</strong></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message_Code.png" alt="Notification报文错误码"></p>
+<ul>
+<li>1：报文首部出错</li>
+<li>2：OPEN报文出错</li>
+<li>3：UPDATE报文出错</li>
+<li>4：Hold timer超时</li>
+<li>5：有限状态机出错</li>
+<li>6：拆除连接</li>
+</ul>
+<p><strong>子类型错误码：</strong></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_Notification_Message_Subcode.png" alt="子类型错误码"></p>
+
+        <h4 id="BGP-Refresh报文"   >
+          <a href="#BGP-Refresh报文" class="heading-link"><i class="fas fa-link"></i></a>BGP Refresh报文</h4>
+      <ul>
+<li>Marker，Length，Type</li>
+<li>Address family identifier</li>
+<li>Reserved</li>
+<li>Subsequent address family identifier</li>
+</ul>
+
+        <h3 id="BGP-压缩形式掩码地址对"   >
+          <a href="#BGP-压缩形式掩码地址对" class="heading-link"><i class="fas fa-link"></i></a>BGP 压缩形式掩码地址对</h3>
+      <p>适应于无类别的寻址方案</p>
+<p>传输方式：采用LENGTH-PREFIX方法：</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_BGP_LENGTH-PREFIX.png" alt="BFP压缩定时掩码"></p>
+<ul>
+<li>LEN：掩码长度</li>
+<li>PREFIX：长度可变，根据LEN的值来确定长度</li>
+</ul>
+<p>当LEN为零时，表示默认路由</p>
+
+        <h2 id="3-BGP-路径属性"   >
+          <a href="#3-BGP-路径属性" class="heading-link"><i class="fas fa-link"></i></a>3 BGP 路径属性</h2>
+      
+        <h3 id="路径属性信息"   >
+          <a href="#路径属性信息" class="heading-link"><i class="fas fa-link"></i></a>路径属性信息</h3>
+      <p>通过路径属性可以提供额外的属性，比简单的DV包含更多信息，包括</p>
+<ul>
+<li>Next hop</li>
+<li>从本地到达目标的某个路径（路径上每个自治系统的编号）</li>
+<li>可以得知路径的来源（来源于EGP还是IGP）</li>
+</ul>
+<p>BGP路径属性在UPDATE报文格式出现，在attributes后面跟了多个目标（一对多的关系）。这些attributes是后面这些目标公用的，目标的attributes不一样那么必须要分多个UPDATE报文进行通告。</p>
+
+        <h3 id="使用路径属性的理由"   >
+          <a href="#使用路径属性的理由" class="heading-link"><i class="fas fa-link"></i></a>使用路径属性的理由</h3>
+      <ul>
+<li>可以检测到路径中是否包含回路：列出了路径上所有的AS号，若其中有两个号码相同则存在回路</li>
+<li>可以帮助接收方实现策略上的约束</li>
+<li>可以使得接收方了解到所有路由信息中每一条路由的源（路径是EGP还是IGP获取的）</li>
+</ul>
+
+        <h3 id="路径属性包含的内容"   >
+          <a href="#路径属性包含的内容" class="heading-link"><i class="fas fa-link"></i></a>路径属性包含的内容</h3>
+      <p>包含了如下结构的列表</p>
+<p><code>(type, length, value)</code></p>
+<ul>
+<li>type：2字节</li>
+<li>length：1~2字节（取决于type中的一个标志）</li>
+<li>value：总的表项的值由value来确定</li>
+</ul>
+
+        <h4 id="type字段"   >
+          <a href="#type字段" class="heading-link"><i class="fas fa-link"></i></a>type字段</h4>
+      <p><strong>标志位</strong></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_Path_Attribute_type.png" alt="type标志位"></p>
+<ul>
+<li>0：属性是否必须</li>
+<li>1：属性是否可以转发</li>
+<li>2：属性是否完整</li>
+<li>3：属性长度length字段的字节数</li>
+<li>5-7：未使用，置零</li>
+</ul>
+<p><strong>type值</strong></p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_Path_Attribute_type_value.png" alt="type值"></p>
+<ul>
+<li>1：指出路径信息的源</li>
+<li>2：到达目标路径上的AS列表</li>
+<li>3：到达目标的下一跳</li>
+<li>4：MED：自治系统包含多个边界路由器，告知其中较优的</li>
+<li>5：本地AS有多个出口，告知其中较优的</li>
+<li>6：表示路由汇聚</li>
+<li>7：路由汇聚的自治系统的ID</li>
+<li>8：通告目标的共有ID</li>
+</ul>
+
+        <h3 id="6-BGP-多协议扩展（MBGP）"   >
+          <a href="#6-BGP-多协议扩展（MBGP）" class="heading-link"><i class="fas fa-link"></i></a>6 BGP 多协议扩展（MBGP）</h3>
+      
+        <h4 id="扩展中的属性"   >
+          <a href="#扩展中的属性" class="heading-link"><i class="fas fa-link"></i></a>扩展中的属性</h4>
+      <ul>
+<li>可选属性</li>
+<li>不能转发</li>
+</ul>
+
+        <h4 id="两种扩展属性的Type"   >
+          <a href="#两种扩展属性的Type" class="heading-link"><i class="fas fa-link"></i></a>两种扩展属性的Type</h4>
+      <p>（放在BGP Path Attributes中传输）</p>
+<p>NLRI（type14）可达 - 网络层可达信息</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/Ch13_NLRI-type14.png" alt="可达性额扩展属性"></p>
+<ul>
+<li>SNPA：子网协议地址（具体的每一个目标，到达这些目标都是通过Next Hop到达）</li>
+</ul>
+<p>NLRI（type15）不可达</p>
+
+        <h2 id="4-BGP存在的问题"   >
+          <a href="#4-BGP存在的问题" class="heading-link"><i class="fas fa-link"></i></a>4 BGP存在的问题</h2>
+      <ul>
+<li>BGP不能同时使用到达一个目标的多条路径，对于某个可达的目标网络路径中只能选择一个</li>
+<li>BGP不支持自治系统间的负载均衡（这只能将一个AS拆成多个）</li>
+<li>针对广域网环境很难做出最优的路由（需要通过管理人工设置）</li>
+<li>在通告可达性的时候所有自治系统需要一致同意这个方案，BGP很难保证全球一致性</li>
+</ul>
+
+        <h2 id="5-因特网路由的体系结构与注册的数据库"   >
+          <a href="#5-因特网路由的体系结构与注册的数据库" class="heading-link"><i class="fas fa-link"></i></a>5 因特网路由的体系结构与注册的数据库</h2>
+      <p>目标：保证路由信息的全球一致性</p>
+
+        <h3 id="当前因特网路由的体系结构"   >
+          <a href="#当前因特网路由的体系结构" class="heading-link"><i class="fas fa-link"></i></a>当前因特网路由的体系结构</h3>
+      <ul>
+<li><p>大的服务商连到NAP（网络访问点）上，通过NAP来接入到因特网。</p>
+<p>NAP也成为IXP（因特网交换节点）。</p>
+</li>
+<li><p>通过NAP相连，不同的因特网服务商通过相互之间建立的对等关系来交换路由信息。</p>
+<p>不同的服务商之间的关系：上下游关系，中间转发关系</p>
+</li>
+<li><p><strong>采用路由注册数据库服务</strong></p>
+<p>（使用局部数据库）</p>
+<p>但是会出现“黑洞”现象：通告了不可达的地址</p>
+</li>
+</ul>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER </li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://acptek.github.io">acptek</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://acptek.github.io/2020/07/24/TCP-IP-%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE/">https://acptek.github.io/2020/07/24/TCP-IP-%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/BGP/">BGP</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/20/TCP-IP-%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%EF%BC%8C%E6%A0%B8%E5%BF%83%E7%BD%91%EF%BC%8C%E5%AF%B9%E7%AD%89%E7%BD%91%E5%92%8C%E7%9B%B8%E5%85%B3%E8%B7%AF%E7%94%B1%E7%AE%97%E6%B3%95/"><span class="paginator-prev__text">TCP/IP 路由选择，核心网，对等网和相关路由算法</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#BGP-协议"><span class="toc-number">1.</span> <span class="toc-text">
+          BGP 协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-路由协议"><span class="toc-number">1.1.</span> <span class="toc-text">
+          1  路由协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#路由更新协议"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          路由更新协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将路由器分成一些独立的组"><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          将路由器分成一些独立的组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组的大小限制"><span class="toc-number">1.1.3.</span> <span class="toc-text">
+          组的大小限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#额外跳"><span class="toc-number">1.1.4.</span> <span class="toc-text">
+          额外跳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自治系统-AS"><span class="toc-number">1.1.5.</span> <span class="toc-text">
+          自治系统 AS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-外部网关协议及其可达性问题"><span class="toc-number">1.2.</span> <span class="toc-text">
+          2 外部网关协议及其可达性问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#EGP-外部网关协议"><span class="toc-number">1.2.1.</span> <span class="toc-text">
+          EGP 外部网关协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP：边界网关协议"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">
+          BGP：边界网关协议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BGP-边界网关协议"><span class="toc-number">1.2.2.</span> <span class="toc-text">
+          BGP 边界网关协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#特性"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">
+          特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#功能："><span class="toc-number">1.2.2.2.</span> <span class="toc-text">
+          功能：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#报文类型"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">
+          报文类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP报文首部"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">
+          BGP报文首部</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP-OPEN报文"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">
+          BGP OPEN报文</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP-UPDATE报文"><span class="toc-number">1.2.2.6.</span> <span class="toc-text">
+          BGP UPDATE报文</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP-KEEPALIVE报文"><span class="toc-number">1.2.2.7.</span> <span class="toc-text">
+          BGP KEEPALIVE报文</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP-Notification报文"><span class="toc-number">1.2.2.8.</span> <span class="toc-text">
+          BGP Notification报文</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BGP-Refresh报文"><span class="toc-number">1.2.2.9.</span> <span class="toc-text">
+          BGP Refresh报文</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BGP-压缩形式掩码地址对"><span class="toc-number">1.2.3.</span> <span class="toc-text">
+          BGP 压缩形式掩码地址对</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BGP-路径属性"><span class="toc-number">1.3.</span> <span class="toc-text">
+          3 BGP 路径属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#路径属性信息"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          路径属性信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用路径属性的理由"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          使用路径属性的理由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#路径属性包含的内容"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          路径属性包含的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#type字段"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">
+          type字段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-BGP-多协议扩展（MBGP）"><span class="toc-number">1.3.4.</span> <span class="toc-text">
+          6 BGP 多协议扩展（MBGP）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#扩展中的属性"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">
+          扩展中的属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#两种扩展属性的Type"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">
+          两种扩展属性的Type</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-BGP存在的问题"><span class="toc-number">1.4.</span> <span class="toc-text">
+          4 BGP存在的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-因特网路由的体系结构与注册的数据库"><span class="toc-number">1.5.</span> <span class="toc-text">
+          5 因特网路由的体系结构与注册的数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#当前因特网路由的体系结构"><span class="toc-number">1.5.1.</span> <span class="toc-text">
+          当前因特网路由的体系结构</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="acpteks@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">37</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>

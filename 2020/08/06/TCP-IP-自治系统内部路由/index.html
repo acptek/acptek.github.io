@@ -1,0 +1,558 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="http://acptek.gitee.io/blogpictures/config/icons/favicon-16x16.png?v=2.0.1" type="image/png" sizes="16x16"><link rel="icon" href="http://acptek.gitee.io/blogpictures/config/icons/favicon-32x32.png?v=2.0.1" type="image/png" sizes="32x32"><meta name="description" content="Ch 14 自治系统内部路由       典型的内部路由协议  RIP，RIPng(IPv6)，OSPF，IS-IS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP 自治系统内部路由">
+<meta property="og:url" content="https://acptek.github.io/2020/08/06/TCP-IP-%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%86%85%E9%83%A8%E8%B7%AF%E7%94%B1/index.html">
+<meta property="og:site_name" content="Acptek">
+<meta property="og:description" content="Ch 14 自治系统内部路由       典型的内部路由协议  RIP，RIPng(IPv6)，OSPF，IS-IS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_rip2_messageformat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_rip2_messageformat_command.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ripng_messageformat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ripng_messageformat_entry.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_type.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_hello.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_dbd.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_dbd_LStype.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_LSrequest.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_update.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_update_lsa.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv3_messageformat_header.png">
+<meta property="og:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv3_messageformat_hello.png">
+<meta property="article:published_time" content="2020-08-06T13:14:10.000Z">
+<meta property="article:modified_time" content="2020-08-06T13:24:59.143Z">
+<meta property="article:author" content="acptek">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="IGP">
+<meta property="article:tag" content="RIP">
+<meta property="article:tag" content="OSPF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://acptek.gitee.io/blogpictures/TCPIP/ch14_rip2_messageformat.png"><meta name="keywords" content="acptek, Acptek"><meta name="description"><meta name="baidu-site-verification" content="vC7vUq95Fh"><title>TCP/IP 自治系统内部路由 | Acptek</title><link ref="canonical" href="https://acptek.github.io/2020/08/06/TCP-IP-%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%86%85%E9%83%A8%E8%B7%AF%E7%94%B1/"><link rel="alternate" href="/atom.xml" type="application/atom+xml"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.1"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://hm.baidu.com"><link rel="dns-prefetch" href="https://tajs.qq.com"><script src="https://www.googletagmanager.com/gtag/js?id=UA-147394489-1" async=""></script><script>if (window.location.hostname !== 'localhost') {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'UA-147394489-1');
+}</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?6d7e0fbe5db024841f4996931542823f';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66469461';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.1"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fas-user"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">TCP/IP 自治系统内部路由</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-06</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body">
+        <h1 id="Ch-14-自治系统内部路由"   >
+          <a href="#Ch-14-自治系统内部路由" class="heading-link"><i class="fas fa-link"></i></a>Ch 14 自治系统内部路由</h1>
+      <p>典型的内部路由协议</p>
+<ul>
+<li>RIP，RIPng(IPv6)，OSPF，IS-IS</li>
+</ul>
+<a id="more"></a>
+
+        <h2 id="1-内部路由器"   >
+          <a href="#1-内部路由器" class="heading-link"><i class="fas fa-link"></i></a>1 内部路由器</h2>
+      <p>相对于属于不同自治系统的路由器而言，称为内部路由</p>
+
+        <h3 id="1-1-内部路由如何学习到自己的路由信息"   >
+          <a href="#1-1-内部路由如何学习到自己的路由信息" class="heading-link"><i class="fas fa-link"></i></a>1.1 内部路由如何学习到自己的路由信息</h3>
+      <ul>
+<li>（静态路由）对于小型系统，可以采取手工办法：人工完成路由表的创建和更新和删除</li>
+<li>（动态路由）自动配置方案，</li>
+</ul>
+<p>对于稍微大一点的自治系统会选择几个内部网关协议</p>
+
+        <h3 id="1-2-在简单性与功能性方面做折中"   >
+          <a href="#1-2-在简单性与功能性方面做折中" class="heading-link"><i class="fas fa-link"></i></a>1.2 在简单性与功能性方面做折中</h3>
+      <p>在实践中，AS中通常采用多个内部协议。</p>
+<ul>
+<li>对于小的AS，可能采用单一的独有内部协议</li>
+<li>对于大的AS，通常会选取几个内部网关协议（选取一个IGP的一个小的集合来支持AS内部的需求）</li>
+</ul>
+
+        <h3 id="1-2-IGP-内部网关协议"   >
+          <a href="#1-2-IGP-内部网关协议" class="heading-link"><i class="fas fa-link"></i></a>1.2 IGP 内部网关协议</h3>
+      <p>是指一类内部网关协议，与EGP是一个相对的概念。IGP是一个路由协议的类别。</p>
+
+        <h2 id="2-RIP-路由信息协议"   >
+          <a href="#2-RIP-路由信息协议" class="heading-link"><i class="fas fa-link"></i></a>2  RIP 路由信息协议</h2>
+      
+        <h3 id="RIP的一些基本信息"   >
+          <a href="#RIP的一些基本信息" class="heading-link"><i class="fas fa-link"></i></a>RIP的一些基本信息</h3>
+      <p>在unix中的实现是 <strong>routed</strong></p>
+<p>RIP中的路由信息交换，最初通过广播方式，后来改为多播方式</p>
+<p>RIP适用于局域网环境（不大的网络范围）</p>
+
+        <h3 id="RIP使用距离向量算法"   >
+          <a href="#RIP使用距离向量算法" class="heading-link"><i class="fas fa-link"></i></a>RIP使用距离向量算法</h3>
+      <ul>
+<li>RIP属于：距离向量协议</li>
+<li>RIP将协议的参与者（路由器，主机）分为两类，<br>一类为<strong>主动的设备</strong>，若为主动设备则一定是路由器，并负责向外通告路由表<br>一类为<strong>被动的设备</strong>，处理主动设备发送过来的向量表，但是不能向外传自己的向量表</li>
+<li>RIP中，本地的fib向外通告的默认周期是30s，通过update报文 采用广播/多播方式向外发信息，将本地的fib路由信息抽取出来装配到update报文中发送</li>
+<li>RIP距离向量算法，<br>距离的单位：跳数。直接相连为1跳（即起始值就为一跳，一般起始值为零跳），经过一个路由增加一跳。（其中：可以人为配置一些已知网络的跳数：例如给卫星网增加跳数）</li>
+</ul>
+
+        <h3 id="RIP的特点"   >
+          <a href="#RIP的特点" class="heading-link"><i class="fas fa-link"></i></a>RIP的特点</h3>
+      <ul>
+<li>主动端与被动端都监听广播信息，根据DV算法更新路由表信息。在一定时间后向外传播通告</li>
+<li>路由表采用<strong>滞后</strong>技术：防止路径的<u>振荡（例如在路径费用相同的路径上来回切换，此时应该不进行更新）</u></li>
+<li>需要定时器来设定路径的有效期：针对一个目标设定到达路径的有效期，RIP中默认180s，超时后目标对应的表项无效</li>
+</ul>
+
+        <h3 id="RIP需要解决的三类差错"   >
+          <a href="#RIP需要解决的三类差错" class="heading-link"><i class="fas fa-link"></i></a>RIP需要解决的三类差错</h3>
+      <ul>
+<li><p>路由回路问题</p>
+</li>
+<li><p>不稳定性问题</p>
+<p>RIP中跳数的最大的距离为15，16指的是无穷大</p>
+<p>如果网络过大，需要对网络进行划分</p>
+</li>
+<li><p>慢收敛问题</p>
+</li>
+</ul>
+
+        <h2 id="3-解决路由回路"   >
+          <a href="#3-解决路由回路" class="heading-link"><i class="fas fa-link"></i></a>3 解决路由回路</h2>
+      <p>慢收敛问题是路由回路造成的</p>
+<p><strong>路由回路形成的原因</strong>：假设R2通过R1连接到一个网络N中，那么到达网络N的费用在R1路由表中保存的是1跳，在R2路由表中保存的是2跳。如果在某一时刻直接与网络N相连的R1和网络N出错断开，此时对R1而言到达网络N不可达，在RIP中跳数对应为16。但是在一个周期后R2向R1发送update消息，那么R1收到R2的路由向量表后更新自己本地转发表，将到达网络N标记为经过R2到达，同时费用改为3跳。此时形成了<u>路由回路</u>，R1，R2二者变为互相经过然后才能到达网络N的情况，所以会轮流增加表项中到达网络N的跳数，知道跳数增加到16是，才意识到网络N现在不可达。这个过程是一个<u>慢收敛</u>的过程。</p>
+
+        <h3 id="解决路由回路的方法"   >
+          <a href="#解决路由回路的方法" class="heading-link"><i class="fas fa-link"></i></a>解决路由回路的方法</h3>
+      <ul>
+<li><p>水平分割：从一个目标获取的路由信息不能在将这个信息传回这个目标</p>
+<p>所以，针对上述（路由回路形成的原因）的情况经过几轮的更新后，所有目标都能得知网络N不可达</p>
+</li>
+<li><p>保持（hold down）</p>
+<p>设置间隔时间，RIP中是60s</p>
+<p>如果接收到网络不可达消息，则先忽略此消息，等待hold down时间：这样所有节点都能获得网络不可达的消息 </p>
+<p>缺点：在hold down期间若存在路由回路，该路由回路会一直被保留；同样，也会保留错误路由</p>
+</li>
+<li><p>逆向毒害 （poison reverse）</p>
+<p>在连接断开时，向外通告的路由器保留表项的一些更新周期，但是向外通告的时候将费用改为无穷大</p>
+<p>与<strong>触发式更新</strong>技术相结合：减少等待时间（当某个路径断开，则不等待向外通告更新周期的时间30s，立即向外通告）</p>
+</li>
+</ul>
+
+        <h3 id="解决方法中的缺点"   >
+          <a href="#解决方法中的缺点" class="heading-link"><i class="fas fa-link"></i></a>解决方法中的缺点</h3>
+      <ul>
+<li>触发式更新的缺点：可能产生广播崩溃（短时间内update的广播消息过多耗尽链路带宽）</li>
+<li>采用广播方式消耗额外带宽</li>
+<li>如果存在回路，使得回路中拆除连接的报文信息无法传播出去</li>
+<li>在广域网（更大的网络环境中），由于hold down等待的时间过长，使得上层协议判断连接已断开然后进行出错处理</li>
+</ul>
+
+        <h2 id="4-RIP2-报文格式"   >
+          <a href="#4-RIP2-报文格式" class="heading-link"><i class="fas fa-link"></i></a>4 RIP2 报文格式</h2>
+      
+        <h3 id="RIP1-报文格式-IPv4"   >
+          <a href="#RIP1-报文格式-IPv4" class="heading-link"><i class="fas fa-link"></i></a>RIP1 报文格式 (IPv4)</h3>
+      
+        <h4 id="报文类型"   >
+          <a href="#报文类型" class="heading-link"><i class="fas fa-link"></i></a>报文类型</h4>
+      <ul>
+<li>路由信息报文</li>
+<li>信息请求报文</li>
+</ul>
+
+        <h4 id="格式"   >
+          <a href="#格式" class="heading-link"><i class="fas fa-link"></i></a>格式</h4>
+      <p>采用相同的格式</p>
+
+        <h3 id="RIP2-报文格式"   >
+          <a href="#RIP2-报文格式" class="heading-link"><i class="fas fa-link"></i></a>RIP2 报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_rip2_messageformat.png" alt="rip2报文格式"></p>
+<ul>
+<li><p>COMMAND字段</p>
+<p>总共5中类型</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_rip2_messageformat_command.png" alt="command"></p>
+</li>
+<li><p>VERSION：版本号为2，RIP2</p>
+</li>
+<li><p>接下来是每一个目标：</p>
+<p>FAMILY OF NET_k：网络的家族，对应IPv4的取值为2</p>
+<p>ROUTE TAG FOR NET_k：标记这条路由的源</p>
+<p>IP地址 （0.0.0.0 ：表示默认路由）</p>
+<p>IP地址对应的子网掩码</p>
+<p>到达目标网络NET_k的下一跳</p>
+</li>
+</ul>
+
+        <h3 id="RIP2-对比-RIP1"   >
+          <a href="#RIP2-对比-RIP1" class="heading-link"><i class="fas fa-link"></i></a>RIP2 对比 RIP1</h3>
+      <ul>
+<li>RIP2 支持可变长子网掩码</li>
+<li>支持CIDR：无类别地址寻址</li>
+<li>采用多播替代广播</li>
+</ul>
+
+        <h3 id="说明"   >
+          <a href="#说明" class="heading-link"><i class="fas fa-link"></i></a>说明</h3>
+      <p>rip报文的计算（报文长度等信息）依靠传输层服务，封装在udp，使用520端口</p>
+
+        <h2 id="5-RIPng"   >
+          <a href="#5-RIPng" class="heading-link"><i class="fas fa-link"></i></a>5 RIPng</h2>
+      <p>对于IPv6的RIP（RIP next generation）</p>
+<p>使用的端口号：521</p>
+
+        <h3 id="报文格式"   >
+          <a href="#报文格式" class="heading-link"><i class="fas fa-link"></i></a>报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ripng_messageformat.png" alt="ripng"></p>
+<ul>
+<li><p>ROUTE TABLE ENTRY K</p>
+<p>每个占20字节，格式：</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ripng_messageformat_entry.png" alt="route table entry"></p>
+<ul>
+<li>IPv6 PRIFIX：占128位</li>
+<li>ROUTE TAG：路由标签</li>
+<li>PREFIX LENGTH：前缀长度，IPv6不分类通过前缀长度区分</li>
+<li>METRIC：费用</li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="RIPng的特点"   >
+          <a href="#RIPng的特点" class="heading-link"><i class="fas fa-link"></i></a>RIPng的特点</h3>
+      <p>1 但是在ROUTE TABLE ENTRY中没有设置下一跳地址，由于IPv6地址过长，所以如果包含了下一跳在一个表项中会导致报文长度过长。</p>
+<p>解决方案：</p>
+<ul>
+<li>若费用字段（METRIC）值为全1（0xFF）时，则当前表项代表Next Hop</li>
+</ul>
+<p>2 RIPng的更新周期是30s，表项超时间隔为180s</p>
+<p>3 采用水平分割、逆向毒害和触发式更新来解决路由回路问题</p>
+
+        <h2 id="6-采用跳数作为单位的缺点"   >
+          <a href="#6-采用跳数作为单位的缺点" class="heading-link"><i class="fas fa-link"></i></a>6 采用跳数作为单位的缺点</h2>
+      <p>限制了网路的规模，导致RIP只能适用于小型互联网</p>
+<p>使用跳数会造成一些不准确的情况（例如卫星网和以太网间）</p>
+
+        <h2 id="7-hello协议"   >
+          <a href="#7-hello协议" class="heading-link"><i class="fas fa-link"></i></a>7 hello协议</h2>
+      <p>（属于距离向量协议）</p>
+<ul>
+<li>采用时间延迟作为度量单位的协议</li>
+<li>提供的功能：1 在所有运行hello协议的节点之间进行时钟的同步  2 计算基于时延的最短路径</li>
+</ul>
+
+        <h3 id="特点："   >
+          <a href="#特点：" class="heading-link"><i class="fas fa-link"></i></a>特点：</h3>
+      <p>报文传输除了路由信息同时还带上时间戳：计算两个节点之间的时钟差异和进行同步<br>可以对到达目标的费用基于延迟进行计算，收到向量表后，按照延迟时间短的进行更新</p>
+
+        <h3 id="缺点："   >
+          <a href="#缺点：" class="heading-link"><i class="fas fa-link"></i></a>缺点：</h3>
+      <p>不稳定性：延迟时间是变化的（网络流量变化大，对延迟影响也较大等原因）</p>
+<p>如果采用快速响应的策略，会造成二阶段震荡问题（反复在两条路径之间切换）</p>
+
+        <h3 id="避免震荡："   >
+          <a href="#避免震荡：" class="heading-link"><i class="fas fa-link"></i></a>避免震荡：</h3>
+      <ul>
+<li>hold down：等一定的时间再去改变延时</li>
+<li>round off measurements or  use threshold：设定一个阈值，当延时变化超过阈值才改变路由</li>
+<li>use average measurement：使用平均度量方法，每一次延迟测量作为一个样本，N个样本中若出现超过k个比当前平均延迟小，此时才对路由进行改变</li>
+</ul>
+<p>不稳定性仍然存在，无法消除振荡</p>
+
+        <h2 id="8-OSPF协议"   >
+          <a href="#8-OSPF协议" class="heading-link"><i class="fas fa-link"></i></a>8 OSPF协议</h2>
+      
+        <h3 id="Open-SPF-Protocol-特点"   >
+          <a href="#Open-SPF-Protocol-特点" class="heading-link"><i class="fas fa-link"></i></a>Open SPF Protocol 特点</h3>
+      <ul>
+<li>属于IGP</li>
+<li>开放标准</li>
+<li>支持大型互联网，采用多区域管理</li>
+<li>路由使用ToS</li>
+<li>支持负载均衡（支持多条路径）</li>
+<li>支持大型互联网（网络规模大）</li>
+<li>支持认证</li>
+<li>路由的粒度可以分为多个子网</li>
+<li>支持CIDR</li>
+<li>适应于多路访问（链路是共享链路，逻辑上是一条公共总线）</li>
+<li>支持多播传递</li>
+<li>支持虚拟连接</li>
+<li>可以相互交换从外面学习到的路由信息（通过EGP学习获得和IGP学习获得）</li>
+<li>OSPF报文传输的时候直接封装在IP内</li>
+</ul>
+
+        <h3 id="OSPFv2报文格式"   >
+          <a href="#OSPFv2报文格式" class="heading-link"><i class="fas fa-link"></i></a>OSPFv2报文格式</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat.png" alt="ospfv2"></p>
+<ul>
+<li><p>version：版本号，=2</p>
+</li>
+<li><p>type：五种报文类型</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_type.png" alt="type"></p>
+</li>
+<li><p>source ip：报文发送者ip</p>
+</li>
+<li><p>area id：区域号，是一个区域的标识。</p>
+<p>OSPF将网络区域分为主干区域和非主干区域两种类型。是一个二层的结构（构成了一个星形拓扑）</p>
+</li>
+<li><p>authentication type：认证类型，定义了认证方案</p>
+<p>0：表示没有认证， 1：表示口令密码认证</p>
+</li>
+</ul>
+
+        <h3 id="OSPFv2-hello-报文"   >
+          <a href="#OSPFv2-hello-报文" class="heading-link"><i class="fas fa-link"></i></a>OSPFv2 hello 报文</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_hello.png" alt="hello"></p>
+<ul>
+<li>公共头部TYPE=1</li>
+<li>NETWORK MASK：网络地址的掩码，（发送报文的目标网络的掩码）</li>
+<li>HELLO INTERVAL：两个邻居间发送hello的时间间隔</li>
+<li>DEAD INTERVAL：两个路由通过hello建立了邻居关系，如果经过了DEAD INTERVAL时间后再没有hello报文的交换，则可以认为邻居已经不存在（一般是HELLO INTERVAL的4倍）</li>
+<li>GWAY PRIO：指定自身路由器的优先级，用于选取备份指定路由器（BDR）</li>
+<li>DR，BDR：多路访问的链路上，为了减少路由间信息量交换，则在链路上选取一个指定路由器DR和一个备份指定路由器BDR</li>
+<li>NEOGHBOR_i IP ADDR：邻居IP地址</li>
+</ul>
+
+        <h3 id="OSPFv2-数据库描述报文"   >
+          <a href="#OSPFv2-数据库描述报文" class="heading-link"><i class="fas fa-link"></i></a>OSPFv2 数据库描述报文</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_dbd.png" alt="dbd"></p>
+
+        <h4 id="描述"   >
+          <a href="#描述" class="heading-link"><i class="fas fa-link"></i></a>描述</h4>
+      <p>用于初始化数据库</p>
+<p>在报文交换时：一个作为主节点，另一个作为从节点，主节点发送一个数据库描述报文，从节点返回一个确认</p>
+<p>如果子网拓扑数据库较大，则需要有多个数据库描述报文，才能将这些拓扑信息全部传输出去，需要用到报文中的一些特殊比特位：</p>
+<ul>
+<li>I = 1：表示初始报文</li>
+<li>M = 1：本报文后还有报文</li>
+<li>S： 1：主节点，0：从节点</li>
+<li>SEQUENCE NUMBER：用于保证传输是否正确（初始报文选定一个初始值，之后没法送一个报文在序号上加1）</li>
+</ul>
+
+        <h4 id="报文格式-1"   >
+          <a href="#报文格式-1" class="heading-link"><i class="fas fa-link"></i></a>报文格式</h4>
+      <ul>
+<li>LS Type：链路状态类型</li>
+</ul>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_dbd_LStype.png" alt="LStype"></p>
+<p>路由器、网络、总结链路、外部链路</p>
+<ul>
+<li>INTERFACE MTU：按此长度传输IP报文，可以避免产生分片</li>
+<li>每个链路都有 LS AGE ~ LS LENGTH来描述：<ul>
+<li>LS AGE：链路建立好后所经过的时间</li>
+<li>LS Type：链路类型</li>
+<li>LINK ID：链路的标识号，一般可以设置为路由器上的某个接口的IP地址</li>
+<li>ADVERTISING ROUTE：指发送此链路的路由器的地址</li>
+<li>LINK SEQUENCE NUMBER：链路序号，防止报文乱序和丢失</li>
+<li>CHECKSUM</li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="OSPFv2-链路状态request报文"   >
+          <a href="#OSPFv2-链路状态request报文" class="heading-link"><i class="fas fa-link"></i></a>OSPFv2 链路状态request报文</h3>
+      <p>路由器收到数据库描述报文后，发现自己本地链路有一些链路状态已经过时，此时需要通过request报文要求邻居发送自己指定的链路状态（提出链路状态请求报文，则通过update报文来响应）</p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_LSrequest.png" alt="LS request"></p>
+<p>对于每一条链路都需要这三个字段：</p>
+<ul>
+<li>LS Type</li>
+<li>LINK ID</li>
+<li>ADVERTISING ROUTER</li>
+</ul>
+
+        <h3 id="OSPFv2-链路状态更新报文"   >
+          <a href="#OSPFv2-链路状态更新报文" class="heading-link"><i class="fas fa-link"></i></a>OSPFv2 链路状态更新报文</h3>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_update.png" alt="update"></p>
+<p>分别对应的每个 LINK STATUS ADVERTIEMENT（链路状态通告） </p>
+<p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv2_messageformat_update_lsa.png" alt="lsa"></p>
+<p>在这个通告头部之后，才跟上实际的信息，这个信息取决于LS TYPE字段</p>
+<p>LS LENGTH：LS长度包括通告首部长度（20字节）和后面的信息的长度</p>
+
+        <h2 id="9-OSPFv3"   >
+          <a href="#9-OSPFv3" class="heading-link"><i class="fas fa-link"></i></a>9 OSPFv3</h2>
+      <p>在OSPFv2基础上做了一些改动，使得可以支持IPv6。但是由于IPv6的地址较长，所以：</p>
+<ul>
+<li>OSPFv2 用32位IP地址来标识一个路由器，OSPFv3使用一个32位的路由ID来标识一个路由器</li>
+</ul>
+
+        <h3 id="特点"   >
+          <a href="#特点" class="heading-link"><i class="fas fa-link"></i></a>特点</h3>
+      <ul>
+<li>支持IPv6的路由范围：本地链路、按区域划分、按自治系统划分</li>
+<li>可以同时运行多个OSPF进程的实例</li>
+<li>OSPFv3移除了对报文公共首部的所有认证（交给了IPv6首部处理认证）</li>
+<li>OSPFv3报文可以容纳IPv6地址</li>
+<li>使用32位的ID来标识一个路由器</li>
+</ul>
+
+        <h3 id="OSPFv3-报文格式"   >
+          <a href="#OSPFv3-报文格式" class="heading-link"><i class="fas fa-link"></i></a>OSPFv3 报文格式</h3>
+      
+        <h4 id="固定长度的公共首部"   >
+          <a href="#固定长度的公共首部" class="heading-link"><i class="fas fa-link"></i></a>固定长度的公共首部</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv3_messageformat_header.png" alt="header"></p>
+<ul>
+<li>…… （与OSPFv2类似）</li>
+</ul>
+
+        <h4 id="Hello-报文格式"   >
+          <a href="#Hello-报文格式" class="heading-link"><i class="fas fa-link"></i></a>Hello 报文格式</h4>
+      <p><img src="http://acptek.gitee.io/blogpictures/TCPIP/ch14_ospfv3_messageformat_hello.png" alt="hello"></p>
+<ul>
+<li>INTERFACE ID：接口ID，使用32位空间来标识</li>
+<li>ROUTER PRIO：优先级</li>
+<li>…… // 各个地址都是使用标识号而非IP地址</li>
+</ul>
+
+        <h3 id="OSPFv3与OSPFv2比较"   >
+          <a href="#OSPFv3与OSPFv2比较" class="heading-link"><i class="fas fa-link"></i></a>OSPFv3与OSPFv2比较</h3>
+      <p>OSPFv3结合并扩展了OSPFv2的很多特性</p>
+<p>OSPFv3根据需要定义了一些LSA（链路状态通告）的类型</p>
+<p>OSPFv3的每个链路状态报文的首部与OSPFv2是一样的</p>
+
+        <h2 id="10-IS-IS-中间系统到中间系统路由协议"   >
+          <a href="#10-IS-IS-中间系统到中间系统路由协议" class="heading-link"><i class="fas fa-link"></i></a>10 IS-IS 中间系统到中间系统路由协议</h2>
+      <p>IS-IS属于链路状态协议</p>
+
+        <h2 id="11-Gated"   >
+          <a href="#11-Gated" class="heading-link"><i class="fas fa-link"></i></a>11 Gated</h2>
+      <p>是一个路由网关的守护进程</p>
+<p>实现了包括RIP在内的IGP和包括BGP在内的EGP</p>
+<ul>
+<li>理解多种不同的路由协议，可以用于不同AS之间的信息交换</li>
+</ul>
+
+        <h2 id="12-人工费用-Artificial-Metrics"   >
+          <a href="#12-人工费用-Artificial-Metrics" class="heading-link"><i class="fas fa-link"></i></a>12 人工费用 (Artificial Metrics)</h2>
+      <p>Metric ： 路由费用度量值</p>
+<p>可以将原来的Metric值用人工的值进行替换，以便于控制和反映实际情况</p>
+<p>优点：</p>
+<ul>
+<li>一旦网络出现故障可以自动选择另外一条路径</li>
+<li>管理员在配制路由时只需要更改路由值Metric而非修改转发表（工作量小，便于管理）</li>
+</ul>
+
+        <h2 id="13-采用部分信息路由"   >
+          <a href="#13-采用部分信息路由" class="heading-link"><i class="fas fa-link"></i></a>13 采用部分信息路由</h2>
+      <ul>
+<li><p>主机节点：采用部分信息路由（可以依赖路由器进行转发）</p>
+</li>
+<li><p>路由器节点：并非所有路由器都使用所有信息。一些路由器可能采用部分路由信息进行路由。</p>
+<p>核心路由器：必须包含所有信息（必须了解所有目标，不能使用默认路由）</p>
+<p>非核心路由器：可以采用默认路由方式</p>
+</li>
+</ul>
+
+        <h3 id="使用默认路由的结果："   >
+          <a href="#使用默认路由的结果：" class="heading-link"><i class="fas fa-link"></i></a>使用默认路由的结果：</h3>
+      <ul>
+<li>1 如果本地路由发生错误则无法发现（转交后有送回，路由路径仍然存在，造成很长的延迟）</li>
+<li>2 对于一个AS内部的路由器而言，只要将内部所有已知的所有目标在路由表中列出，其余都可以通过默认路由解决，大大减少了需要传输更新的路由信息量。</li>
+</ul>
+<hr>
+<p>参考资料：</p>
+<ul>
+<li>INTERNETWORKING WITH TCP/IP PRINCIPLES, PROTOCOLS, AND ARCHITECTURE Vol1 (6th Edition).  DOUGLASE E. COMER</li>
+<li>Routing with TCP/IP 2nd VOL I / II , Cisco Press. (VOL I : IGP , VOL II : EGP)</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束 ------</div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/TCP-IP/">TCP/IP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/IGP/">IGP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/RIP/">RIP</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://acptek.github.io/tags/OSPF/">OSPF</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/24/TCP-IP-%E8%BE%B9%E7%95%8C%E7%BD%91%E5%85%B3%E5%8D%8F%E8%AE%AE/"><span class="paginator-prev__text">TCP/IP 边界网关协议</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ch-14-自治系统内部路由"><span class="toc-text">
+          Ch 14 自治系统内部路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-内部路由器"><span class="toc-text">
+          1 内部路由器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-内部路由如何学习到自己的路由信息"><span class="toc-text">
+          1.1 内部路由如何学习到自己的路由信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-在简单性与功能性方面做折中"><span class="toc-text">
+          1.2 在简单性与功能性方面做折中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-IGP-内部网关协议"><span class="toc-text">
+          1.2 IGP 内部网关协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RIP-路由信息协议"><span class="toc-text">
+          2  RIP 路由信息协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP的一些基本信息"><span class="toc-text">
+          RIP的一些基本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP使用距离向量算法"><span class="toc-text">
+          RIP使用距离向量算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP的特点"><span class="toc-text">
+          RIP的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP需要解决的三类差错"><span class="toc-text">
+          RIP需要解决的三类差错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-解决路由回路"><span class="toc-text">
+          3 解决路由回路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决路由回路的方法"><span class="toc-text">
+          解决路由回路的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法中的缺点"><span class="toc-text">
+          解决方法中的缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-RIP2-报文格式"><span class="toc-text">
+          4 RIP2 报文格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP1-报文格式-IPv4"><span class="toc-text">
+          RIP1 报文格式 (IPv4)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#报文类型"><span class="toc-text">
+          报文类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#格式"><span class="toc-text">
+          格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP2-报文格式"><span class="toc-text">
+          RIP2 报文格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP2-对比-RIP1"><span class="toc-text">
+          RIP2 对比 RIP1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#说明"><span class="toc-text">
+          说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-RIPng"><span class="toc-text">
+          5 RIPng</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#报文格式"><span class="toc-text">
+          报文格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIPng的特点"><span class="toc-text">
+          RIPng的特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-采用跳数作为单位的缺点"><span class="toc-text">
+          6 采用跳数作为单位的缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-hello协议"><span class="toc-text">
+          7 hello协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特点："><span class="toc-text">
+          特点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点："><span class="toc-text">
+          缺点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免震荡："><span class="toc-text">
+          避免震荡：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-OSPF协议"><span class="toc-text">
+          8 OSPF协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Open-SPF-Protocol-特点"><span class="toc-text">
+          Open SPF Protocol 特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv2报文格式"><span class="toc-text">
+          OSPFv2报文格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv2-hello-报文"><span class="toc-text">
+          OSPFv2 hello 报文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv2-数据库描述报文"><span class="toc-text">
+          OSPFv2 数据库描述报文</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#描述"><span class="toc-text">
+          描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#报文格式-1"><span class="toc-text">
+          报文格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv2-链路状态request报文"><span class="toc-text">
+          OSPFv2 链路状态request报文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv2-链路状态更新报文"><span class="toc-text">
+          OSPFv2 链路状态更新报文</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-OSPFv3"><span class="toc-text">
+          9 OSPFv3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">
+          特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv3-报文格式"><span class="toc-text">
+          OSPFv3 报文格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#固定长度的公共首部"><span class="toc-text">
+          固定长度的公共首部</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hello-报文格式"><span class="toc-text">
+          Hello 报文格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSPFv3与OSPFv2比较"><span class="toc-text">
+          OSPFv3与OSPFv2比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-IS-IS-中间系统到中间系统路由协议"><span class="toc-text">
+          10 IS-IS 中间系统到中间系统路由协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-Gated"><span class="toc-text">
+          11 Gated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-人工费用-Artificial-Metrics"><span class="toc-text">
+          12 人工费用 (Artificial Metrics)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-采用部分信息路由"><span class="toc-text">
+          13 采用部分信息路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用默认路由的结果："><span class="toc-text">
+          使用默认路由的结果：</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="http://acptek.gitee.io/blogpictures/config/avatar_head.png" alt="avatar"></div><p class="sidebar-ov-author__text">Code 4ever</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/acptek" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a><a class="sidebar-ov-social-item" href="acptek" target="_blank" rel="noopener" data-popover="微信" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-weixin"></i></span></a></div><div class="sidebar-ov-feed"><span class="sidebar-ov-feed-email"><a class="sidebar-ov-feed-email__link" href="mailto:acpteks@gmail.com" target="_blank" rel="noopener"><span class="sidebar-ov-feed-email__icon"><i class="fas fa-envelope"></i></span><span>Email 订阅</span></a></span><span class="sidebar-ov-feed-rss"><a class="sidebar-ov-feed-rss__link" href="/atom.xml" target="_blank" rel="noopener"><span class="sidebar-ov-feed-rss__icon"><i class="fas fa-rss"></i></span><span>RSS 订阅</span></a></span></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">40</div><div class="sidebar-ov-state-item__name">标签</div></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__devider"></span><span>Acptek = >.< =</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: '9b8bc2f8b01d62ec7d57',
+    clientSecret: 'b36e96fbd613947458f2426c25324c389f26c463',
+    repo: 'acptek.github.io',
+    owner: 'acptek',
+    admin: ['acptek'],
+    distractionFreeMode: 'false',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.0.1"></script><script src="/js/stun-boot.js?v=2.0.1"></script><script src="/js/scroll.js?v=2.0.1"></script><script src="/js/header.js?v=2.0.1"></script><script src="/js/sidebar.js?v=2.0.1"></script></body></html>
